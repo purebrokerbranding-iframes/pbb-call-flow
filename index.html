@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PBB — Sales Call Flow</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --dark: #12282c;
+    --dark2: #1a363c;
+    --dark3: #0e1f22;
+    --gold: #c9a84c;
+    --gold-light: #e6c96e;
+    --gold-dim: rgba(201,168,76,0.15);
+    --gold-glow: rgba(201,168,76,0.3);
+    --white: #f4f0e8;
+    --gray: #a3b0b3;
+    --green: #34d399;
+    --red: #f87171;
+    --orange: #fbbf24;
+    --radius: 12px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--dark3);
+    color: var(--white);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── PIN SCREEN ── */
+  #pin-screen {
+    position: fixed; inset:0; z-index:9999;
+    background: var(--dark3);
+    display: flex; align-items:center; justify-content:center;
+    flex-direction: column; gap: 24px;
+  }
+  #pin-screen.hidden { display:none; }
+  #pin-screen img { width:90px; filter: drop-shadow(0 0 20px var(--gold-glow)); }
+  #pin-screen h2 { font-family:'Playfair Display',serif; color:var(--gold); font-size:1.4rem; }
+  #pin-box {
+    display:flex; gap:10px; align-items:center;
+  }
+  #pin-box input {
+    width: 220px; padding:14px 18px;
+    background: var(--dark2); border:2px solid var(--gold-dim);
+    border-radius: var(--radius); color:var(--white);
+    font-size:1.1rem; font-family:'Inter',sans-serif;
+    letter-spacing: 4px; text-align:center;
+    outline:none; transition: border-color 0.3s;
+    -webkit-text-security: disc;
+  }
+  #pin-box input:focus { border-color: var(--gold); }
+  #pin-box button {
+    padding:14px 24px; background:var(--gold); color:var(--dark);
+    border:none; border-radius:var(--radius); font-weight:700;
+    cursor:pointer; font-size:1rem; transition: all 0.2s;
+  }
+  #pin-box button:hover { background:var(--gold-light); transform:scale(1.03); }
+  #pin-error { color:var(--red); font-size:0.85rem; min-height:20px; }
+  .pin-role { color:var(--gray); font-size:0.8rem; margin-top:-10px; }
+
+  /* ── MAIN APP ── */
+  #app { display:none; }
+  #app.visible { display:block; }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--dark);
+    border-bottom: 1px solid var(--gold-dim);
+    padding: 16px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:100;
+  }
+  .header-left { display:flex; align-items:center; gap:14px; }
+  .header-left img { height:40px; }
+  .header-left h1 {
+    font-family:'Playfair Display',serif; font-size:1.2rem;
+    color:var(--gold); letter-spacing:0.5px;
+  }
+  .header-right { display:flex; align-items:center; gap:12px; }
+  .role-badge {
+    padding:5px 14px; border-radius:20px; font-size:0.75rem;
+    font-weight:600; text-transform:uppercase; letter-spacing:1px;
+  }
+  .role-owner { background:var(--gold); color:var(--dark); }
+  .role-guest { background:var(--gold-dim); color:var(--gold); border:1px solid var(--gold); }
+  .btn-logout {
+    padding:6px 14px; background:transparent; border:1px solid var(--gray);
+    color:var(--gray); border-radius:var(--radius); cursor:pointer;
+    font-size:0.75rem; transition:all 0.2s;
+  }
+  .btn-logout:hover { border-color:var(--red); color:var(--red); }
+
+  /* ── TABS ── */
+  .tabs {
+    display:flex; gap:0; background:var(--dark);
+    border-bottom:1px solid var(--gold-dim);
+    padding:0 24px; overflow-x:auto;
+  }
+  .tab {
+    padding:14px 22px; cursor:pointer; font-size:0.85rem;
+    font-weight:600; color:var(--gray); border-bottom:3px solid transparent;
+    white-space:nowrap; transition: all 0.2s;
+  }
+  .tab:hover { color:var(--white); }
+  .tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+  /* ── TAB CONTENT ── */
+  .tab-content { display:none; padding:24px; max-width:900px; margin:0 auto; }
+  .tab-content.visible { display:block; }
+
+  /* ── CALL FLOW STEPS ── */
+  .step {
+    background: var(--dark);
+    border: 1px solid var(--gold-dim);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .step:hover { border-color: var(--gold-glow); }
+  .step-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 20px; cursor:pointer; user-select:none;
+  }
+  .step-header-left { display:flex; align-items:center; gap:14px; }
+  .step-num {
+    width:32px; height:32px; border-radius:50%;
+    background:var(--gold); color:var(--dark);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:0.85rem; flex-shrink:0;
+  }
+  .step-num.completed { background:var(--green); }
+  .step-title { font-weight:600; font-size:1rem; }
+  .step-tag {
+    font-size:0.65rem; padding:3px 10px; border-radius:20px;
+    font-weight:600; text-transform:uppercase; letter-spacing:0.5px;
+    margin-left:10px;
+  }
+  .tag-opener { background:rgba(52,211,153,0.15); color:var(--green); }
+  .tag-discovery { background:rgba(96,165,250,0.15); color:#60a5fa; }
+  .tag-bridge { background:rgba(251,191,36,0.15); color:var(--orange); }
+  .tag-pitch { background:rgba(168,85,247,0.15); color:#a855f7; }
+  .tag-close { background:rgba(248,113,113,0.15); color:var(--red); }
+  .step-chevron {
+    color:var(--gold); font-size:1.2rem; transition:transform 0.3s;
+    flex-shrink:0;
+  }
+  .step.open .step-chevron { transform:rotate(180deg); }
+  .step-body {
+    max-height:0; overflow:hidden; transition: max-height 0.4s ease;
+  }
+  .step.open .step-body { max-height:2000px; }
+  .step-inner { padding:0 20px 20px 66px; }
+  .script-label {
+    font-size:0.7rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:1.5px; color:var(--gold); margin-bottom:8px;
+  }
+  .script-text {
+    background:var(--dark2); border-left:3px solid var(--gold);
+    padding:14px 18px; border-radius:0 var(--radius) var(--radius) 0;
+    font-size:0.95rem; color:var(--white); margin-bottom:12px;
+    line-height:1.7; font-style:italic;
+  }
+  .tip {
+    background:rgba(201,168,76,0.08); border:1px solid var(--gold-dim);
+    border-radius:var(--radius); padding:12px 16px; margin-top:10px;
+    font-size:0.85rem; color:var(--gray);
+  }
+  .tip strong { color:var(--gold); }
+  .questions { list-style:none; margin:8px 0 0 0; }
+  .questions li {
+    padding:8px 0; border-bottom:1px solid var(--gold-dim);
+    font-size:0.95rem; color:var(--white); font-style:italic;
+  }
+  .questions li:last-child { border:none; }
+  .questions li::before { content:'→ '; color:var(--gold); font-weight:700; font-style:normal; }
+
+  /* ── OBJECTIONS ── */
+  .objection {
+    background:var(--dark); border:1px solid var(--gold-dim);
+    border-radius:var(--radius); margin-bottom:12px;
+    overflow:hidden; transition:border-color 0.3s;
+  }
+  .objection:hover { border-color:var(--gold-glow); }
+  .obj-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 20px; cursor:pointer; user-select:none;
+  }
+  .obj-label { display:flex; align-items:center; gap:12px; }
+  .obj-icon {
+    width:28px; height:28px; border-radius:50%;
+    background:rgba(248,113,113,0.15); color:var(--red);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.8rem; font-weight:700; flex-shrink:0;
+  }
+  .obj-text { font-weight:600; font-size:0.95rem; color:var(--white); }
+  .obj-chevron {
+    color:var(--gold); font-size:1.2rem; transition:transform 0.3s; flex-shrink:0;
+  }
+  .objection.open .obj-chevron { transform:rotate(180deg); }
+  .obj-body { max-height:0; overflow:hidden; transition:max-height 0.4s ease; }
+  .objection.open .obj-body { max-height:1000px; }
+  .obj-inner { padding:0 20px 18px 60px; }
+  .obj-response {
+    background:var(--dark2); border-left:3px solid var(--green);
+    padding:14px 18px; border-radius:0 var(--radius) var(--radius) 0;
+    font-size:0.95rem; color:var(--white); font-style:italic;
+    margin-bottom:10px;
+  }
+  .obj-why {
+    font-size:0.8rem; color:var(--gray); padding:8px 0;
+  }
+  .obj-why strong { color:var(--gold); }
+
+  /* ── LOG CALL FORM ── */
+  .form-section {
+    background:var(--dark); border:1px solid var(--gold-dim);
+    border-radius:var(--radius); padding:28px;
+  }
+  .form-section h3 {
+    font-family:'Playfair Display',serif; color:var(--gold);
+    font-size:1.2rem; margin-bottom:20px;
+  }
+  .form-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  }
+  .form-group { display:flex; flex-direction:column; gap:6px; }
+  .form-group.full { grid-column:1/-1; }
+  .form-group label {
+    font-size:0.75rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:1px; color:var(--gold);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding:12px 16px; background:var(--dark2);
+    border:1px solid var(--gold-dim); border-radius:var(--radius);
+    color:var(--white); font-family:'Inter',sans-serif;
+    font-size:0.95rem; outline:none; transition:border-color 0.3s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color:var(--gold); }
+  .form-group textarea { resize:vertical; min-height:100px; }
+  .form-group select { cursor:pointer; }
+  .form-group select option { background:var(--dark2); }
+  .form-actions {
+    display:flex; gap:12px; margin-top:20px; align-items:center;
+  }
+  .btn-submit {
+    padding:14px 32px; background:var(--gold); color:var(--dark);
+    border:none; border-radius:var(--radius); font-weight:700;
+    font-size:1rem; cursor:pointer; transition:all 0.2s;
+  }
+  .btn-submit:hover { background:var(--gold-light); transform:scale(1.02); }
+  .btn-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+  .btn-clear {
+    padding:14px 24px; background:transparent; border:1px solid var(--gray);
+    color:var(--gray); border-radius:var(--radius); cursor:pointer;
+    font-size:0.9rem; transition:all 0.2s;
+  }
+  .btn-clear:hover { border-color:var(--white); color:var(--white); }
+  .form-status { margin-top:14px; font-size:0.9rem; min-height:24px; }
+  .status-success { color:var(--green); }
+  .status-error { color:var(--red); }
+
+  /* ── QUICK TIPS ── */
+  .tips-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  }
+  .tip-card {
+    background:var(--dark); border:1px solid var(--gold-dim);
+    border-radius:var(--radius); padding:20px;
+  }
+  .tip-card h4 {
+    color:var(--gold); font-size:0.9rem; margin-bottom:10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .tip-card p { color:var(--gray); font-size:0.85rem; line-height:1.6; }
+
+  /* ── CALL TIMER ── */
+  .timer-bar {
+    display:flex; align-items:center; gap:14px;
+    background:var(--dark); border:1px solid var(--gold-dim);
+    border-radius:var(--radius); padding:14px 20px;
+    margin-bottom:24px;
+  }
+  .timer-display {
+    font-size:1.8rem; font-weight:700; color:var(--gold);
+    font-variant-numeric:tabular-nums; min-width:100px;
+  }
+  .timer-btn {
+    padding:8px 20px; border-radius:var(--radius);
+    font-weight:600; cursor:pointer; font-size:0.85rem;
+    border:none; transition:all 0.2s;
+  }
+  .timer-start { background:var(--green); color:var(--dark); }
+  .timer-start:hover { filter:brightness(1.1); }
+  .timer-pause { background:var(--orange); color:var(--dark); }
+  .timer-pause:hover { filter:brightness(1.1); }
+  .timer-reset { background:transparent; border:1px solid var(--gray); color:var(--gray); }
+  .timer-reset:hover { border-color:var(--white); color:var(--white); }
+  .timer-label { font-size:0.8rem; color:var(--gray); margin-left:auto; }
+
+  /* ── GUEST RESTRICTIONS ── */
+  .guest-locked {
+    position:relative; pointer-events:none; opacity:0.4;
+  }
+  .guest-locked::after {
+    content:'Owner Only';
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    background:var(--dark); border:1px solid var(--gold);
+    color:var(--gold); padding:6px 16px; border-radius:var(--radius);
+    font-size:0.75rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:1px; pointer-events:none;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:700px) {
+    .header { padding:12px 16px; }
+    .header-left h1 { font-size:1rem; }
+    .tabs { padding:0 12px; }
+    .tab { padding:12px 14px; font-size:0.8rem; }
+    .tab-content { padding:16px; }
+    .step-inner { padding:0 16px 16px 16px; }
+    .obj-inner { padding:0 16px 16px 16px; }
+    .form-grid { grid-template-columns:1fr; }
+    .tips-grid { grid-template-columns:1fr; }
+    .timer-bar { flex-wrap:wrap; }
+    .timer-label { width:100%; margin-left:0; margin-top:4px; }
+    .form-section { padding:20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── PIN SCREEN ── -->
+<div id="pin-screen">
+  <img src="https://purebrokerbranding.com/cdn/shop/files/Logo_Big_-_Pure_Broker-removebg-preview.png" alt="PBB">
+  <h2>Sales Call Flow</h2>
+  <div id="pin-box">
+    <input type="password" id="pin-input" placeholder="Enter PIN" maxlength="6" inputmode="numeric" autocomplete="off">
+    <button onclick="checkPin()">Enter</button>
+  </div>
+  <div id="pin-error"></div>
+  <div class="pin-role">Owner &amp; Guest access available</div>
+</div>
+
+<!-- ── MAIN APP ── -->
+<div id="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <img src="https://purebrokerbranding.com/cdn/shop/files/Logo_Big_-_Pure_Broker-removebg-preview.png" alt="PBB">
+      <h1>Call Flow</h1>
+    </div>
+    <div class="header-right">
+      <span class="role-badge" id="role-badge"></span>
+      <button class="btn-logout" onclick="logout()">Lock</button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" data-tab="flow">Call Flow</div>
+    <div class="tab" data-tab="objections">Objections</div>
+    <div class="tab" data-tab="log">Log Call</div>
+    <div class="tab" data-tab="tips">Playbook</div>
+  </div>
+
+  <!-- ═══ TAB: CALL FLOW ═══ -->
+  <div class="tab-content visible" id="tab-flow">
+
+    <!-- CALL TIMER -->
+    <div class="timer-bar">
+      <div class="timer-display" id="timer">00:00</div>
+      <button class="timer-btn timer-start" id="timer-toggle" onclick="toggleTimer()">Start</button>
+      <button class="timer-btn timer-reset" onclick="resetTimer()">Reset</button>
+      <div class="timer-label">Track your call length</div>
+    </div>
+
+    <!-- STEP 1: OPEN -->
+    <div class="step open">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-header-left">
+          <div class="step-num">1</div>
+          <span class="step-title">Open — Build Rapport</span>
+          <span class="step-tag tag-opener">Opener</span>
+        </div>
+        <span class="step-chevron">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-inner">
+          <div class="script-label">Say This</div>
+          <div class="script-text">"Hey what's going on, appreciate you reaching out. Tell me a little about what you've got going right now."</div>
+          <div class="tip"><strong>Pro tip:</strong> Shut up after this. Let them talk. The more they share, the more ammo you have. Don't pitch yet — just listen and take notes on their pain points.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: FIND PROBLEM -->
+    <div class="step">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-header-left">
+          <div class="step-num">2</div>
+          <span class="step-title">Find the Problem</span>
+          <span class="step-tag tag-discovery">Discovery</span>
+        </div>
+        <span class="step-chevron">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-inner">
+          <div class="script-label">Ask These (Pick 2–3)</div>
+          <ul class="questions">
+            <li>"Are you getting consistent leads from your site right now?"</li>
+            <li>"Do you feel like your site actually converts visitors or just exists?"</li>
+            <li>"How are people finding you right now — referrals, organic, paid?"</li>
+            <li>"If I pulled up your site right now, would you say it represents the level of business you're trying to build?"</li>
+          </ul>
+          <div class="tip"><strong>What you're listening for:</strong> "No," "not really," "I'm not sure." Any hesitation means there's a gap. Mirror their language back — if they say "my site is trash," use that exact word later.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: IDENTIFY GAP -->
+    <div class="step">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-header-left">
+          <div class="step-num">3</div>
+          <span class="step-title">Identify the Gap</span>
+          <span class="step-tag tag-bridge">Bridge</span>
+        </div>
+        <span class="step-chevron">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-inner">
+          <div class="script-label">Say This</div>
+          <div class="script-text">"So it sounds like you've got [traffic/a site/some presence], but it's not really turning into consistent business. That's exactly the gap I help agencies close."</div>
+          <div class="tip"><strong>Key move:</strong> Repeat their problem back in their own words. This builds trust instantly because they feel understood. Don't exaggerate — just reflect what they told you. This is where the sale actually starts.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: POSITION -->
+    <div class="step">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-header-left">
+          <div class="step-num">4</div>
+          <span class="step-title">Position the Solution</span>
+          <span class="step-tag tag-pitch">Pitch</span>
+        </div>
+        <span class="step-chevron">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-inner">
+          <div class="script-label">Say This</div>
+          <div class="script-text">"What I do is build out your entire digital presence — site, SEO, lead capture, the works — so your site actually brings in and converts leads on autopilot. Everything stays compliant, everything's built to perform."</div>
+          <div class="tip"><strong>Don't oversell.</strong> Keep it tight. You're not listing features — you're painting the outcome. They don't care about "responsive design." They care about getting more clients without chasing referrals.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5: TRANSITION -->
+    <div class="step">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-header-left">
+          <div class="step-num">5</div>
+          <span class="step-title">Transition to Close</span>
+          <span class="step-tag tag-bridge">Bridge</span>
+        </div>
+        <span class="step-chevron">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-inner">
+          <div class="script-label">Say This</div>
+          <div class="script-text">"Based on what you told me, this is something I can definitely help you fix. Let me walk you through what it looks like."</div>
+          <div class="tip"><strong>Confidence is everything here.</strong> Don't say "I think I can help." Say "I can fix this." You've heard their problem, you know the solution — own it. This is the bridge from discovery to dollars.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 6: PRICE -->
+    <div class="step">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-header-left">
+          <div class="step-num">6</div>
+          <span class="step-title">Drop the Price</span>
+          <span class="step-tag tag-pitch">Pitch</span>
+        </div>
+        <span class="step-chevron">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-inner">
+          <div class="script-label">Say This</div>
+          <div class="script-text">"Based on what you need, this falls around $X. We do 40% upfront to get started, and the rest is spread out. Nothing crazy — just enough to get the ball rolling."</div>
+          <div class="tip"><strong>State the price and stop talking.</strong> Don't justify it, don't discount it, don't fill the silence. The first person who talks after the price loses. Let them process. Silence is your best closer.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 7: CLOSE -->
+    <div class="step">
+      <div class="step-header" onclick="toggleStep(this)">
+        <div class="step-header-left">
+          <div class="step-num">7</div>
+          <span class="step-title">Close</span>
+          <span class="step-tag tag-close">Close</span>
+        </div>
+        <span class="step-chevron">▼</span>
+      </div>
+      <div class="step-body">
+        <div class="step-inner">
+          <div class="script-label">Say This</div>
+          <div class="script-text">"Let's go ahead and get you set up so we can start fixing this."</div>
+          <div class="tip"><strong>Assumptive close.</strong> You're not asking "do you want to move forward?" — you're assuming they do. Then pause. Let them respond. If they push back, that's what the objections tab is for.</div>
+
+          <div class="script-label" style="margin-top:18px;">If No Sale — Leave-Open Close</div>
+          <div class="script-text">"No worries at all — I never push decisions. At least now you know exactly what's holding your site back. When you're ready to fix it, I'll already have the game plan ready to go."</div>
+          <div class="script-text" style="border-left-color:var(--orange);">"I'll send you a quick recap so you have everything in front of you. If something clicks later this week, just reply and we'll pick it right back up — no need to re-explain anything."</div>
+          <div class="tip"><strong>Plant the seed, don't beg.</strong> This keeps the door open without sounding desperate. Follow up in 48 hours with a short text or email — not a pitch, just a check-in.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: OBJECTIONS ═══ -->
+  <div class="tab-content" id="tab-objections">
+    <h2 style="font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:20px;">Objection Handling</h2>
+    <p style="color:var(--gray);margin-bottom:24px;font-size:0.9rem;">Every objection is a buying signal. They're still on the phone — that means they're interested. Handle it, don't fight it.</p>
+
+    <!-- OBJ 1 -->
+    <div class="objection open">
+      <div class="obj-header" onclick="toggleObj(this)">
+        <div class="obj-label">
+          <div class="obj-icon">!</div>
+          <span class="obj-text">"I need to think about it"</span>
+        </div>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-inner">
+          <div class="obj-response">"Totally understand — what specifically are you unsure about? Is it the investment, the timing, or something else?"</div>
+          <div class="obj-why"><strong>Why this works:</strong> Forces them to name the real objection instead of hiding behind a vague excuse. Most of the time "I need to think about it" means "I have a concern I haven't said out loud." Get it out in the open and you can actually address it.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJ 2 -->
+    <div class="objection">
+      <div class="obj-header" onclick="toggleObj(this)">
+        <div class="obj-label">
+          <div class="obj-icon">$</div>
+          <span class="obj-text">"It's too expensive"</span>
+        </div>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-inner">
+          <div class="obj-response">"I hear you — compared to what you're getting right now, does what I'm offering actually solve the problem or not?"</div>
+          <div class="obj-why"><strong>Why this works:</strong> Reframes price as value. You're not defending the cost — you're making them compare your solution to their current results (which are zero). The answer is almost always "yes, it solves it." Now price becomes an investment, not an expense.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJ 3 -->
+    <div class="objection">
+      <div class="obj-header" onclick="toggleObj(this)">
+        <div class="obj-label">
+          <div class="obj-icon">↻</div>
+          <span class="obj-text">"I already have someone"</span>
+        </div>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-inner">
+          <div class="obj-response">"Got you — are they actually driving results, or just maintaining what's already there?"</div>
+          <div class="obj-why"><strong>Why this works:</strong> If their current person was crushing it, they wouldn't be on a strategy call with you. This question makes them confront the gap between what they're paying for and what they're actually getting. Let them sell themselves on switching.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJ 4 -->
+    <div class="objection">
+      <div class="obj-header" onclick="toggleObj(this)">
+        <div class="obj-label">
+          <div class="obj-icon">?</div>
+          <span class="obj-text">"Do you have case studies?"</span>
+        </div>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-inner">
+          <div class="obj-response">"Great question — I'm in a relaunch phase onboarding a few agencies right now to build fresh case studies. That actually works in your favor because you're getting premium, hands-on work at a lower entry point than what this will cost in 6 months."</div>
+          <div class="obj-why"><strong>Why this works:</strong> Turns a weakness into urgency. You're not apologizing — you're positioning them as getting early access to something that's about to be more expensive. Scarcity + exclusivity = action.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OBJ 5 -->
+    <div class="objection">
+      <div class="obj-header" onclick="toggleObj(this)">
+        <div class="obj-label">
+          <div class="obj-icon">⏳</div>
+          <span class="obj-text">"Not right now"</span>
+        </div>
+        <span class="obj-chevron">▼</span>
+      </div>
+      <div class="obj-body">
+        <div class="obj-inner">
+          <div class="obj-response">"No worries — timing has to make sense. Just keep in mind, every month your site isn't converting is money you're leaving on the table. When you're ready, I'll have the plan ready to go."</div>
+          <div class="obj-why"><strong>Why this works:</strong> Respects their decision while planting a cost-of-inaction seed. You're not arguing — you're letting the math do the work. Follow up in 5–7 days with a low-pressure check-in.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: LOG CALL ═══ -->
+  <div class="tab-content" id="tab-log">
+    <div class="form-section">
+      <h3>Log Strategy Call</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Prospect Name</label>
+          <input type="text" id="f-name" placeholder="Full name">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="f-email" placeholder="email@example.com">
+        </div>
+        <div class="form-group">
+          <label>Call Result</label>
+          <select id="f-result">
+            <option value="">Select outcome...</option>
+            <option value="Closed — Won">Closed — Won 🎯</option>
+            <option value="Follow-Up Scheduled">Follow-Up Scheduled 📅</option>
+            <option value="Interested — Needs Time">Interested — Needs Time ⏳</option>
+            <option value="Not a Fit">Not a Fit ❌</option>
+            <option value="No Show">No Show 👻</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Call Date</label>
+          <input type="date" id="f-date">
+        </div>
+        <div class="form-group full">
+          <label>Call Summary</label>
+          <textarea id="f-summary" placeholder="Key pain points, what was discussed, next steps..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-submit" id="btn-send" onclick="submitLog()">Send to CRM</button>
+        <button class="btn-clear" onclick="clearForm()">Clear</button>
+      </div>
+      <div class="form-status" id="form-status"></div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: PLAYBOOK ═══ -->
+  <div class="tab-content" id="tab-tips">
+    <h2 style="font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:20px;">Sales Playbook</h2>
+    <div class="tips-grid">
+
+      <div class="tip-card">
+        <h4>🎯 The 80/20 Rule</h4>
+        <p>They should be talking 80% of the time. Your job is to ask the right questions and shut up. The more they talk, the more they convince themselves they need you.</p>
+      </div>
+
+      <div class="tip-card">
+        <h4>🪞 Mirror Their Words</h4>
+        <p>If they say "my site looks outdated," don't say "your site needs modernization." Say "outdated" right back. Matching their language builds subconscious trust.</p>
+      </div>
+
+      <div class="tip-card">
+        <h4>⏸️ Master the Pause</h4>
+        <p>After you state the price — stop. After you ask a closing question — stop. Silence is uncomfortable. The first person to break it loses leverage. Let them fill the gap.</p>
+      </div>
+
+      <div class="tip-card">
+        <h4>🔥 Urgency Without Pressure</h4>
+        <p>Never say "this deal expires." Instead: "Every month your site isn't converting, that's X leads you're not getting." Let the cost of inaction create the urgency.</p>
+      </div>
+
+      <div class="tip-card">
+        <h4>📱 Follow-Up Framework</h4>
+        <p>48 hours after a no-close: short text or email — "Hey [name], just wanted to follow up. No pressure, just want to make sure you have everything you need." Keep it human.</p>
+      </div>
+
+      <div class="tip-card">
+        <h4>🚫 Never Trash Competitors</h4>
+        <p>If they have someone already, don't talk bad about their current provider. Just ask if they're getting results. Let the gap speak for itself — you don't need to push them off a cliff.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ── PIN AUTH ── */
+  var userRole = '';
+  var OWNER_PIN = '278262';
+  var GUEST_PIN = '987789';
+
+  document.getElementById('pin-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPin();
+  });
+
+  function checkPin() {
+    var pin = document.getElementById('pin-input').value.trim();
+    if (pin === OWNER_PIN) {
+      userRole = 'owner';
+      unlock();
+    } else if (pin === GUEST_PIN) {
+      userRole = 'guest';
+      unlock();
+    } else {
+      document.getElementById('pin-error').textContent = 'Invalid PIN — try again.';
+      document.getElementById('pin-input').value = '';
+      document.getElementById('pin-input').focus();
+    }
+  }
+
+  function unlock() {
+    document.getElementById('pin-screen').classList.add('hidden');
+    document.getElementById('app').classList.add('visible');
+    var badge = document.getElementById('role-badge');
+    if (userRole === 'owner') {
+      badge.textContent = 'Owner';
+      badge.className = 'role-badge role-owner';
+    } else {
+      badge.textContent = 'Guest';
+      badge.className = 'role-badge role-guest';
+      /* Lock the Log Call tab for guests */
+      document.getElementById('tab-log').innerHTML = '<div class="guest-locked" style="min-height:300px;display:flex;align-items:center;justify-content:center;"><p style="color:var(--gray);text-align:center;">Call logging is restricted to the owner account.</p></div>';
+    }
+    /* Set today's date */
+    var d = document.getElementById('f-date');
+    if (d) d.valueAsDate = new Date();
+  }
+
+  function logout() {
+    userRole = '';
+    document.getElementById('pin-screen').classList.remove('hidden');
+    document.getElementById('app').classList.remove('visible');
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-error').textContent = '';
+  }
+
+  /* ── TABS ── */
+  document.querySelectorAll('.tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('visible'); });
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('visible');
+    });
+  });
+
+  /* ── STEP ACCORDION ── */
+  function toggleStep(header) {
+    header.closest('.step').classList.toggle('open');
+  }
+
+  /* ── OBJECTION ACCORDION ── */
+  function toggleObj(header) {
+    header.closest('.objection').classList.toggle('open');
+  }
+
+  /* ── CALL TIMER ── */
+  var timerInterval = null;
+  var timerSeconds = 0;
+  var timerRunning = false;
+
+  function toggleTimer() {
+    var btn = document.getElementById('timer-toggle');
+    if (!timerRunning) {
+      timerRunning = true;
+      btn.textContent = 'Pause';
+      btn.className = 'timer-btn timer-pause';
+      timerInterval = setInterval(function() {
+        timerSeconds++;
+        updateTimerDisplay();
+      }, 1000);
+    } else {
+      timerRunning = false;
+      btn.textContent = 'Resume';
+      btn.className = 'timer-btn timer-start';
+      clearInterval(timerInterval);
+    }
+  }
+
+  function resetTimer() {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    timerSeconds = 0;
+    updateTimerDisplay();
+    var btn = document.getElementById('timer-toggle');
+    btn.textContent = 'Start';
+    btn.className = 'timer-btn timer-start';
+  }
+
+  function updateTimerDisplay() {
+    var m = Math.floor(timerSeconds / 60);
+    var s = timerSeconds % 60;
+    document.getElementById('timer').textContent =
+      (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  /* ── FORM SUBMISSION (Zapier Webhook) ── */
+  function submitLog() {
+    var name = document.getElementById('f-name').value.trim();
+    var email = document.getElementById('f-email').value.trim();
+    var result = document.getElementById('f-result').value;
+    var date = document.getElementById('f-date').value;
+    var summary = document.getElementById('f-summary').value.trim();
+    var status = document.getElementById('form-status');
+    var btn = document.getElementById('btn-send');
+
+    if (!name || !email || !result || !date) {
+      status.className = 'form-status status-error';
+      status.textContent = 'Please fill in all required fields.';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    status.textContent = '';
+
+    /* ── REPLACE THIS URL WITH YOUR ZAPIER WEBHOOK ── */
+    var WEBHOOK_URL = 'YOUR_ZAPIER_WEBHOOK_URL_HERE';
+
+    var payload = {
+      name: name,
+      email: email,
+      result: result,
+      date: date,
+      summary: summary,
+      logged_by: userRole,
+      call_duration: document.getElementById('timer').textContent
+    };
+
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      mode: 'no-cors',
+      body: JSON.stringify(payload)
+    }).then(function() {
+      status.className = 'form-status status-success';
+      status.textContent = 'Call logged successfully.';
+      btn.disabled = false;
+      btn.textContent = 'Send to CRM';
+      clearForm();
+    }).catch(function() {
+      status.className = 'form-status status-error';
+      status.textContent = 'Failed to send — check your webhook URL.';
+      btn.disabled = false;
+      btn.textContent = 'Send to CRM';
+    });
+  }
+
+  function clearForm() {
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-result').value = '';
+    document.getElementById('f-summary').value = '';
+    var d = document.getElementById('f-date');
+    if (d) d.valueAsDate = new Date();
+  }
+
+  /* Auto-focus PIN input */
+  document.getElementById('pin-input').focus();
+</script>
+
+</body>
+</html>
