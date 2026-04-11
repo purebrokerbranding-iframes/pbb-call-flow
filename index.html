@@ -190,9 +190,7 @@
   .copy-btn.copied { background: var(--green); color:#000; }
 
   /* ── PROPOSAL FORM ── */
-  .proposal-section {
-    max-width: 600px; margin: 0 auto;
-  }
+  .proposal-section { max-width: 600px; margin: 0 auto; }
   .proposal-form {
     background: var(--dark); border:1px solid var(--teal-dim); border-radius:var(--radius);
     padding: 24px;
@@ -213,8 +211,6 @@
     width:100%;
   }
   .proposal-form .send-btn:hover { background:var(--gold-light); }
-
-  /* Update contact toggle */
   .update-toggle {
     background: var(--dark2); border:1px solid var(--teal-dim); border-radius:var(--radius);
     padding: 14px 18px; margin-top:16px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
@@ -243,6 +239,73 @@
   }
   .log-submit:hover { background:var(--gold-light); }
   .log-success { color:var(--green); text-align:center; padding:10px; display:none; font-weight:600; }
+  .client-id-display {
+    background:var(--dark2); border:1px solid var(--teal-dim); border-radius:8px;
+    padding:10px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;
+  }
+  .client-id-display span { color:var(--teal-light); font-family:'Courier New',monospace; font-weight:700; font-size:.95rem; }
+  .client-id-display .cid-label { color:var(--gray); font-size:.75rem; font-weight:600; text-transform:uppercase; }
+  .amount-row { display:none; }
+  .amount-row.show { display:block; }
+
+  /* ── TRACKER ── */
+  .tracker-section { max-width: 900px; margin: 0 auto; }
+  .tracker-search {
+    display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;
+  }
+  .tracker-search input {
+    flex:1; min-width:200px; padding:12px 16px; border-radius:8px;
+    border:1px solid var(--teal-dim); background:var(--dark2); color:var(--white);
+    font-size:.9rem; outline:none;
+  }
+  .tracker-search input:focus { border-color:var(--teal); }
+  .tracker-search button {
+    padding:12px 24px; border-radius:8px; background:var(--teal); color:#fff;
+    border:none; font-weight:600; font-size:.9rem; cursor:pointer; transition:all .2s;
+  }
+  .tracker-search button:hover { background:var(--teal-light); }
+  .tracker-search .refresh-btn {
+    padding:12px 16px; border-radius:8px; background:var(--dark2); color:var(--gray);
+    border:1px solid var(--teal-dim); font-weight:600; font-size:.9rem; cursor:pointer;
+  }
+  .tracker-status {
+    text-align:center; padding:20px; color:var(--gray); font-size:.9rem;
+  }
+  .tracker-card {
+    background: var(--dark); border:1px solid var(--teal-dim); border-radius:var(--radius);
+    padding:18px; margin-bottom:12px;
+  }
+  .tracker-card-header {
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
+    margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--teal-dim);
+  }
+  .tracker-card-header .tc-name { font-weight:700; font-size:1rem; color:var(--white); }
+  .tracker-card-header .tc-id { font-family:'Courier New',monospace; font-size:.8rem; color:var(--teal-light); background:var(--teal-dim); padding:2px 10px; border-radius:10px; }
+  .tracker-card-row {
+    display:grid; grid-template-columns: 1fr 1fr; gap:8px 20px; margin-bottom:6px;
+  }
+  .tracker-card-row .tc-label { color:var(--gray); font-size:.75rem; font-weight:600; text-transform:uppercase; }
+  .tracker-card-row .tc-value { color:var(--white); font-size:.85rem; margin-bottom:8px; }
+  .tc-result {
+    display:inline-block; padding:3px 10px; border-radius:10px; font-size:.75rem; font-weight:600;
+  }
+  .tc-result-closed { background:rgba(52,211,153,.15); color:var(--green); }
+  .tc-result-proposal { background:rgba(201,168,76,.15); color:var(--gold); }
+  .tc-result-interested { background:rgba(42,161,152,.15); color:var(--teal-light); }
+  .tc-result-callback { background:rgba(251,191,36,.15); color:var(--orange); }
+  .tc-result-nofit { background:rgba(248,113,113,.15); color:var(--red); }
+  .tc-result-noshow { background:rgba(163,176,179,.15); color:var(--gray); }
+  .tc-result-partner { background:rgba(42,161,152,.15); color:var(--teal-light); }
+  .tc-summary { margin-top:8px; padding-top:8px; border-top:1px solid var(--teal-dim); }
+  .tc-summary .tc-label { color:var(--gray); font-size:.75rem; font-weight:600; text-transform:uppercase; }
+  .tc-summary .tc-value { color:var(--white); font-size:.85rem; margin-top:4px; line-height:1.5; }
+  .tc-amount { color:var(--green); font-weight:700; font-size:1rem; }
+  .tracker-setup-msg {
+    background:var(--dark); border:1px solid var(--gold-dim); border-radius:var(--radius);
+    padding:20px; text-align:center;
+  }
+  .tracker-setup-msg p { color:var(--gray); font-size:.9rem; margin-bottom:10px; }
+  .tracker-setup-msg code { color:var(--gold); background:var(--dark2); padding:2px 8px; border-radius:4px; font-size:.85rem; }
 
   /* ── PLAYBOOK ── */
   .playbook-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:14px; }
@@ -256,11 +319,12 @@
 
   /* ── RESPONSIVE ── */
   @media (max-width:600px) {
-    .tab-bar button { font-size:.7rem; padding:10px 6px; }
+    .tab-bar button { font-size:.65rem; padding:10px 5px; }
     .link-grid { grid-template-columns: 1fr; }
     .playbook-grid { grid-template-columns: 1fr; }
     header { padding: 12px 14px; }
     .tab-content { padding: 14px; }
+    .tracker-card-row { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -285,7 +349,7 @@
     <img src="https://purebrokerbranding.com/cdn/shop/files/Logo_Big_-_Pure_Broker-removebg-preview.png" alt="PBB">
     <span>Sales Call Flow</span>
   </div>
-  <div class="user-badge" id="user-badge">Owner</div>
+  <div class="user-badge" id="user-badge">Perry</div>
 </header>
 
 <!-- Timer -->
@@ -310,15 +374,15 @@
   <button class="active" onclick="openTab('flow',this)">📋 Call Flow</button>
   <button onclick="openTab('objections',this)">🛡 Objections</button>
   <button onclick="openTab('links',this)">🔗 Links</button>
-  <button onclick="openTab('proposal',this)">📩 Send Proposal</button>
+  <button onclick="openTab('proposal',this)">📩 Proposal</button>
   <button onclick="openTab('log',this)">📝 Log Call</button>
+  <button onclick="openTab('tracker',this)">📊 Tracker</button>
   <button onclick="openTab('playbook',this)">🧠 Playbook</button>
 </div>
 
-<!-- ═══ TAB 1: CALL FLOW (LIVE STRATEGY CALL — CLOSING) ═══ -->
+<!-- ═══ TAB 1: CALL FLOW ═══ -->
 <div id="flow" class="tab-content active">
 
-  <!-- Step 1 -->
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">1</span> Start Here — Open the Call</h3>
@@ -332,7 +396,6 @@
     </div>
   </div>
 
-  <!-- Step 2 -->
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">2</span> Set the Agenda</h3>
@@ -346,7 +409,6 @@
     </div>
   </div>
 
-  <!-- Step 3: Discovery -->
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">3</span> Dig In — Find Their Pain</h3>
@@ -354,37 +416,31 @@
     </div>
     <div class="card-body">
       <p style="color:var(--gray);font-size:.85rem;margin-bottom:12px;">Ask 2–3 questions. Match to their industry:</p>
-
       <ul class="i-all">
         <li>"Tell me about your business — what's working well right now and what's not?"</li>
         <li>"When someone looks you up online right now, are you proud of what they see?"</li>
         <li>"Where are most of your clients coming from today — and is that consistent?"</li>
         <li>"What made you book this call? What's the #1 thing you're trying to fix?"</li>
       </ul>
-
       <ul class="i-insurance">
         <li>"Are your referral partners sending you consistent business, or is it hit or miss?"</li>
         <li>"How are you standing out from every other agent in your market right now?"</li>
         <li>"When a prospect compares you to a competitor online, what do they see?"</li>
       </ul>
-
       <ul class="i-financial">
         <li>"How are you building trust with prospects before the first meeting?"</li>
         <li>"Do your high-net-worth prospects research you online before committing?"</li>
         <li>"What does your digital first impression say about your advisory practice?"</li>
       </ul>
-
       <ul class="i-realestate">
         <li>"In a market with so many agents, how are you differentiating yourself?"</li>
         <li>"When a seller checks you out before the listing appointment, what do they find?"</li>
         <li>"Are you getting leads from your online presence, or mostly referrals and cold outreach?"</li>
       </ul>
-
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> "What made you book this call?" is the most powerful question. Their answer IS the pain — use their exact words later when you present the solution.</div>
     </div>
   </div>
 
-  <!-- Step 4: Gap Statement -->
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">4</span> Show the Gap</h3>
@@ -394,9 +450,7 @@
       <div class="script-block">
         "So based on what you're telling me — you're doing [X], but you're not getting the [leads / trust / visibility / growth] you deserve. That gap between where you are now and where you know you should be — that's exactly what we close."
       </div>
-
       <p style="color:var(--gray);font-size:.85rem;margin:12px 0 8px;">Industry-specific gap amplifiers:</p>
-
       <div class="i-insurance">
         <div class="script-block">"Right now, your competitors who invest in branding are the ones getting the referrals, the Google searches, and the trust — before the prospect even picks up the phone. That's the gap we close for you."</div>
       </div>
@@ -406,12 +460,10 @@
       <div class="i-realestate">
         <div class="script-block">"Every seller has 10 agents in their inbox. The one who looks the most professional online — polished brand, strong website, real authority — that's who gets the listing appointment. If that's not you right now, it's your competitor."</div>
       </div>
-
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> Use their exact words from discovery. "You said you're tired of [X] — that's the gap." When they hear their own words back, it hits different.</div>
     </div>
   </div>
 
-  <!-- Step 5: Present the Solution -->
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">5</span> Present the Solution</h3>
@@ -425,7 +477,6 @@
     </div>
   </div>
 
-  <!-- Step 6: Close -->
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">6</span> Close the Deal</h3>
@@ -443,7 +494,6 @@
     </div>
   </div>
 
-  <!-- Step 7: Next Steps -->
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">7</span> Lock In & Next Steps</h3>
@@ -473,183 +523,43 @@
     <button class="obj-btn" onclick="filterObj('realestate',this)">Real Estate</button>
   </div>
 
-  <!-- Universal Objections -->
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"I need to think about it." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"Totally respect that — I'd never want you to rush. Just so I understand, when you say 'think about it,' is it the investment, the timing, or whether this is the right fit? That way I can get you exactly what you need to make a decision."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I need to think about it." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Totally respect that — I'd never want you to rush. Just so I understand, when you say 'think about it,' is it the investment, the timing, or whether this is the right fit? That way I can get you exactly what you need to make a decision."</div></div></div>
 
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"It's too expensive / I don't have the budget." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"I hear you — and honestly, that's the #1 thing our clients worried about before they started. But here's what they found: not investing in their brand was costing them more in lost deals than the investment itself. If this brings you even 2-3 new clients, what's that worth to your business?"</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"It's too expensive / I don't have the budget." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"I hear you — and honestly, that's the #1 thing our clients worried about before they started. But here's what they found: not investing in their brand was costing them more in lost deals than the investment itself. If this brings you even 2-3 new clients, what's that worth to your business?"</div></div></div>
 
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"I already have a website." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"That's great — having a website is step one. But the question is: is it actually working for you? Is it bringing in leads, building trust, and making people choose you over competitors? There's a big difference between a website and a brand that converts."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I already have a website." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's great — having a website is step one. But the question is: is it actually working for you? Is it bringing in leads, building trust, and making people choose you over competitors? There's a big difference between a website and a brand that converts."</div></div></div>
 
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"I need to talk to my partner / spouse." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"Absolutely — that's smart. Just so you can have the best conversation with them, let me send the proposal over with everything we discussed. That way you can walk them through it. Would it help if I hopped on a quick call with both of you? I'm happy to answer their questions directly."</div>
-      <div class="pro-tip"><strong>💡 Pro Tip:</strong> Offering to get on a call with the decision maker shows confidence and keeps you in the loop instead of letting the prospect sell it for you (they won't).</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I need to talk to my partner / spouse." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Absolutely — that's smart. Just so you can have the best conversation with them, let me send the proposal over with everything we discussed. That way you can walk them through it. Would it help if I hopped on a quick call with both of you? I'm happy to answer their questions directly."</div><div class="pro-tip"><strong>💡 Pro Tip:</strong> Offering to get on a call with the decision maker shows confidence and keeps you in the loop instead of letting the prospect sell it for you (they won't).</div></div></div>
 
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"Can you send me the proposal and I'll look it over?" <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"Of course — I'll fire it over right now. Before I do, is there anything specific you want me to include or any questions I can answer right now while we're both here? I want to make sure it addresses everything we talked about."</div>
-      <div class="pro-tip"><strong>💡 Pro Tip:</strong> Don't just send and pray. Get their real objection before they hang up. Then set a specific follow-up: "Let's touch base Thursday — 10am or 2pm work?"</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"Can you send me the proposal and I'll look it over?" <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Of course — I'll fire it over right now. Before I do, is there anything specific you want me to include or any questions I can answer right now while we're both here? I want to make sure it addresses everything we talked about."</div><div class="pro-tip"><strong>💡 Pro Tip:</strong> Don't just send and pray. Get their real objection before they hang up. Then set a specific follow-up: "Let's touch base Thursday — 10am or 2pm work?"</div></div></div>
 
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"I've been burned before by agencies." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"I'm sorry to hear that — and honestly, that's one of the biggest reasons people come to us. Most agencies are generic, slow, and don't understand your industry. We specialize exclusively in [insurance/financial/real estate] professionals. That's all we do. And you've already seen the quality of what we build — this isn't a gamble."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I've been burned before by agencies." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"I'm sorry to hear that — and honestly, that's one of the biggest reasons people come to us. Most agencies are generic, slow, and don't understand your industry. We specialize exclusively in [insurance/financial/real estate] professionals. That's all we do. And you've already seen the quality of what we build — this isn't a gamble."</div></div></div>
 
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"I get all my business from referrals." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"That's awesome — referrals mean you're great at what you do. But here's the thing: even your referrals are Googling you before they call. If your online presence doesn't match the reputation your referral partner gave you, you're losing deals you don't even know about. We make sure when people look you up, they're blown away."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I get all my business from referrals." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's awesome — referrals mean you're great at what you do. But here's the thing: even your referrals are Googling you before they call. If your online presence doesn't match the reputation your referral partner gave you, you're losing deals you don't even know about."</div></div></div>
 
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"How are you different from other agencies?" <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"Great question. Three things: 1) We only work with [industry] professionals — we're not a generalist agency trying to figure out your market. 2) We build everything — brand, website, content, marketing — as one system, not piecemeal. 3) Our clients actually see results because we focus on conversion, not just making things look pretty."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"How are you different from other agencies?" <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Great question. Three things: 1) We only work with [industry] professionals — we're not a generalist agency trying to figure out your market. 2) We build everything — brand, website, content, marketing — as one system, not piecemeal. 3) Our clients actually see results because we focus on conversion, not just making things look pretty."</div></div></div>
 
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"I can just do it myself / use DIY tools." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"You definitely could — Canva, Wix, all that stuff exists. But let me ask: would you tell your clients to handle their own [insurance/finances/real estate] because YouTube tutorials exist? Probably not. Your expertise is your business — ours is making your brand the most trusted name in your market."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I can just do it myself / use DIY tools." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"You definitely could — Canva, Wix, all that stuff exists. But let me ask: would you tell your clients to handle their own [insurance/finances/real estate] because YouTube tutorials exist? Probably not. Your expertise is your business — ours is making your brand the most trusted name in your market."</div></div></div>
 
-  <div class="card obj-card" data-cat="universal">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"The timing isn't right." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"I totally get that. But here's the thing — your competitors aren't waiting. Every day without a strong brand is another day prospects are choosing them over you. The best time to build your brand was a year ago. The second best time is right now. And we make the process completely hands-off for you."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"The timing isn't right." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"I totally get that. But here's the thing — your competitors aren't waiting. Every day without a strong brand is another day prospects are choosing them over you. The best time to build your brand was a year ago. The second best time is right now. And we make the process completely hands-off for you."</div></div></div>
 
-  <!-- Insurance Objections -->
-  <div class="card obj-card" data-cat="insurance">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"My carrier provides marketing." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"They do — and so does every other agent's carrier. That's the problem. When every agent in your market has the same carrier templates, who stands out? Nobody. A custom brand is what separates the top 1% of agents from the rest."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"My carrier provides marketing." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"They do — and so does every other agent's carrier. That's the problem. When every agent in your market has the same carrier templates, who stands out? Nobody. A custom brand is what separates the top 1% of agents from the rest."</div></div></div>
 
-  <div class="card obj-card" data-cat="insurance">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"My book of business is big enough." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"That's great — but are you retaining those clients as well as you'd like? A strong brand doesn't just attract new clients, it keeps existing ones loyal. When your clients see competitors marketing to them, your brand is the reason they stay."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"My book of business is big enough." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's great — but are you retaining those clients as well as you'd like? A strong brand doesn't just attract new clients, it keeps existing ones loyal. When your clients see competitors marketing to them, your brand is the reason they stay."</div></div></div>
 
-  <div class="card obj-card" data-cat="insurance">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"I only work with referrals from agents." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"That's a great channel — but even the agents referring you are looking you up online before they send their clients your way. If your brand doesn't look the part, you're missing referrals you'll never know about."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"I only work with referrals from agents." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's a great channel — but even the agents referring you are looking you up online before they send their clients your way. If your brand doesn't look the part, you're missing referrals you'll never know about."</div></div></div>
 
-  <!-- Financial Advisor Objections -->
-  <div class="card obj-card" data-cat="financial">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"Compliance won't approve it." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"Totally understand — compliance is real. We've worked with advisors across multiple BDs and RIAs. We build everything to be compliance-friendly and work directly with your compliance team if needed. You won't have to worry about that part."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"Compliance won't approve it." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Totally understand — compliance is real. We've worked with advisors across multiple BDs and RIAs. We build everything to be compliance-friendly and work directly with your compliance team if needed. You won't have to worry about that part."</div></div></div>
 
-  <div class="card obj-card" data-cat="financial">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"My BD provides a website." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"They do — and it looks exactly like every other advisor's at your BD. When a prospect with $2M to invest is comparing three advisors and all three have the same cookie-cutter BD site, who do they pick? The one with a real brand."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"My BD provides a website." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"They do — and it looks exactly like every other advisor's at your BD. When a prospect with $2M to invest is comparing three advisors and all three have the same cookie-cutter BD site, who do they pick? The one with a real brand."</div></div></div>
 
-  <div class="card obj-card" data-cat="financial">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"My AUM is big enough, I don't need marketing." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"That's impressive. But here's the question: if you could attract higher-net-worth clients or build a recognizable brand that commands premium fees, wouldn't that be worth it? We're not about volume — we're about positioning you for the next level."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"My AUM is big enough, I don't need marketing." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's impressive. But here's the question: if you could attract higher-net-worth clients or build a recognizable brand that commands premium fees, wouldn't that be worth it? We're not about volume — we're about positioning you for the next level."</div></div></div>
 
-  <!-- Real Estate Objections -->
-  <div class="card obj-card" data-cat="realestate">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"I just use Zillow / Realtor.com for leads." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"Those platforms work — but you're renting leads where you're competing with 20 other agents for the same prospect. A strong brand means people come to YOU directly. Zillow leads cost money and loyalty. Your brand builds equity."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"I just use Zillow / Realtor.com for leads." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Those platforms work — but you're renting leads where you're competing with 20 other agents for the same prospect. A strong brand means people come to YOU directly. Zillow leads cost money and loyalty. Your brand builds equity."</div></div></div>
 
-  <div class="card obj-card" data-cat="realestate">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"My brokerage handles my marketing." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"Your brokerage markets the brokerage — not you. When you leave or switch, that marketing goes away. Your personal brand follows you everywhere. The top producers in every market have their own brand identity."</div>
-    </div>
-  </div>
+  <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"My brokerage handles my marketing." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Your brokerage markets the brokerage — not you. When you leave or switch, that marketing goes away. Your personal brand follows you everywhere. The top producers in every market have their own brand identity."</div></div></div>
 
-  <div class="card obj-card" data-cat="realestate">
-    <div class="card-head" onclick="toggleCard(this)">
-      <h3>"The market is slow right now." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span>
-    </div>
-    <div class="card-body">
-      <div class="script-block">"That's exactly when you should be investing in your brand. When the market is slow, the agents who show up looking professional and trustworthy get the few deals that are happening. The agents who build their brand in a downturn dominate the upswing."</div>
-    </div>
-  </div>
-
+  <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"The market is slow right now." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's exactly when you should be investing in your brand. When the market is slow, the agents who show up looking professional and trustworthy get the few deals that are happening. The agents who build their brand in a downturn dominate the upswing."</div></div></div>
 </div>
 
 <!-- ═══ TAB 3: QUICK LINKS ═══ -->
@@ -657,70 +567,22 @@
   <h3 style="color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:16px;">Quick Links — Send to Prospect</h3>
   <p style="color:var(--gray);font-size:.85rem;margin-bottom:16px;">Click "Copy Link" to copy the URL, then paste it into your chat or email with the prospect.</p>
   <div class="link-grid">
-    <div class="link-card">
-      <div class="link-info"><h4>Homepage</h4><p>Main site — overview of what we do</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Our Solutions</h4><p>Full breakdown of services</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/solutions')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Investment / Pricing</h4><p>Pricing & packages</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/investment')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>The Experience</h4><p>What it's like working with us</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/the-experience')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Book a Strategy Call</h4><p>Direct booking page</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/booking-page')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Get in Touch</h4><p>Contact page</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/get-in-touch')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Inquire Now</h4><p>Start the onboarding process</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/inquire-pure-broker-branding')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>The Broker Brief (Blog)</h4><p>Industry insights & articles</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/blogs/the-broker-brief')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Press & Media</h4><p>News coverage & features</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/press')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Management Plans</h4><p>Monthly care packages</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/monthly-care-pricing-page')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Insurance Broker FAQ</h4><p>Industry-specific info</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/insurance-broker-faqs-pure-broker-branding')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Financial Advisor FAQ</h4><p>Industry-specific info</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/financial-advisor-faqs-pure-broker-branding')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Mortgage Broker FAQ</h4><p>Industry-specific info</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/mortgage-broker-faqs')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Facebook</h4><p>Social proof & community</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://www.facebook.com/share/1FNjySPjNu/?mibextid=wwXIfr')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>Instagram</h4><p>Visual portfolio & content</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://www.instagram.com/purebrokerbranding/')">Copy Link</button>
-    </div>
-    <div class="link-card">
-      <div class="link-info"><h4>LinkedIn</h4><p>Professional presence</p></div>
-      <button class="copy-btn" onclick="copyLink(this,'https://www.linkedin.com/company/purebrokerbranding/')">Copy Link</button>
-    </div>
+    <div class="link-card"><div class="link-info"><h4>Homepage</h4><p>Main site — overview of what we do</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Our Solutions</h4><p>Full breakdown of services</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/solutions')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Investment / Pricing</h4><p>Pricing & packages</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/investment')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>The Experience</h4><p>What it's like working with us</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/the-experience')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Book a Strategy Call</h4><p>Direct booking page</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/booking-page')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Get in Touch</h4><p>Contact page</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/get-in-touch')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Inquire Now</h4><p>Start the onboarding process</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/inquire-pure-broker-branding')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>The Broker Brief (Blog)</h4><p>Industry insights & articles</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/blogs/the-broker-brief')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Press & Media</h4><p>News coverage & features</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/press')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Management Plans</h4><p>Monthly care packages</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/monthly-care-pricing-page')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Insurance Broker FAQ</h4><p>Industry-specific info</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/insurance-broker-faqs-pure-broker-branding')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Financial Advisor FAQ</h4><p>Industry-specific info</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/financial-advisor-faqs-pure-broker-branding')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Mortgage Broker FAQ</h4><p>Industry-specific info</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/mortgage-broker-faqs')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Facebook</h4><p>Social proof & community</p></div><button class="copy-btn" onclick="copyLink(this,'https://www.facebook.com/share/1FNjySPjNu/?mibextid=wwXIfr')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Instagram</h4><p>Visual portfolio & content</p></div><button class="copy-btn" onclick="copyLink(this,'https://www.instagram.com/purebrokerbranding/')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>LinkedIn</h4><p>Professional presence</p></div><button class="copy-btn" onclick="copyLink(this,'https://www.linkedin.com/company/purebrokerbranding/')">Copy Link</button></div>
   </div>
 </div>
 
@@ -730,28 +592,21 @@
     <div class="proposal-form">
       <h3>📩 Send Proposal</h3>
       <p class="form-desc">Enter the prospect's email to send their proposal. The Zap will fire immediately.</p>
-
       <label>Prospect Email <span class="required-star">*</span></label>
       <input type="email" id="prop-email" placeholder="prospect@example.com">
-
       <label>Prospect Name</label>
       <input type="text" id="prop-name" placeholder="John Smith">
-
       <button class="send-btn" onclick="sendProposal()">Send Proposal</button>
       <div id="proposal-success" class="log-success">✅ Proposal sent successfully!</div>
       <div id="proposal-error" style="color:var(--red);text-align:center;padding:10px;display:none;font-weight:600;"></div>
-
-      <!-- Update Contact Info Toggle -->
       <div class="update-toggle" onclick="toggleUpdate(this)">
         <h4>📝 Update Contact Info (Optional)</h4>
         <span class="arrow">▼</span>
       </div>
       <div class="update-fields" id="update-fields">
         <p class="update-note">Use these fields if the prospect wants the proposal sent to a different email or wants to update their phone number (e.g. another decision maker). Leave blank to keep existing info.</p>
-
         <label>Alternate Email</label>
         <input type="email" id="prop-alt-email" placeholder="other-decision-maker@example.com">
-
         <label>Update Phone Number</label>
         <input type="tel" id="prop-phone" placeholder="(555) 123-4567">
       </div>
@@ -763,6 +618,12 @@
 <div id="log" class="tab-content">
   <h3 style="color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:16px;text-align:center;">Log This Call</h3>
   <div class="log-form">
+
+    <div class="client-id-display">
+      <div><span class="cid-label">Client ID</span><br><span id="client-id-value">—</span></div>
+      <button class="copy-btn" onclick="copyClientId()" style="font-size:.75rem;">Copy ID</button>
+    </div>
+
     <label>Prospect Name</label>
     <input type="text" id="log-name" placeholder="John Smith">
 
@@ -782,7 +643,7 @@
     </select>
 
     <label>Call Result</label>
-    <select id="log-result">
+    <select id="log-result" onchange="toggleAmountField()">
       <option value="">Select result...</option>
       <option value="Closed — Signed">✅ Closed — Signed</option>
       <option value="Proposal Sent — Following Up">📩 Proposal Sent — Following Up</option>
@@ -792,6 +653,11 @@
       <option value="Not a Fit">❌ Not a Fit</option>
       <option value="No Show">📵 No Show</option>
     </select>
+
+    <div class="amount-row" id="amount-row">
+      <label>Amount Closed ($)</label>
+      <input type="text" id="log-amount" placeholder="e.g. 5000">
+    </div>
 
     <label>Follow-Up Date (if applicable)</label>
     <input type="date" id="log-followup">
@@ -807,73 +673,82 @@
   </div>
 </div>
 
-<!-- ═══ TAB 6: PLAYBOOK ═══ -->
+<!-- ═══ TAB 6: CLOSE TRACKER ═══ -->
+<div id="tracker" class="tab-content">
+  <div class="tracker-section">
+    <h3 style="color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:16px;">Close Tracker</h3>
+
+    <div class="tracker-search">
+      <input type="text" id="tracker-email-search" placeholder="Search by email...">
+      <button onclick="searchByEmail()">Search</button>
+      <button class="refresh-btn" onclick="loadTracker()">↻ Refresh</button>
+    </div>
+
+    <div id="tracker-status" class="tracker-status">Loading call data...</div>
+    <div id="tracker-results"></div>
+
+    <div id="tracker-setup" class="tracker-setup-msg" style="display:none;">
+      <p><strong>Setup Required:</strong> To pull live data, publish your Google Sheet to the web.</p>
+      <p>In Google Sheets: <strong>File → Share → Publish to web → Entire Document → CSV → Publish</strong></p>
+      <p>Then update the <code>GOOGLE_SHEET_ID</code> in the code with your Sheet ID.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB 7: PLAYBOOK ═══ -->
 <div id="playbook" class="tab-content">
   <h3 style="color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:16px;">Sales Playbook — 10 Principles</h3>
   <div class="playbook-grid">
-    <div class="playbook-card">
-      <div class="pb-num">Principle 01</div>
-      <h4>Tonality Over Script</h4>
-      <p>How you say it matters 10x more than what you say. A confident, conversational tone creates trust. Reading a script creates distance. Master the message, then forget the words.</p>
-    </div>
-    <div class="playbook-card">
-      <div class="pb-num">Principle 02</div>
-      <h4>Ask, Don't Tell</h4>
-      <p>Questions control conversations. The person asking questions is always in control. Discovery isn't a checklist — it's a conversation that makes the prospect sell themselves on needing help.</p>
-    </div>
-    <div class="playbook-card">
-      <div class="pb-num">Principle 03</div>
-      <h4>Silence Is a Weapon</h4>
-      <p>After you make a key point or ask a closing question — shut up. The first person who talks loses. Silence creates pressure that makes the prospect process and respond honestly.</p>
-    </div>
-    <div class="playbook-card">
-      <div class="pb-num">Principle 04</div>
-      <h4>Sell the Outcome, Not the Product</h4>
-      <p>Nobody buys branding. They buy more clients, more trust, more authority. Paint the picture of their life AFTER working with you. Features bore people — results close deals.</p>
-    </div>
-    <div class="playbook-card">
-      <div class="pb-num">Principle 05</div>
-      <h4>Use Their Own Words</h4>
-      <p>When the prospect tells you their pain in discovery, write it down. Then use their exact words when you present the solution. "You said you're tired of X — that's exactly what we fix." It hits 10x harder than your version.</p>
-    </div>
-    <div class="playbook-card">
-      <div class="pb-num">Principle 06</div>
-      <h4>Pain Over Features</h4>
-      <p>Nobody buys branding. They buy the solution to their pain: lost deals, weak online presence, blending in with competitors. Find the pain, amplify it, then present the bridge.</p>
-    </div>
-    <div class="playbook-card">
-      <div class="pb-num">Principle 07</div>
-      <h4>Assume the Close</h4>
-      <p>"What questions do you have before we get started?" is 10x stronger than "So what do you think?" Assume they're moving forward. Handle objections as they come — don't invite them.</p>
-    </div>
-    <div class="playbook-card">
-      <div class="pb-num">Principle 08</div>
-      <h4>Objections = Interest</h4>
-      <p>A prospect who objects is a prospect who's engaged. Someone truly not interested just ends the call. Every objection is an invitation to go deeper. Welcome them.</p>
-    </div>
-    <div class="playbook-card">
-      <div class="pb-num">Principle 09</div>
-      <h4>Speed to Follow-Up</h4>
-      <p>Send the proposal within 60 seconds of ending the call. Text a confirmation within 5 minutes. Speed signals professionalism and keeps the momentum alive. Every minute you wait, the close rate drops.</p>
-    </div>
-    <div class="playbook-card">
-      <div class="pb-num">Principle 10</div>
-      <h4>Detach From the Outcome</h4>
-      <p>Desperation kills deals. If you need every call to convert, you'll push too hard. Approach every call like you don't need it. Paradoxically, that confidence is exactly what makes people say yes.</p>
-    </div>
+    <div class="playbook-card"><div class="pb-num">Principle 01</div><h4>Tonality Over Script</h4><p>How you say it matters 10x more than what you say. A confident, conversational tone creates trust. Reading a script creates distance. Master the message, then forget the words.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 02</div><h4>Ask, Don't Tell</h4><p>Questions control conversations. The person asking questions is always in control. Discovery isn't a checklist — it's a conversation that makes the prospect sell themselves on needing help.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 03</div><h4>Silence Is a Weapon</h4><p>After you make a key point or ask a closing question — shut up. The first person who talks loses. Silence creates pressure that makes the prospect process and respond honestly.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 04</div><h4>Sell the Outcome, Not the Product</h4><p>Nobody buys branding. They buy more clients, more trust, more authority. Paint the picture of their life AFTER working with you. Features bore people — results close deals.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 05</div><h4>Use Their Own Words</h4><p>When the prospect tells you their pain in discovery, write it down. Then use their exact words when you present the solution. "You said you're tired of X — that's exactly what we fix." It hits 10x harder than your version.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 06</div><h4>Pain Over Features</h4><p>Nobody buys branding. They buy the solution to their pain: lost deals, weak online presence, blending in with competitors. Find the pain, amplify it, then present the bridge.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 07</div><h4>Assume the Close</h4><p>"What questions do you have before we get started?" is 10x stronger than "So what do you think?" Assume they're moving forward. Handle objections as they come — don't invite them.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 08</div><h4>Objections = Interest</h4><p>A prospect who objects is a prospect who's engaged. Someone truly not interested just ends the call. Every objection is an invitation to go deeper. Welcome them.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 09</div><h4>Speed to Follow-Up</h4><p>Send the proposal within 60 seconds of ending the call. Text a confirmation within 5 minutes. Speed signals professionalism and keeps the momentum alive. Every minute you wait, the close rate drops.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 10</div><h4>Detach From the Outcome</h4><p>Desperation kills deals. If you need every call to convert, you'll push too hard. Approach every call like you don't need it. Paradoxically, that confidence is exactly what makes people say yes.</p></div>
   </div>
 </div>
 
 </div><!-- /app -->
 
 <script>
-  // ── CONFIG ──
+  // ══════════════════════════════════════
+  // CONFIG
+  // ══════════════════════════════════════
   const OWNER_PIN = '278262';
   const GUEST_PIN = '987789';
   const CALL_LOG_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7qjc75/';
   const PROPOSAL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7lo40e/';
 
-  // ── PIN AUTO-UNLOCK ──
+  // Google Sheet ID — Replace with your actual sheet ID after publishing
+  // Your sheet URL looks like: https://docs.google.com/spreadsheets/d/XXXXXX/edit
+  // Copy the XXXXXX part and paste it below
+  const GOOGLE_SHEET_ID = 'YOUR_GOOGLE_SHEET_ID_HERE';
+
+  // ══════════════════════════════════════
+  // GENERATE UNIQUE CLIENT ID
+  // ══════════════════════════════════════
+  function generateClientId() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let id = 'PBB-';
+    for (let i = 0; i < 6; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
+    return id;
+  }
+
+  // Generate a new client ID when Log Call tab loads
+  let currentClientId = generateClientId();
+  document.getElementById('client-id-value').textContent = currentClientId;
+
+  function copyClientId() {
+    navigator.clipboard.writeText(currentClientId);
+  }
+
+  // ══════════════════════════════════════
+  // PIN AUTO-UNLOCK
+  // ══════════════════════════════════════
   const pinInput = document.getElementById('pin-input');
   const pinError = document.getElementById('pin-error');
   const pinRole = document.getElementById('pin-role');
@@ -883,9 +758,9 @@
     pinError.textContent = '';
     if (val.length === 6) {
       if (val === OWNER_PIN) {
-        pinRole.textContent = 'Welcome, Owner';
+        pinRole.textContent = 'Welcome, Perry';
         pinRole.classList.add('show');
-        document.getElementById('user-badge').textContent = 'Owner';
+        document.getElementById('user-badge').textContent = 'Perry';
         setTimeout(unlock, 400);
       } else if (val === GUEST_PIN) {
         pinRole.textContent = 'Welcome, Sales Rep';
@@ -902,17 +777,27 @@
   function unlock() {
     document.getElementById('pin-screen').classList.add('hidden');
     document.getElementById('app').style.display = 'block';
+    loadTracker();
   }
 
-  // ── TABS ──
+  // ══════════════════════════════════════
+  // TABS
+  // ══════════════════════════════════════
   function openTab(id, btn) {
     document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     btn.classList.add('active');
+    if (id === 'tracker') loadTracker();
+    if (id === 'log') {
+      currentClientId = generateClientId();
+      document.getElementById('client-id-value').textContent = currentClientId;
+    }
   }
 
-  // ── CARDS ──
+  // ══════════════════════════════════════
+  // CARDS & TOGGLES
+  // ══════════════════════════════════════
   function toggleCard(head) {
     const body = head.nextElementSibling;
     const arrow = head.querySelector('.arrow');
@@ -920,7 +805,6 @@
     arrow.classList.toggle('open');
   }
 
-  // ── UPDATE CONTACT TOGGLE ──
   function toggleUpdate(el) {
     const fields = document.getElementById('update-fields');
     const arrow = el.querySelector('.arrow');
@@ -928,7 +812,20 @@
     arrow.classList.toggle('open');
   }
 
-  // ── TIMER ──
+  function toggleAmountField() {
+    const result = document.getElementById('log-result').value;
+    const row = document.getElementById('amount-row');
+    if (result === 'Closed — Signed') {
+      row.classList.add('show');
+    } else {
+      row.classList.remove('show');
+      document.getElementById('log-amount').value = '';
+    }
+  }
+
+  // ══════════════════════════════════════
+  // TIMER
+  // ══════════════════════════════════════
   let timerInterval = null;
   let timerSeconds = 0;
 
@@ -939,38 +836,29 @@
       document.getElementById('timer-display').textContent = formatTime(timerSeconds);
     }, 1000);
   }
-  function stopTimer() {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-  function resetTimer() {
-    stopTimer();
-    timerSeconds = 0;
-    document.getElementById('timer-display').textContent = '00:00';
-  }
+  function stopTimer() { clearInterval(timerInterval); timerInterval = null; }
+  function resetTimer() { stopTimer(); timerSeconds = 0; document.getElementById('timer-display').textContent = '00:00'; }
   function formatTime(s) {
-    const m = Math.floor(s / 60);
-    const sec = s % 60;
+    const m = Math.floor(s / 60), sec = s % 60;
     return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
   }
 
-  // ── INDUSTRY FILTER ──
-  let currentIndustry = 'all';
-
+  // ══════════════════════════════════════
+  // INDUSTRY FILTER
+  // ══════════════════════════════════════
   function setIndustry(ind, btn) {
-    currentIndustry = ind;
     document.querySelectorAll('.ind-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
-    const tags = ['insurance','financial','realestate'];
-    tags.forEach(tag => {
+    ['insurance','financial','realestate'].forEach(tag => {
       document.querySelectorAll('.i-' + tag).forEach(el => {
         el.style.display = (ind === 'all' || ind === tag) ? '' : 'none';
       });
     });
   }
 
-  // ── OBJECTION FILTER ──
+  // ══════════════════════════════════════
+  // OBJECTION FILTER
+  // ══════════════════════════════════════
   function filterObj(cat, btn) {
     document.querySelectorAll('.obj-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -979,7 +867,9 @@
     });
   }
 
-  // ── COPY LINK ──
+  // ══════════════════════════════════════
+  // COPY LINK
+  // ══════════════════════════════════════
   function copyLink(btn, url) {
     navigator.clipboard.writeText(url).then(() => {
       btn.textContent = 'Copied!';
@@ -988,7 +878,9 @@
     });
   }
 
-  // ── SEND PROPOSAL ──
+  // ══════════════════════════════════════
+  // SEND PROPOSAL
+  // ══════════════════════════════════════
   function sendProposal() {
     const email = document.getElementById('prop-email').value.trim();
     const name = document.getElementById('prop-name').value.trim();
@@ -996,47 +888,38 @@
     const phone = document.getElementById('prop-phone').value.trim();
     const errEl = document.getElementById('proposal-error');
     const succEl = document.getElementById('proposal-success');
-    errEl.style.display = 'none';
-    succEl.style.display = 'none';
+    errEl.style.display = 'none'; succEl.style.display = 'none';
 
-    if (!email) {
-      errEl.textContent = 'Email is required to send the proposal.';
-      errEl.style.display = 'block';
-      return;
-    }
-
-    const payload = {
-      prospect_email: email,
-      prospect_name: name || '',
-      alternate_email: altEmail || '',
-      update_phone: phone || '',
-      sent_at: new Date().toISOString(),
-      sent_by: document.getElementById('user-badge').textContent
-    };
+    if (!email) { errEl.textContent = 'Email is required to send the proposal.'; errEl.style.display = 'block'; return; }
 
     fetch(PROPOSAL_WEBHOOK, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({
+        prospect_email: email, prospect_name: name || '',
+        alternate_email: altEmail || '', update_phone: phone || '',
+        sent_at: new Date().toISOString(),
+        sent_by: document.getElementById('user-badge').textContent
+      })
     }).then(() => {
       succEl.style.display = 'block';
-      document.getElementById('prop-email').value = '';
-      document.getElementById('prop-name').value = '';
-      document.getElementById('prop-alt-email').value = '';
-      document.getElementById('prop-phone').value = '';
+      ['prop-email','prop-name','prop-alt-email','prop-phone'].forEach(id => document.getElementById(id).value = '');
       setTimeout(() => succEl.style.display = 'none', 4000);
     });
   }
 
-  // ── SUBMIT CALL LOG ──
+  // ══════════════════════════════════════
+  // SUBMIT CALL LOG
+  // ══════════════════════════════════════
   function submitLog() {
     const data = {
+      client_id: currentClientId,
       prospect_name: document.getElementById('log-name').value.trim(),
       prospect_email: document.getElementById('log-email').value.trim(),
       prospect_phone: document.getElementById('log-phone').value.trim(),
       industry: document.getElementById('log-industry').value,
       call_result: document.getElementById('log-result').value,
+      amount_closed: document.getElementById('log-amount').value.trim() || '',
       follow_up_date: document.getElementById('log-followup').value,
       call_duration: document.getElementById('timer-display').textContent,
       call_summary: document.getElementById('log-notes').value.trim(),
@@ -1045,23 +928,171 @@
     };
 
     if (!data.prospect_name) { alert('Please enter the prospect name.'); return; }
-
     document.getElementById('log-duration').value = document.getElementById('timer-display').textContent;
 
     fetch(CALL_LOG_WEBHOOK, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     }).then(() => {
       document.getElementById('log-success').style.display = 'block';
-      ['log-name','log-email','log-phone','log-notes'].forEach(id => document.getElementById(id).value = '');
+      ['log-name','log-email','log-phone','log-notes','log-amount'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('log-industry').selectedIndex = 0;
       document.getElementById('log-result').selectedIndex = 0;
       document.getElementById('log-followup').value = '';
       document.getElementById('log-duration').value = '';
+      document.getElementById('amount-row').classList.remove('show');
+      currentClientId = generateClientId();
+      document.getElementById('client-id-value').textContent = currentClientId;
       setTimeout(() => document.getElementById('log-success').style.display = 'none', 4000);
     });
+  }
+
+  // ══════════════════════════════════════
+  // CLOSE TRACKER — Google Sheets Integration
+  // ══════════════════════════════════════
+  let trackerData = [];
+
+  function loadTracker() {
+    const statusEl = document.getElementById('tracker-status');
+    const resultsEl = document.getElementById('tracker-results');
+    const setupEl = document.getElementById('tracker-setup');
+    resultsEl.innerHTML = '';
+
+    if (GOOGLE_SHEET_ID === 'YOUR_GOOGLE_SHEET_ID_HERE') {
+      statusEl.style.display = 'none';
+      setupEl.style.display = 'block';
+      return;
+    }
+
+    setupEl.style.display = 'none';
+    statusEl.style.display = 'block';
+    statusEl.textContent = 'Loading call data...';
+
+    const url = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv`;
+
+    fetch(url)
+      .then(res => res.text())
+      .then(csv => {
+        trackerData = parseCSV(csv);
+        displayTracker(trackerData.slice(-10).reverse());
+        statusEl.style.display = 'none';
+      })
+      .catch(err => {
+        statusEl.textContent = 'Could not load data. Make sure the sheet is published to the web.';
+        console.error(err);
+      });
+  }
+
+  function parseCSV(csv) {
+    const lines = csv.split('\n');
+    if (lines.length < 2) return [];
+    const headers = parseCSVLine(lines[0]);
+    const rows = [];
+    for (let i = 1; i < lines.length; i++) {
+      if (!lines[i].trim()) continue;
+      const vals = parseCSVLine(lines[i]);
+      const row = {};
+      headers.forEach((h, idx) => { row[h.toLowerCase().replace(/[^a-z0-9]/g, '_')] = vals[idx] || ''; });
+      rows.push(row);
+    }
+    return rows;
+  }
+
+  function parseCSVLine(line) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (c === '"') {
+        if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+        else { inQuotes = !inQuotes; }
+      } else if (c === ',' && !inQuotes) {
+        result.push(current.trim());
+        current = '';
+      } else {
+        current += c;
+      }
+    }
+    result.push(current.trim());
+    return result;
+  }
+
+  function searchByEmail() {
+    const query = document.getElementById('tracker-email-search').value.trim().toLowerCase();
+    if (!query) { displayTracker(trackerData.slice(-10).reverse()); return; }
+    const matches = trackerData.filter(row => {
+      const email = (row.prospect_email || row.email || '').toLowerCase();
+      const name = (row.prospect_name || row.name || '').toLowerCase();
+      const cid = (row.client_id || '').toLowerCase();
+      return email.includes(query) || name.includes(query) || cid.includes(query);
+    });
+    displayTracker(matches.reverse());
+  }
+
+  function getResultClass(result) {
+    if (!result) return '';
+    const r = result.toLowerCase();
+    if (r.includes('closed')) return 'tc-result-closed';
+    if (r.includes('proposal')) return 'tc-result-proposal';
+    if (r.includes('interested')) return 'tc-result-interested';
+    if (r.includes('callback')) return 'tc-result-callback';
+    if (r.includes('not a fit')) return 'tc-result-nofit';
+    if (r.includes('no show')) return 'tc-result-noshow';
+    if (r.includes('partner')) return 'tc-result-partner';
+    return '';
+  }
+
+  function displayTracker(rows) {
+    const resultsEl = document.getElementById('tracker-results');
+    const statusEl = document.getElementById('tracker-status');
+
+    if (rows.length === 0) {
+      statusEl.style.display = 'block';
+      statusEl.textContent = 'No calls found.';
+      resultsEl.innerHTML = '';
+      return;
+    }
+
+    statusEl.style.display = 'none';
+    resultsEl.innerHTML = rows.map(row => {
+      const name = row.prospect_name || row.name || 'Unknown';
+      const email = row.prospect_email || row.email || '—';
+      const phone = row.prospect_phone || row.phone || '—';
+      const industry = row.industry || '—';
+      const result = row.call_result || row.result || '—';
+      const amount = row.amount_closed || row.amount || '';
+      const duration = row.call_duration || row.duration || '—';
+      const followup = row.follow_up_date || row.followup || '—';
+      const summary = row.call_summary || row.summary || row.notes || '—';
+      const cid = row.client_id || '—';
+      const loggedAt = row.logged_at || row.date || '—';
+      const loggedBy = row.logged_by || '—';
+      const resultClass = getResultClass(result);
+
+      return `<div class="tracker-card">
+        <div class="tracker-card-header">
+          <span class="tc-name">${name}</span>
+          <span class="tc-id">${cid}</span>
+        </div>
+        <div class="tracker-card-row">
+          <div><span class="tc-label">Email</span><div class="tc-value">${email}</div></div>
+          <div><span class="tc-label">Phone</span><div class="tc-value">${phone}</div></div>
+          <div><span class="tc-label">Industry</span><div class="tc-value">${industry}</div></div>
+          <div><span class="tc-label">Result</span><div class="tc-value"><span class="tc-result ${resultClass}">${result}</span></div></div>
+          ${amount ? `<div><span class="tc-label">Amount Closed</span><div class="tc-value tc-amount">$${amount}</div></div>` : ''}
+          <div><span class="tc-label">Duration</span><div class="tc-value">${duration}</div></div>
+          <div><span class="tc-label">Follow-Up</span><div class="tc-value">${followup}</div></div>
+          <div><span class="tc-label">Logged</span><div class="tc-value">${loggedAt}</div></div>
+          <div><span class="tc-label">Logged By</span><div class="tc-value">${loggedBy}</div></div>
+        </div>
+        <div class="tc-summary">
+          <span class="tc-label">Call Summary</span>
+          <div class="tc-value">${summary}</div>
+        </div>
+      </div>`;
+    }).join('');
   }
 </script>
 
