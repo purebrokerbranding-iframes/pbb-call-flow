@@ -1260,6 +1260,7 @@
   const CALL_LOG_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7qjc75/';
   const PROPOSAL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7lo40e/';
   const SEND_LINK_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7lbhcb/';
+  const PDF_UPLOAD_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7lax33/';
   const GOOGLE_SHEET_ID = '1FuFzs8lykztpW3_tC4ttq9pz-RjoMmr_0RkCzVYf8fY';
   const PBB_LOGO_URL = 'https://purebrokerbranding.com/cdn/shop/files/Logo_Big_-_Pure_Broker-removebg-preview.png';
 
@@ -1640,29 +1641,39 @@
     const sendBtn = document.querySelector('.proposal-form .send-btn');
     const origText = sendBtn.textContent;
     sendBtn.textContent = 'Sending...'; sendBtn.classList.add('sending');
+    // Contact info via URLSearchParams (avoids CORS preflight)
     const propPayload = {
       prospect_email: email,
       prospect_name: name || '',
       alternate_email: altEmail || '',
       update_phone: phone || '',
+      pdf_1_filename: pdfData.pdf1 ? pdfData.pdf1.filename : '',
+      pdf_2_filename: pdfData.pdf2 ? pdfData.pdf2.filename : '',
+      has_pdf: pdfData.pdf1 ? 'true' : 'false',
       sent_at: new Date().toISOString(),
       sent_by: document.getElementById('user-badge').textContent
     };
-    // Attach PDF base64 data + filenames if generated
-    if (pdfData.pdf1) {
-      propPayload.pdf_1_filename = pdfData.pdf1.filename;
-      propPayload.pdf_1_base64 = pdfData.pdf1.base64;
-    }
-    if (pdfData.pdf2) {
-      propPayload.pdf_2_filename = pdfData.pdf2.filename;
-      propPayload.pdf_2_base64 = pdfData.pdf2.base64;
-    }
     fetch(PROPOSAL_WEBHOOK, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(propPayload)
-    }).then(r => {
-      if (!r.ok) throw new Error('Response not ok');
+      body: new URLSearchParams(propPayload)
+    }).then(() => {
+      // If we have PDF data, send it to the dedicated PDF webhook
+      if (pdfData.pdf1 && PDF_UPLOAD_WEBHOOK) {
+        const pdfPayload = {
+          prospect_email: email,
+          prospect_name: name || '',
+          pdf_1_filename: pdfData.pdf1.filename,
+          pdf_1_base64: pdfData.pdf1.base64
+        };
+        if (pdfData.pdf2) {
+          pdfPayload.pdf_2_filename = pdfData.pdf2.filename;
+          pdfPayload.pdf_2_base64 = pdfData.pdf2.base64;
+        }
+        // Send PDF data as multipart form (no preflight)
+        const formData = new FormData();
+        Object.entries(pdfPayload).forEach(([k,v]) => formData.append(k, v));
+        fetch(PDF_UPLOAD_WEBHOOK, { method: 'POST', body: formData }).catch(()=>{});
+      }
       sendBtn.textContent = origText; sendBtn.classList.remove('sending');
       succEl.style.display = 'block';
       ['prop-email','prop-name','prop-alt-email','prop-phone'].forEach(id => document.getElementById(id).value = '');
