@@ -38,25 +38,85 @@
   /* ── PIN SCREEN ── */
   #pin-screen {
     position: fixed; inset:0; z-index:9999;
-    background: var(--dark3);
+    background: radial-gradient(ellipse at 50% 30%, rgba(0,110,132,0.12) 0%, var(--dark3) 70%);
     display: flex; align-items:center; justify-content:center;
-    flex-direction: column; gap: 24px;
+    flex-direction: column; gap: 0;
+    overflow:hidden;
   }
   #pin-screen.hidden { display:none; }
-  #pin-screen img { width:90px; filter: drop-shadow(0 0 20px var(--teal-glow)); }
-  #pin-screen h2 { font-family:'Playfair Display',serif; color:var(--gold); font-size:1.4rem; }
-  #pin-box { display:flex; gap:10px; align-items:center; flex-direction:column; }
+  #pin-screen::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--teal) 50%, var(--gold) 80%, transparent 100%);
+  }
+  #pin-screen::after {
+    content:''; position:absolute; bottom:0; left:0; right:0; height:3px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 20%, var(--teal) 50%, var(--gold) 80%, transparent 100%);
+  }
+  .pin-card {
+    display:flex; flex-direction:column; align-items:center; gap:20px;
+    padding:48px 52px 40px; position:relative;
+    background: linear-gradient(165deg, rgba(18,40,44,0.95) 0%, rgba(14,31,34,0.98) 100%);
+    border:1px solid rgba(0,110,132,0.2); border-radius:16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(0,110,132,0.08), inset 0 1px 0 rgba(205,188,139,0.08);
+  }
+  .pin-card::before, .pin-card::after, .pin-corner-bl, .pin-corner-br {
+    position:absolute; width:20px; height:20px; pointer-events:none;
+  }
+  .pin-card::before {
+    content:''; top:12px; left:12px;
+    border-top:1.5px solid var(--gold); border-left:1.5px solid var(--gold);
+  }
+  .pin-card::after {
+    content:''; top:12px; right:12px;
+    border-top:1.5px solid var(--gold); border-right:1.5px solid var(--gold);
+  }
+  .pin-corner-bl {
+    position:absolute; bottom:12px; left:12px; width:20px; height:20px;
+    border-bottom:1.5px solid var(--gold); border-left:1.5px solid var(--gold);
+  }
+  .pin-corner-br {
+    position:absolute; bottom:12px; right:12px; width:20px; height:20px;
+    border-bottom:1.5px solid var(--gold); border-right:1.5px solid var(--gold);
+  }
+  #pin-screen img {
+    width:80px; filter: drop-shadow(0 0 24px var(--teal-glow));
+    animation: pin-logo-glow 3s ease-in-out infinite alternate;
+  }
+  @keyframes pin-logo-glow {
+    0% { filter: drop-shadow(0 0 16px rgba(0,110,132,0.3)); }
+    100% { filter: drop-shadow(0 0 28px rgba(0,110,132,0.5)); }
+  }
+  .pin-brand { text-align:center; }
+  .pin-brand h2 {
+    font-family:'Playfair Display',serif; color:var(--gold); font-size:1.5rem;
+    letter-spacing:1px; margin-bottom:4px;
+  }
+  .pin-brand .pin-subtitle {
+    color:var(--gray); font-size:.72rem; text-transform:uppercase; letter-spacing:3px;
+  }
+  .pin-separator {
+    width:60px; height:1px; position:relative;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  }
+  .pin-separator::before {
+    content:''; position:absolute; top:-2.5px; left:50%; transform:translateX(-50%);
+    width:5px; height:5px; background:var(--gold); transform:translateX(-50%) rotate(45deg);
+  }
+  #pin-box { display:flex; gap:12px; align-items:center; flex-direction:column; }
   #pin-box input {
     width: 220px; padding: 14px 18px; border-radius: var(--radius);
-    border: 2px solid var(--teal-dim); background: var(--dark2);
+    border: 1.5px solid var(--teal-dim); background: rgba(14,31,34,0.8);
     color: var(--gold); font-size: 1.6rem; text-align:center;
     letter-spacing: 12px; font-weight:700; outline:none;
-    transition: border-color .3s;
+    transition: border-color .3s, box-shadow .3s;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
   }
-  #pin-box input:focus { border-color: var(--teal); }
+  #pin-box input:focus { border-color: var(--teal); box-shadow: inset 0 2px 8px rgba(0,0,0,0.3), 0 0 12px rgba(0,110,132,0.2); }
+  .pin-hint { color:var(--gray); font-size:.7rem; letter-spacing:1px; opacity:.5; }
   #pin-error { color: var(--red); font-size:.85rem; min-height:20px; }
   .pin-role { color: var(--teal-light); font-size: .85rem; opacity:0; transition: opacity .3s; }
   .pin-role.show { opacity:1; }
+  .pin-footer-text { color:var(--gray); font-size:.65rem; letter-spacing:1.5px; text-transform:uppercase; opacity:.35; margin-top:8px; }
   /* ── HEADER ── */
   header {
     background: var(--dark);
@@ -566,12 +626,22 @@
 <body>
 <!-- ═══ PIN SCREEN ═══ -->
 <div id="pin-screen">
-  <img src="https://purebrokerbranding.com/cdn/shop/files/Logo_Big_-_Pure_Broker-removebg-preview.png" alt="PBB">
-  <h2>Sales Call Flow</h2>
-  <div id="pin-box">
-    <input type="password" id="pin-input" maxlength="6" placeholder="••••••" inputmode="numeric" autofocus>
-    <div class="pin-role" id="pin-role"></div>
-    <div id="pin-error"></div>
+  <div class="pin-card">
+    <div class="pin-corner-bl"></div>
+    <div class="pin-corner-br"></div>
+    <img src="https://purebrokerbranding.com/cdn/shop/files/Logo_Big_-_Pure_Broker-removebg-preview.png" alt="PBB">
+    <div class="pin-brand">
+      <h2>Sales Call Flow</h2>
+      <div class="pin-subtitle">Pure Broker Branding</div>
+    </div>
+    <div class="pin-separator"></div>
+    <div id="pin-box">
+      <input type="password" id="pin-input" maxlength="6" placeholder="••••••" inputmode="numeric" autofocus>
+      <div class="pin-hint">Enter your 6-digit access code</div>
+      <div class="pin-role" id="pin-role"></div>
+      <div id="pin-error"></div>
+    </div>
+    <div class="pin-footer-text">Secure Access</div>
   </div>
 </div>
 <!-- ═══ MAIN APP ═══ -->
@@ -748,9 +818,9 @@
       </div>
       <p style="color:var(--gray);font-size:.85rem;margin:10px 0;">If they want to review the overview first:</p>
       <div class="script-block">
-        "Totally understand — I'm sending the overview to your inbox right now. Take a look, show your partner, do whatever you need to do. The final proposal is the last step to lock everything in, and we can knock it out over the phone in two minutes whenever you're ready. When's a good time to reconnect — how about [day] at [time]?"
+        "Totally understand — here's what I'll do. I'm sending the overview to your inbox right now so you can look it over, show your partner, whatever you need. And I'll have the final proposal over to you before end of day so everything's ready to go the moment you are. Once you sign off on the proposal, we lock in your launch date and get started immediately."
       </div>
-      <div class="pro-tip"><strong>💡 Pro Tip:</strong> Always leave with a specific follow-up date and time. "I'll follow up next week" is a dead lead. "Let's reconnect Thursday at 2" keeps the deal alive. The overview builds trust, the final proposal closes it — your goal is to get both done on this call whenever possible.</div>
+      <div class="pro-tip"><strong>💡 Pro Tip:</strong> The overview builds trust, the final proposal closes the deal. Your goal is to get both done on this call. If they push back, don't schedule another call — just send both by end of day. That keeps momentum alive without adding friction. When the proposal lands in their inbox ready to sign, most close within 24 hours.</div>
     </div>
   </div>
   </div><!-- /flow-left -->
