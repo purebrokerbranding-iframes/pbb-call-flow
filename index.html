@@ -777,6 +777,10 @@
 
   <!-- RIGHT COLUMN: Live Calculator -->
   <div class="flow-right">
+    <div style="background:linear-gradient(135deg,var(--dark2),var(--dark));border:1px solid var(--gold-dim);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;text-align:center;">
+      <div style="color:var(--gold);font-family:'Playfair Display',serif;font-size:.85rem;font-weight:600;margin-bottom:4px;">🎯 Close Line — Read Before Price</div>
+      <div style="color:var(--white);font-size:.82rem;line-height:1.6;font-style:italic;">"So [Name], to get this fully built out based on everything you told me — your brand, your site, your entire online presence custom-built to make you the obvious choice in your market — here's what that investment looks like:"</div>
+    </div>
     <div class="calc-panel">
       <div class="calc-header">
         <h3>📊 Live Quote</h3>
@@ -1112,7 +1116,7 @@
   // ══════════════════════════════════════
   const PT_SERVICES = {
     base: [
-      { id:'web-design', name:'Custom Responsive Website Design', price:1200, desc:'Professionally crafted for all devices — built for conversions, not just aesthetics.', sell:'This is the foundation. Without a conversion-optimized site, everything else leaks leads. Every dollar they spend on marketing without this is wasted.' },
+      { id:'web-design', name:'Custom Responsive Website Design', price:1500, desc:'Professionally crafted for all devices — built for conversions, not just aesthetics.', sell:'This is the foundation. Without a conversion-optimized site, everything else leaks leads. Every dollar they spend on marketing without this is wasted.' },
       { id:'lead-capture', name:'Lead Capture System', price:350, desc:'Strategic CTAs, contact forms, and inquiry flows placed for maximum conversion.', sell:'Without this, their site is a brochure. This turns visitors into booked calls. Ask: "How many visitors hit your site and leave without you ever knowing?"' },
       { id:'local-seo', name:'Local SEO Foundation', price:450, desc:'Keyword targeting, meta tags, schema markup, Google Business Profile optimization.', sell:'If they\'re not showing up in local search, their competitors are stealing their leads right now. This is how they get found.' },
       { id:'chatbot-entry', name:'AI Chatbot — Entry Level', price:300, desc:'Automated FAQ responses and inquiry routing — qualifies leads 24/7.', sell:'Their site works while they sleep. This qualifies leads at 2am without lifting a finger. Ask: "What happens when someone visits your site at midnight?"' },
@@ -1714,9 +1718,15 @@
     doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...gold);
     doc.text('Services Breakdown', margin, y);
     y += 4; doc.setFillColor(...teal); doc.rect(margin,y,40,1.5,'F'); y += 14;
+    // Always show base package description
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...white);
+    const baseNote = 'Every project starts with your Custom Responsive Website Design — a fully custom, conversion-optimized site built from scratch around your brand, market, and goals. This includes professional design for all devices, mobile optimization, branded visual identity integration, strategic page structure, and launch-ready deployment.';
+    const bnLines = doc.splitTextToSize(baseNote, contentW);
+    doc.text(bnLines, margin, y); y += bnLines.length * 4 + 10;
+
     if (selected.length === 0) {
       doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(...gray);
-      doc.text('No services selected.', margin, y);
+      doc.text('No additional services selected.', margin, y);
     } else {
       selected.forEach((svc, i) => {
         checkPage(22);
@@ -1768,16 +1778,31 @@
     if (pbbLogoData) { try { doc.addImage(pbbLogoData,'PNG',w-margin-18,10,18,18); } catch(e){} }
     doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...gold);
     doc.text('Explanation of Services', margin, y);
-    y += 4; doc.setFillColor(...teal); doc.rect(margin,y,40,1.5,'F'); y += 14;
+    y += 4; doc.setFillColor(...teal); doc.rect(margin,y,40,1.5,'F'); y += 10;
+
+    // Clarification note
+    doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...gray);
+    const clarNote = 'The following explains the services referenced in your proposal above. This section is a general reference guide — it does not represent everything we are building for your business specifically. Your custom scope is outlined in the Services Breakdown on the previous page.';
+    const cnLines = doc.splitTextToSize(clarNote, contentW);
+    doc.text(cnLines, margin, y); y += cnLines.length * 3.8 + 10;
+
     const explanations = [
-      ['Custom Responsive Website Design','A fully custom, conversion-optimized website built from scratch around your brand, market, and business goals. Designed to look premium on every device and engineered to turn visitors into leads.'],
-      ['Lead Capture System','Strategic placement of calls-to-action, contact forms, and inquiry flows throughout your site. Every touchpoint is designed to capture visitor information and move them toward a booked call.'],
+      ['Custom Responsive Website Design','A fully custom, conversion-optimized website built from scratch around your brand, market, and business goals. Designed to look premium on every device and engineered to turn visitors into leads. Includes professional design, mobile optimization, branded visual identity, strategic page structure, and launch-ready deployment.'],
+      ['Lead Capture System','Strategic placement of calls-to-action, contact forms, and inquiry flows throughout your site. Every touchpoint is designed to capture visitor information and move them toward a booked call or consultation.'],
       ['Local SEO Foundation','Keyword research, meta descriptions, title tags, schema markup, and Google Business Profile optimization — setting you up to appear in local search results from day one.'],
-      ['AI Chatbot','An intelligent assistant embedded in your website that engages visitors, answers questions, captures lead information, and can book appointments — running 24/7 without staff involvement.'],
-      ['Lead Automation','Automated email sequences and follow-up workflows triggered by visitor actions. From simple confirmation emails to multi-step nurture campaigns that convert over time.'],
+      ['AI Chatbot','An intelligent assistant embedded in your website that engages visitors, answers questions, captures lead information, and can book appointments — running 24/7 without staff involvement. Available at entry-level (FAQ + routing) or conversion-trained (objection handling + booking).'],
+      ['Lead Automation','Automated email sequences and follow-up workflows triggered by visitor actions. From simple confirmation emails to multi-step nurture campaigns with lead scoring and CRM integration that convert over time.'],
+      ['Expanded Site Architecture','Additional strategic pages — Blog, Resources, Testimonials, Team pages, and custom service sections — that increase keyword coverage, drive organic traffic, and position you as the authority in your market.'],
       ['Advanced SEO Strategy','In-depth competitor analysis, content strategy, structured data, and ongoing optimization designed to help you rank above established competitors in your market.'],
-      ['Brand Strategy','Complete brand development including visual identity, typography, color systems, brand guidelines, and a cohesive design language that commands premium positioning.'],
+      ['Appointment Scheduling','Embedded booking calendar with automated reminders and confirmation flows. Removes friction between "interested" and "booked" — one click to schedule.'],
+      ['Interactive Financial Tools','Custom calculators and planning tools that engage visitors, demonstrate value, and generate warm leads. Ideal for financial advisors and mortgage brokers.'],
+      ['Brand Strategy','Complete brand development including visual identity, typography, color systems, brand guidelines, motion design, and a cohesive design language that commands premium positioning.'],
+      ['AI Full Ecosystem Integration','Enterprise-level intelligence — predictive analytics, personalized content delivery, and custom AI models built into your business for a competitive moat no one can copy.'],
+      ['End-to-End Business Automation','CRM sync, compliance tools, portfolio platforms, and custom API workflows. Your entire operation on autopilot — less overhead, faster growth, zero manual busywork.'],
       ['Client Portal','A secure, branded platform where clients can access documents, sign agreements, communicate securely, and view personalized dashboards — elevating the client experience.'],
+      ['Performance Tracking Dashboard','Custom analytics dashboard showing leads, conversions, traffic sources, and ROI. Full transparency so you can see exactly what your investment is returning.'],
+      ['Dedicated Strategy Team','Priority support, quarterly growth reviews, and ongoing performance optimization. A proactive team in your corner — not just a vendor.'],
+      ['Website Refresh Services','For existing sites: conversion audits, SEO overhauls, visual redesigns, lead funnel retrofits, compliance updates, and messaging rewrites — maximum ROI without starting over.'],
       ['Monthly Management Plans','Ongoing website maintenance, security monitoring, content updates, performance optimization, and priority support to keep your digital presence running at peak performance.'],
     ];
     explanations.forEach(([title, desc]) => {
