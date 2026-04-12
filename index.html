@@ -1144,6 +1144,11 @@
         <div class="log-payment-col">
           <label>Deposit (50%)</label>
           <input type="text" id="log-deposit-amount" placeholder="—" readonly>
+          <label style="margin-top:6px;">Deposit Paid?</label>
+          <select id="log-deposit-paid" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--card-border);background:var(--dark);color:var(--white);font-size:.82rem;font-family:'Inter',sans-serif;">
+            <option value="No">No</option>
+            <option value="Yes">Yes</option>
+          </select>
         </div>
         <div class="log-payment-col">
           <label>Approval (30%)</label>
@@ -1757,6 +1762,7 @@
       client_id: currentClientId,
       total_quoted: document.getElementById('log-total-quoted').value || '',
       deposit_amount: document.getElementById('log-deposit-amount').value || '',
+      deposit_paid: document.getElementById('log-deposit-paid').value,
       approval_amount: document.getElementById('log-approval-amount').value || '',
       final_amount: document.getElementById('log-final-amount').value || ''
     };
@@ -1769,6 +1775,7 @@
       ['log-name','log-email','log-phone','log-notes','log-amount'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('log-total-quoted').value = '';
       document.getElementById('log-deposit-amount').value = '';
+      document.getElementById('log-deposit-paid').selectedIndex = 0;
       document.getElementById('log-approval-amount').value = '';
       document.getElementById('log-final-amount').value = '';
       document.getElementById('log-industry').selectedIndex = 0;
