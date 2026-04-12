@@ -72,6 +72,35 @@
     background: var(--teal-dim); color: var(--teal-light);
     padding: 4px 14px; border-radius: 20px; font-size:.8rem; font-weight:600;
   }
+  /* ── CUSTOMER INFO BAR ── */
+  .customer-info-bar {
+    background: var(--dark); border-bottom: 1px solid var(--teal-dim);
+    padding: 10px 20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .customer-info-bar label { color:var(--gold); font-size:.75rem; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+  .ci-field {
+    display:flex; align-items:center; gap:6px;
+  }
+  .ci-field span.ci-label { color:var(--gray); font-size:.75rem; white-space:nowrap; }
+  .ci-field input {
+    background:var(--dark2); border:1px solid var(--teal-dim); border-radius:6px;
+    color:var(--white); padding:5px 10px; font-size:.82rem; width:140px; font-family:'Inter',sans-serif;
+  }
+  .ci-field input:focus { border-color:var(--teal); outline:none; }
+  .ci-field .ci-copy-val {
+    display:none; background:var(--dark2); border:1px solid var(--teal-dim); border-radius:6px;
+    color:var(--white); padding:5px 10px; font-size:.82rem; cursor:pointer; min-width:100px;
+    transition:all .2s; user-select:all;
+  }
+  .ci-field .ci-copy-val:hover { border-color:var(--gold); background:var(--gold-dim); }
+  .ci-field.locked input { display:none; }
+  .ci-field.locked .ci-copy-val { display:inline-block; }
+  .ci-lock-btn {
+    padding:5px 14px; border-radius:6px; font-weight:600; font-size:.75rem;
+    border:none; cursor:pointer; transition:all .2s; margin-left:auto;
+  }
+  .ci-lock-btn.lock { background:var(--teal); color:#000; }
+  .ci-lock-btn.unlock { background:var(--gold-dim); color:var(--gold); border:1px solid var(--gold-dim); }
   /* ── CALL TIMER ── */
   .timer-bar {
     background: var(--dark); border-bottom: 1px solid var(--teal-dim);
@@ -551,12 +580,22 @@
   </div>
   <div class="user-badge" id="user-badge">Perry</div>
 </header>
-<!-- Timer -->
-<div class="timer-bar">
-  <button class="timer-btn timer-start" onclick="startTimer()">▶ Start</button>
-  <div id="timer-display">00:00</div>
-  <button class="timer-btn timer-stop" onclick="stopTimer()">⏸ Pause</button>
-  <button class="timer-btn timer-reset" onclick="resetTimer()">↺ Reset</button>
+<!-- Customer Info + Timer -->
+<div style="display:flex;align-items:center;background:var(--dark);border-bottom:1px solid var(--teal-dim);padding:10px 20px;gap:12px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;flex:1;">
+    <label style="color:var(--gold);font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Prospect:</label>
+    <div class="ci-field" id="ci-first"><input type="text" id="ci-first-input" placeholder="First Name"><span class="ci-copy-val" id="ci-first-copy" onclick="copyCi(this)"></span></div>
+    <div class="ci-field" id="ci-last"><input type="text" id="ci-last-input" placeholder="Last Name"><span class="ci-copy-val" id="ci-last-copy" onclick="copyCi(this)"></span></div>
+    <div class="ci-field" id="ci-email"><input type="email" id="ci-email-input" placeholder="Email"><span class="ci-copy-val" id="ci-email-copy" onclick="copyCi(this)"></span></div>
+    <div class="ci-field" id="ci-phone"><input type="tel" id="ci-phone-input" placeholder="Phone"><span class="ci-copy-val" id="ci-phone-copy" onclick="copyCi(this)"></span></div>
+    <button class="ci-lock-btn lock" id="ci-lock-btn" onclick="toggleCiLock()">🔒 Lock</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="timer-btn timer-start" onclick="startTimer()">▶ Start</button>
+    <div id="timer-display">00:00</div>
+    <button class="timer-btn timer-stop" onclick="stopTimer()">⏸ Pause</button>
+    <button class="timer-btn timer-reset" onclick="resetTimer()">↺ Reset</button>
+  </div>
 </div>
 <!-- Industry Filter -->
 <div class="industry-bar">
@@ -870,12 +909,20 @@
     <div class="sl-error" id="sl-error"></div>
   </div>
 
-  <!-- PAYMENT LINKS (Above Quick Links) -->
-  <h3 class="link-section-label">💳 Payment Links</h3>
+  <!-- MONTHLY PAYMENT LINKS -->
+  <h3 class="link-section-label">💳 Monthly Payment Links <span style="color:var(--gray);font-size:.75rem;font-weight:400;">(Monthly Management Plan subscriptions — billed separately from project pricing)</span></h3>
   <div class="link-grid">
     <div class="link-card" style="border-color:var(--gold-dim);"><div class="link-info"><h4 style="color:var(--gold);">Starter Plan Payment</h4><p>$97/mo — Starter Care</p></div><button class="copy-btn" onclick="copyLink(this,'https://pay.purebrokerbranding.com/b/eVq28s1r57tN7Ms3Da0kE00')">Copy Link</button></div>
     <div class="link-card" style="border-color:var(--teal);"><div class="link-info"><h4 style="color:var(--teal-light);">Growth Plan Payment</h4><p>$197/mo — Growth Care</p></div><button class="copy-btn" onclick="copyLink(this,'https://pay.purebrokerbranding.com/b/bJe9AUedR9BV6Ioa1y0kE02')">Copy Link</button></div>
     <div class="link-card" style="border-color:var(--gold);"><div class="link-info"><h4 style="color:var(--gold-light);">Premium Plan Payment</h4><p>$297/mo — Premium Care</p></div><button class="copy-btn" onclick="copyLink(this,'https://pay.purebrokerbranding.com/b/14A6oI0n16pJ6IoehO0kE03')">Copy Link</button></div>
+  </div>
+
+  <!-- PROJECT INVESTMENT TIERS -->
+  <h3 class="link-section-label" style="margin-top:24px;">🏗️ Project Investment Tiers <span style="color:var(--gray);font-size:.75rem;font-weight:400;">(One-time custom project pricing — send to prospects for reference)</span></h3>
+  <div class="link-grid">
+    <div class="link-card" style="border-color:var(--gold-dim);"><div class="link-info"><h4 style="color:var(--gold);">Signature Tier</h4><p>Starting at $1,500 — Built to Launch</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/investment')">Copy Link</button></div>
+    <div class="link-card" style="border-color:var(--teal);"><div class="link-info"><h4 style="color:var(--teal-light);">Luminary Tier</h4><p>$3,500 – $8,000 — Built to Scale</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/investment')">Copy Link</button></div>
+    <div class="link-card" style="border-color:var(--gold);"><div class="link-info"><h4 style="color:var(--gold-light);">Sovereign Tier</h4><p>Custom Pricing — Built to Dominate</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/investment')">Copy Link</button></div>
   </div>
 
   <hr class="link-section-divider">
@@ -885,7 +932,6 @@
   <div class="link-grid">
     <div class="link-card"><div class="link-info"><h4>Homepage</h4><p>Main site — overview of what we do</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com')">Copy Link</button></div>
     <div class="link-card"><div class="link-info"><h4>Our Solutions</h4><p>Full breakdown of services</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/solutions')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Investment / Pricing</h4><p>Pricing & packages</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/investment')">Copy Link</button></div>
     <div class="link-card"><div class="link-info"><h4>The Experience</h4><p>What it's like working with us</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/the-experience')">Copy Link</button></div>
     <div class="link-card"><div class="link-info"><h4>Book a Strategy Call</h4><p>Direct booking page</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/booking-page')">Copy Link</button></div>
     <div class="link-card"><div class="link-info"><h4>Get in Touch</h4><p>Contact page</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/get-in-touch')">Copy Link</button></div>
@@ -1264,6 +1310,38 @@
   }
 
   // ══════════════════════════════════════
+  // CUSTOMER INFO LOCK/COPY
+  // ══════════════════════════════════════
+  let ciLocked = false;
+  function toggleCiLock() {
+    ciLocked = !ciLocked;
+    const fields = ['ci-first','ci-last','ci-email','ci-phone'];
+    const btn = document.getElementById('ci-lock-btn');
+    fields.forEach(id => {
+      const field = document.getElementById(id);
+      const input = field.querySelector('input');
+      const copyEl = field.querySelector('.ci-copy-val');
+      if (ciLocked) {
+        copyEl.textContent = input.value || '—';
+        field.classList.add('locked');
+      } else {
+        field.classList.remove('locked');
+      }
+    });
+    btn.innerHTML = ciLocked ? '✏️ Edit' : '🔒 Lock';
+    btn.className = ciLocked ? 'ci-lock-btn unlock' : 'ci-lock-btn lock';
+  }
+  function copyCi(el) {
+    const val = el.textContent;
+    if (!val || val === '—') return;
+    navigator.clipboard.writeText(val).then(() => {
+      const orig = el.textContent;
+      el.style.borderColor = 'var(--green)';
+      el.textContent = '✓ Copied';
+      setTimeout(() => { el.textContent = orig; el.style.borderColor = ''; }, 1000);
+    });
+  }
+
   // TIMER
   // ══════════════════════════════════════
   let timerInterval = null;
