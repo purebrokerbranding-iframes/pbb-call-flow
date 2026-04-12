@@ -670,7 +670,7 @@
   <div style="display:flex;align-items:center;gap:12px;">
     <button class="timer-btn timer-start" onclick="startTimer()">▶ Start</button>
     <div id="timer-display">00:00</div>
-    <button class="timer-btn timer-stop" onclick="stopTimer()">⏸ Pause</button>
+    <button class="timer-btn timer-stop" onclick="stopTimer()">⏹ Stop</button>
     <button class="timer-btn timer-reset" onclick="resetTimer()">↺ Reset</button>
   </div>
 </div>
@@ -1520,6 +1520,8 @@
     clearInterval(timerInterval); timerInterval = null;
     const startBtn = document.querySelector('.timer-start');
     startBtn.classList.remove('running'); startBtn.textContent = '▶ Start';
+    // Auto-fill call log duration
+    document.getElementById('log-duration').value = document.getElementById('timer-display').textContent;
   }
   function resetTimer() { stopTimer(); timerSeconds = 0; document.getElementById('timer-display').textContent = '00:00'; }
   function formatTime(s) {
@@ -2274,19 +2276,19 @@
     const blob = doc.output('blob');
     const blobUrl = URL.createObjectURL(blob);
     if (pdfGenCount === 0) {
-      document.getElementById('prop-pdf-1').value = filename;
-      document.getElementById('prop-pdf-1').dataset.url = blobUrl;
+      document.getElementById('prop-pdf-1').value = blobUrl;
+      document.getElementById('prop-pdf-1').dataset.name = filename;
       const link1 = document.getElementById('prop-pdf-1-link');
-      link1.href = blobUrl; link1.style.display = 'inline';
+      link1.href = blobUrl; link1.textContent = filename; link1.style.display = 'inline';
       pdfGenCount = 1;
     } else {
       // Slot 2 — revision; revoke old slot 2 blob if exists
-      const prev = document.getElementById('prop-pdf-2').dataset.url;
-      if (prev) try { URL.revokeObjectURL(prev); } catch(e){}
-      document.getElementById('prop-pdf-2').value = filename;
-      document.getElementById('prop-pdf-2').dataset.url = blobUrl;
+      const prev = document.getElementById('prop-pdf-2').value;
+      if (prev && prev.startsWith('blob:')) try { URL.revokeObjectURL(prev); } catch(e){}
+      document.getElementById('prop-pdf-2').value = blobUrl;
+      document.getElementById('prop-pdf-2').dataset.name = filename;
       const link2 = document.getElementById('prop-pdf-2-link');
-      link2.href = blobUrl; link2.style.display = 'inline';
+      link2.href = blobUrl; link2.textContent = filename; link2.style.display = 'inline';
       pdfGenCount = 2;
     }
   }
