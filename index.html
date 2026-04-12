@@ -13,14 +13,14 @@
     --dark: #12282c;
     --dark2: #1a363c;
     --dark3: #0e1f22;
-    --teal: #2aa198;
-    --teal-light: #5ebeb6;
-    --teal-dim: rgba(42,161,152,0.15);
-    --teal-glow: rgba(42,161,152,0.3);
-    --gold: #c9a84c;
-    --gold-light: #e6c96e;
-    --gold-dim: rgba(201,168,76,0.15);
-    --gold-glow: rgba(201,168,76,0.3);
+    --teal: #006e84;
+    --teal-light: #3a9bb0;
+    --teal-dim: rgba(0,110,132,0.15);
+    --teal-glow: rgba(0,110,132,0.3);
+    --gold: #cdbc8b;
+    --gold-light: #ddd0a8;
+    --gold-dim: rgba(205,188,139,0.15);
+    --gold-glow: rgba(205,188,139,0.3);
     --white: #f4f0e8;
     --gray: #a3b0b3;
     --green: #34d399;
@@ -174,7 +174,7 @@
     line-height: 1.7;
   }
   .card-body .pro-tip {
-    background: rgba(42,161,152,0.08); border: 1px solid var(--teal-dim);
+    background: rgba(0,110,132,0.08); border: 1px solid var(--teal-dim);
     border-radius: 8px; padding: 10px 14px; margin-top: 10px; font-size:.85rem;
   }
   .card-body .pro-tip strong { color: var(--gold); }
@@ -297,12 +297,12 @@
   .tc-name { font-weight:700; font-size:.9rem; color:var(--white); min-width:140px; }
   .tc-pill { display:inline-block; padding:2px 10px; border-radius:10px; font-size:.7rem; font-weight:600; }
   .tc-result-closed { background:rgba(52,211,153,.15); color:var(--green); }
-  .tc-result-proposal { background:rgba(201,168,76,.15); color:var(--gold); }
-  .tc-result-interested { background:rgba(42,161,152,.15); color:var(--teal-light); }
+  .tc-result-proposal { background:rgba(205,188,139,.15); color:var(--gold); }
+  .tc-result-interested { background:rgba(0,110,132,.15); color:var(--teal-light); }
   .tc-result-callback { background:rgba(251,191,36,.15); color:var(--orange); }
   .tc-result-nofit { background:rgba(248,113,113,.15); color:var(--red); }
   .tc-result-noshow { background:rgba(163,176,179,.15); color:var(--gray); }
-  .tc-result-partner { background:rgba(42,161,152,.15); color:var(--teal-light); }
+  .tc-result-partner { background:rgba(0,110,132,.15); color:var(--teal-light); }
   .tc-meta { color:var(--gray); font-size:.75rem; }
   .tc-meta span { margin-right:14px; }
   .tc-meta .tc-val { color:var(--white); }
@@ -443,19 +443,19 @@
   .pt-item-price { color:var(--gold); font-size:.85rem; font-weight:700; white-space:nowrap; }
   .pt-item-desc { color:var(--gray); font-size:.75rem; margin-top:2px; }
   .pt-item-sell {
-    background:rgba(201,168,76,0.08); border-left:2px solid var(--gold-dim);
+    background:rgba(205,188,139,0.08); border-left:2px solid var(--gold-dim);
     padding:4px 10px; margin-top:6px; border-radius:0 6px 6px 0;
     font-size:.73rem; color:var(--gold-light); display:none;
   }
   .pt-item.selected .pt-item-sell { display:block; }
-  .pt-item.selected { background:rgba(42,161,152,0.05); border-radius:6px; margin:0 -8px; padding:8px; }
+  .pt-item.selected { background:rgba(0,110,132,0.05); border-radius:6px; margin:0 -8px; padding:8px; }
   /* Monthly care */
   .pt-care-cards { display:flex; flex-direction:column; gap:8px; }
   .pt-care-card {
     background:var(--dark2); border:1px solid var(--teal-dim); border-radius:8px;
     padding:12px 14px; cursor:pointer; transition:all .2s; position:relative;
   }
-  .pt-care-card.selected { border-color:var(--teal); background:rgba(42,161,152,0.08); }
+  .pt-care-card.selected { border-color:var(--teal); background:rgba(0,110,132,0.08); }
   .pt-care-card.popular::after {
     content:'Popular'; position:absolute; top:-8px; right:12px;
     background:var(--teal); color:#fff; font-size:.6rem; font-weight:700;
@@ -1818,7 +1818,7 @@
     const monthlyPlan = PT_MONTHLY.find(p => p.id === selectedMonthly);
     const projectTotal = serviceTotal;
 
-    const dark = [14,31,34], darkAlt = [18,40,44], gold = [201,168,76], teal = [42,161,152], white = [244,240,232], gray = [140,155,158];
+    const dark = [14,31,34], darkAlt = [18,40,44], gold = [205,188,139], teal = [0,110,132], white = [244,240,232], gray = [140,155,158];
     let tierName = serviceTotal <= 2000 ? 'Signature' : serviceTotal <= 8000 ? 'Luminary' : 'Sovereign';
 
     function addPage() { doc.addPage(); doc.setFillColor(...dark); doc.rect(0,0,w,h,'F'); y = margin; }
