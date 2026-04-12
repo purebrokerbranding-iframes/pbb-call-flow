@@ -288,23 +288,12 @@
     text-align:center; padding:20px; color:var(--gray); font-size:.9rem;
   }
   .tracker-card {
-    background: var(--dark); border:1px solid var(--teal-dim); border-radius:var(--radius);
-    padding:18px; margin-bottom:12px;
+    background: var(--dark); border:1px solid var(--teal-dim); border-radius:8px;
+    padding:10px 14px; margin-bottom:6px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
   }
-  .tracker-card-header {
-    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
-    margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--teal-dim);
-  }
-  .tracker-card-header .tc-name { font-weight:700; font-size:1rem; color:var(--white); }
-  .tracker-card-header .tc-id { font-family:'Courier New',monospace; font-size:.8rem; color:var(--teal-light); background:var(--teal-dim); padding:2px 10px; border-radius:10px; }
-  .tracker-card-row {
-    display:grid; grid-template-columns: 1fr 1fr; gap:8px 20px; margin-bottom:6px;
-  }
-  .tracker-card-row .tc-label { color:var(--gray); font-size:.75rem; font-weight:600; text-transform:uppercase; }
-  .tracker-card-row .tc-value { color:var(--white); font-size:.85rem; margin-bottom:8px; }
-  .tc-result {
-    display:inline-block; padding:3px 10px; border-radius:10px; font-size:.75rem; font-weight:600;
-  }
+  .tracker-card:hover { border-color:var(--teal); }
+  .tc-name { font-weight:700; font-size:.9rem; color:var(--white); min-width:140px; }
+  .tc-pill { display:inline-block; padding:2px 10px; border-radius:10px; font-size:.7rem; font-weight:600; }
   .tc-result-closed { background:rgba(52,211,153,.15); color:var(--green); }
   .tc-result-proposal { background:rgba(201,168,76,.15); color:var(--gold); }
   .tc-result-interested { background:rgba(42,161,152,.15); color:var(--teal-light); }
@@ -312,10 +301,20 @@
   .tc-result-nofit { background:rgba(248,113,113,.15); color:var(--red); }
   .tc-result-noshow { background:rgba(163,176,179,.15); color:var(--gray); }
   .tc-result-partner { background:rgba(42,161,152,.15); color:var(--teal-light); }
-  .tc-summary { margin-top:8px; padding-top:8px; border-top:1px solid var(--teal-dim); }
-  .tc-summary .tc-label { color:var(--gray); font-size:.75rem; font-weight:600; text-transform:uppercase; }
-  .tc-summary .tc-value { color:var(--white); font-size:.85rem; margin-top:4px; line-height:1.5; }
-  .tc-amount { color:var(--green); font-weight:700; font-size:1rem; }
+  .tc-meta { color:var(--gray); font-size:.75rem; }
+  .tc-meta span { margin-right:14px; }
+  .tc-meta .tc-val { color:var(--white); }
+  .tc-meta .tc-val-gold { color:var(--gold); }
+  .tc-expand-btn { margin-left:auto; background:none; border:1px solid var(--teal-dim); color:var(--teal-light); padding:3px 10px; border-radius:6px; font-size:.7rem; cursor:pointer; }
+  .tc-expand-btn:hover { border-color:var(--teal); background:var(--teal-dim); }
+  .tc-detail { width:100%; padding:8px 0 2px; border-top:1px solid var(--teal-dim); display:none; }
+  .tc-detail.open { display:block; }
+  .tc-detail-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px 16px; }
+  .tc-detail-grid .tc-label { color:var(--gray); font-size:.68rem; font-weight:600; text-transform:uppercase; }
+  .tc-detail-grid .tc-value { color:var(--white); font-size:.8rem; margin-bottom:6px; }
+  .tc-summary-row { margin-top:6px; padding-top:6px; border-top:1px solid var(--teal-dim); }
+  .tc-summary-row .tc-label { color:var(--gray); font-size:.68rem; font-weight:600; text-transform:uppercase; }
+  .tc-summary-row .tc-value { color:var(--white); font-size:.8rem; margin-top:2px; line-height:1.4; }
   .tracker-setup-msg {
     background:var(--dark); border:1px solid var(--gold-dim); border-radius:var(--radius);
     padding:20px; text-align:center;
@@ -1555,10 +1554,10 @@
     const query = document.getElementById('tracker-email-search').value.trim().toLowerCase();
     if (!query) { displayTracker(trackerData.slice(-10).reverse()); return; }
     const matches = trackerData.filter(row => {
-      const email = (row.prospect_email || row.email || '').toLowerCase();
-      const name = (row.prospect_name || row.name || '').toLowerCase();
-      const cid = (row.client_id || '').toLowerCase();
-      return email.includes(query) || name.includes(query) || cid.includes(query);
+      const email = (row.email || row.prospect_email || '').toLowerCase();
+      const name = ((row.first_name || '') + ' ' + (row.last_name || '')).trim().toLowerCase() || (row.name || '').toLowerCase();
+      const phone = (row.phone || '').toLowerCase();
+      return email.includes(query) || name.includes(query) || phone.includes(query);
     });
     displayTracker(matches.reverse());
   }
@@ -1579,21 +1578,39 @@
     const statusEl = document.getElementById('tracker-status');
     if (rows.length === 0) { statusEl.style.display = 'block'; statusEl.textContent = 'No calls found.'; resultsEl.innerHTML = ''; return; }
     statusEl.style.display = 'none';
-    resultsEl.innerHTML = rows.map(row => {
-      const name = row.prospect_name || row.name || 'Unknown';
-      const email = row.prospect_email || row.email || '—';
-      const phone = row.prospect_phone || row.phone || '—';
+    resultsEl.innerHTML = rows.map((row, i) => {
+      const first = row.first_name || row.prospect_name || '';
+      const last = row.last_name || '';
+      const name = (first + ' ' + last).trim() || row.name || 'Unknown';
+      const email = row.email || row.prospect_email || '—';
+      const phone = row.phone || row.prospect_phone || '—';
       const industry = row.industry || '—';
-      const result = row.call_result || row.result || '—';
-      const amount = row.amount_closed || row.amount || '';
-      const duration = row.call_duration || row.duration || '—';
+      const result = row.outcome || row.call_result || row.result || '—';
+      const tier = row.tier_interest || row.tier || '';
+      const duration = row.duration || row.call_duration || '—';
       const followup = row.follow_up_date || row.followup || '—';
-      const summary = row.call_summary || row.summary || row.notes || '—';
-      const cid = row.client_id || '—';
-      const loggedAt = row.logged_at || row.date || '—';
-      const loggedBy = row.logged_by || '—';
+      const summary = row.notes || row.call_summary || row.summary || '—';
+      const loggedAt = row.date || row.logged_at || '—';
+      const agent = row.agent || row.logged_by || '—';
+      const source = row.source || '—';
       const resultClass = getResultClass(result);
-      return `<div class="tracker-card"><div class="tracker-card-header"><span class="tc-name">${name}</span><span class="tc-id">${cid}</span></div><div class="tracker-card-row"><div><span class="tc-label">Email</span><div class="tc-value">${email}</div></div><div><span class="tc-label">Phone</span><div class="tc-value">${phone}</div></div><div><span class="tc-label">Industry</span><div class="tc-value">${industry}</div></div><div><span class="tc-label">Result</span><div class="tc-value"><span class="tc-result ${resultClass}">${result}</span></div></div>${amount ? `<div><span class="tc-label">Amount Closed</span><div class="tc-value tc-amount">$${amount}</div></div>` : ''}<div><span class="tc-label">Duration</span><div class="tc-value">${duration}</div></div><div><span class="tc-label">Follow-Up</span><div class="tc-value">${followup}</div></div><div><span class="tc-label">Logged</span><div class="tc-value">${loggedAt}</div></div><div><span class="tc-label">Logged By</span><div class="tc-value">${loggedBy}</div></div></div><div class="tc-summary"><span class="tc-label">Call Summary</span><div class="tc-value">${summary}</div></div></div>`;
+      return `<div class="tracker-card">
+        <span class="tc-name">${name}</span>
+        <span class="tc-pill ${resultClass}">${result}</span>
+        <span class="tc-meta"><span>${loggedAt}</span><span>⏱ ${duration}</span>${tier ? `<span class="tc-val-gold">${tier}</span>` : ''}</span>
+        <button class="tc-expand-btn" onclick="this.textContent=this.textContent==='+ Details'?'− Close':'+ Details';this.closest('.tracker-card').querySelector('.tc-detail').classList.toggle('open')">+ Details</button>
+        <div class="tc-detail" id="tc-detail-${i}">
+          <div class="tc-detail-grid">
+            <div><span class="tc-label">Email</span><div class="tc-value">${email}</div></div>
+            <div><span class="tc-label">Phone</span><div class="tc-value">${phone}</div></div>
+            <div><span class="tc-label">Industry</span><div class="tc-value">${industry}</div></div>
+            <div><span class="tc-label">Follow-Up</span><div class="tc-value">${followup}</div></div>
+            <div><span class="tc-label">Agent</span><div class="tc-value">${agent}</div></div>
+            <div><span class="tc-label">Source</span><div class="tc-value">${source}</div></div>
+          </div>
+          ${summary !== '—' ? `<div class="tc-summary-row"><span class="tc-label">Notes</span><div class="tc-value">${summary}</div></div>` : ''}
+        </div>
+      </div>`;
     }).join('');
   }
 
