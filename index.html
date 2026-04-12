@@ -1718,9 +1718,15 @@
     doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...gold);
     doc.text('Services Breakdown', margin, y);
     y += 4; doc.setFillColor(...teal); doc.rect(margin,y,40,1.5,'F'); y += 14;
-    // Always show base package description
+    // Show base package description — context-aware for new builds vs refreshes
+    const hasRefreshService = selected.some(s => ['conversion-audit','seo-overhaul','visual-redesign','funnel-integration','compliance-trust','copy-refresh'].includes(s.id));
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...white);
-    const baseNote = 'Every project starts with your Custom Responsive Website Design — a fully custom, conversion-optimized site built from scratch around your brand, market, and goals. This includes professional design for all devices, mobile optimization, branded visual identity integration, strategic page structure, and launch-ready deployment.';
+    let baseNote;
+    if (hasRefreshService) {
+      baseNote = 'This proposal covers improvements and additions to your existing website. Your project scope includes only the services listed below — this is not a full site rebuild unless specifically included as a line item. Each service is applied on top of your current site to improve performance, conversions, and functionality.';
+    } else {
+      baseNote = 'Every new build starts with your Custom Responsive Website Design — a fully custom, conversion-optimized site built from scratch around your business, market, and goals. This includes professional design for all devices, mobile optimization, branded visual identity integration, strategic page structure, and launch-ready deployment.';
+    }
     const bnLines = doc.splitTextToSize(baseNote, contentW);
     doc.text(bnLines, margin, y); y += bnLines.length * 4 + 10;
 
@@ -1762,7 +1768,7 @@
       });
     }
     if (monthlyPlan && monthlyPlan.price > 0) {
-      y += 10; checkPage(40);
+      y += 10; checkPage(60);
       doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...gold);
       doc.text('Monthly Management Plan', margin, y);
       y += 3; doc.setFillColor(...teal); doc.rect(margin,y,30,1.5,'F'); y += 12;
@@ -1770,6 +1776,11 @@
       doc.text(`${monthlyPlan.name} — $${monthlyPlan.price}/month`, margin, y); y += 10;
       doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
       monthlyPlan.features.forEach(f => { checkPage(8); doc.text('  •  '+f, margin, y); y += 6; });
+      y += 6; checkPage(20);
+      doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...teal);
+      const mNote = 'Monthly Management Plans are billed as a separate subscription and are not included in your project investment above. If not already purchased during your call, you can subscribe through the Pure Broker Branding website or your Client Portal.';
+      const mNoteLines = doc.splitTextToSize(mNote, contentW);
+      doc.text(mNoteLines, margin, y); y += mNoteLines.length * 3.8;
     }
     addFooter();
 
