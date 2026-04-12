@@ -1826,54 +1826,157 @@
     function addFooter() {
       doc.setFillColor(...teal); doc.rect(margin, h-16, contentW, 0.5, 'F');
       doc.setFontSize(7); doc.setTextColor(...gray);
-      doc.text('Pure Broker Branding  |  purebrokerbranding.com  |  purebrokerbranding@gmail.com', w/2, h-10, {align:'center'});
+      doc.text('Pure Broker Branding  |  purebrokerbranding.com  |  perry@purebrokerbranding.com', w/2, h-10, {align:'center'});
     }
 
-    // PAGE 1: Cover
+    // PAGE 1: Premium Cover
     doc.setFillColor(...dark); doc.rect(0,0,w,h,'F');
-    doc.setFillColor(...gold); doc.rect(0,0,w,3,'F');
-    if (pbbLogoData) { try { doc.addImage(pbbLogoData,'PNG',margin,18,30,30); } catch(e){} }
-    y = 58;
-    doc.setFillColor(...gold); doc.rect(margin,y,45,2,'F');
+
+    // ── Top gold accent bar ──
+    doc.setFillColor(...gold); doc.rect(0,0,w,2.5,'F');
+
+    // ── Corner geometric accents ──
+    doc.setDrawColor(...gold); doc.setLineWidth(0.4);
+    // Top-left corner bracket
+    doc.line(margin-6, 14, margin-6, 28); doc.line(margin-6, 14, margin+8, 14);
+    // Top-right corner bracket
+    doc.line(w-margin+6, 14, w-margin+6, 28); doc.line(w-margin+6, 14, w-margin-8, 14);
+    // Bottom-left corner bracket
+    doc.line(margin-6, h-20, margin-6, h-34); doc.line(margin-6, h-20, margin+8, h-20);
+    // Bottom-right corner bracket
+    doc.line(w-margin+6, h-20, w-margin+6, h-34); doc.line(w-margin+6, h-20, w-margin-8, h-20);
+
+    // ── Logo centered ──
+    if (pbbLogoData) { try { doc.addImage(pbbLogoData,'PNG', w/2-18, 22, 36, 36); } catch(e){} }
+
+    // ── Decorative diamond separator under logo ──
+    y = 66;
+    doc.setFillColor(...gold);
+    const dSize = 2.2;
+    doc.rect(w/2-dSize/2, y, dSize, dSize, 'F'); // center diamond (rotated via small square)
+    doc.setFillColor(...teal);
+    doc.rect(w/2-12-dSize/2, y+0.4, dSize*0.6, dSize*0.6, 'F');
+    doc.rect(w/2+12-dSize/2, y+0.4, dSize*0.6, dSize*0.6, 'F');
+    doc.setDrawColor(...gold); doc.setLineWidth(0.3);
+    doc.line(w/2-10, y+dSize/2, w/2-3, y+dSize/2);
+    doc.line(w/2+3, y+dSize/2, w/2+10, y+dSize/2);
+
+    // ── Title block ──
+    y = 80;
+    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...teal);
+    doc.text('PURE BROKER BRANDING', w/2, y, {align:'center', charSpace:2.5});
     y += 14;
-    doc.setFont('helvetica','bold'); doc.setFontSize(32); doc.setTextColor(...gold);
-    doc.text('Custom Proposal', margin, y);
-    y += 12;
-    doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(...gray);
-    doc.text('Pure Broker Branding', margin, y);
-    y += 24;
-    doc.setFillColor(...teal); doc.rect(margin,y,contentW,0.8,'F');
-    y += 16;
-    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(...white);
-    doc.text(`Prepared for: ${firstName}`, margin, y);
-    if (bizName) { y += 9; doc.setFont('helvetica','normal'); doc.setFontSize(12); doc.setTextColor(...gray); doc.text(bizName, margin, y); }
-    y += 8;
-    doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...gray);
-    doc.text(`Date: ${new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}`, margin, y);
-    y += 28;
-    doc.setFillColor(...darkAlt); doc.roundedRect(margin,y-8,contentW,50,4,4,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(42); doc.setTextColor(...gold);
-    doc.text(`$${projectTotal.toLocaleString()}`, w/2, y+14, {align:'center'});
-    doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(...gray);
-    doc.text('Project Investment', w/2, y+26, {align:'center'});
-    if (monthlyPlan && monthlyPlan.price > 0) { doc.setFontSize(10); doc.setTextColor(...teal); doc.text(`+ $${monthlyPlan.price}/mo — ${monthlyPlan.name}`, w/2, y+34, {align:'center'}); }
-    y += 56;
-    if (serviceTotal > 0) {
-      doc.setFillColor(...teal); doc.roundedRect(w/2-30,y,60,10,3,3,'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(255,255,255);
-      doc.text(`${tierName} Tier`, w/2, y+7, {align:'center'}); y += 14;
+    doc.setFont('helvetica','bold'); doc.setFontSize(36); doc.setTextColor(...gold);
+    doc.text('Custom Proposal', w/2, y, {align:'center'});
+    y += 6;
+    doc.setFillColor(...gold); doc.rect(w/2-25, y, 50, 0.8, 'F');
+
+    // ── Prepared for section ──
+    y += 22;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
+    doc.text('PREPARED FOR', w/2, y, {align:'center', charSpace:1.5});
+    y += 10;
+    doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(...white);
+    doc.text(firstName, w/2, y, {align:'center'});
+    if (bizName) {
+      y += 10;
+      doc.setFont('helvetica','normal'); doc.setFontSize(12); doc.setTextColor(...gray);
+      doc.text(bizName, w/2, y, {align:'center'});
     }
-    y += 4; doc.setFontSize(9); doc.setTextColor(...gray);
-    doc.text(`${selected.length} Service${selected.length!==1?'s':''} Selected`, margin, y);
-    doc.text(`${tierName} Package`, w-margin, y, {align:'right'});
+    y += 8;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
+    doc.text(new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}), w/2, y, {align:'center'});
+
+    // ── Investment card ──
+    y += 18;
+    const cardH = monthlyPlan && monthlyPlan.price > 0 ? 62 : 52;
+    const cardY = y;
+    // Card background with subtle border
+    doc.setFillColor(...darkAlt); doc.roundedRect(margin+10, cardY, contentW-20, cardH, 4, 4, 'F');
+    doc.setDrawColor(...teal); doc.setLineWidth(0.3); doc.roundedRect(margin+10, cardY, contentW-20, cardH, 4, 4, 'S');
+
+    // Icon: dollar sign circle (left of amount)
+    const iconY = cardY + 10;
+    doc.setDrawColor(...gold); doc.setLineWidth(0.5);
+    doc.circle(margin+22, iconY+6, 5, 'S');
+    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...gold);
+    doc.text('$', margin+22, iconY+8.5, {align:'center'});
+
+    // Investment amount
+    doc.setFont('helvetica','bold'); doc.setFontSize(44); doc.setTextColor(...gold);
+    doc.text(`$${projectTotal.toLocaleString()}`, w/2, cardY+18, {align:'center'});
+
+    // Label
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
+    doc.text('PROJECT INVESTMENT', w/2, cardY+28, {align:'center', charSpace:1.2});
+
+    // Tier pill
+    if (serviceTotal > 0) {
+      const pillW = 52, pillH = 8;
+      doc.setFillColor(...teal); doc.roundedRect(w/2-pillW/2, cardY+33, pillW, pillH, 3, 3, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(255,255,255);
+      doc.text(tierName + ' Tier', w/2, cardY+38.5, {align:'center'});
+    }
+
+    // Monthly plan line
+    if (monthlyPlan && monthlyPlan.price > 0) {
+      doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...teal);
+      doc.text(`+ $${monthlyPlan.price}/mo  \u2014  ${monthlyPlan.name}`, w/2, cardY+50, {align:'center'});
+    }
+    y = cardY + cardH + 12;
+
+    // ── Stats row with icons ──
+    const statsY = y;
+    const col1 = margin + 20, col2 = w/2, col3 = w - margin - 20;
+
+    // Stat 1: Services count (grid icon)
+    doc.setDrawColor(...teal); doc.setLineWidth(0.3);
+    doc.rect(col1-8, statsY-4, 3, 3, 'S'); doc.rect(col1-4, statsY-4, 3, 3, 'S');
+    doc.rect(col1-8, statsY, 3, 3, 'S'); doc.rect(col1-4, statsY, 3, 3, 'S');
+    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(...white);
+    doc.text(`${selected.length}`, col1+6, statsY+2, {align:'center'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...gray);
+    doc.text(`Service${selected.length!==1?'s':''}`, col1+6, statsY+7, {align:'center'});
+
+    // Stat 2: Tier (shield icon)
+    doc.setDrawColor(...teal); doc.setLineWidth(0.3);
+    doc.line(col2-3, statsY-4, col2, statsY-7); doc.line(col2, statsY-7, col2+3, statsY-4);
+    doc.line(col2+3, statsY-4, col2+3, statsY); doc.line(col2+3, statsY, col2, statsY+3);
+    doc.line(col2, statsY+3, col2-3, statsY); doc.line(col2-3, statsY, col2-3, statsY-4);
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...white);
+    doc.text(tierName, col2, statsY+12, {align:'center'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...gray);
+    doc.text('Package Tier', col2, statsY+17, {align:'center'});
+
+    // Stat 3: Timeline (clock icon)
+    doc.setDrawColor(...teal); doc.setLineWidth(0.3);
+    doc.circle(col3, statsY-1.5, 4, 'S');
+    doc.line(col3, statsY-1.5, col3, statsY-4); doc.line(col3, statsY-1.5, col3+2, statsY-0.5);
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...white);
+    doc.text('4\u20136 Wks', col3, statsY+12, {align:'center'});
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...gray);
+    doc.text('Est. Delivery', col3, statsY+17, {align:'center'});
+
+    y = statsY + 26;
+
+    // ── Bottom decorative line + tagline ──
+    doc.setFillColor(...teal); doc.rect(margin+20, y, contentW-40, 0.4, 'F');
+    y += 10;
+    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...gray);
+    doc.text('Turn Leads Into Clients', w/2, y, {align:'center', charSpace:1.5});
+
     addFooter();
 
     // PAGE 2: Services Breakdown
     addPage();
     if (pbbLogoData) { try { doc.addImage(pbbLogoData,'PNG',w-margin-18,10,18,18); } catch(e){} }
+    // Section icon: checklist
+    doc.setDrawColor(...teal); doc.setLineWidth(0.3);
+    doc.rect(margin, y-4, 3.5, 3.5, 'S'); doc.line(margin+0.6, y-2, margin+1.5, y-0.8); doc.line(margin+1.5, y-0.8, margin+3, y-3.5);
+    doc.rect(margin, y+1, 3.5, 3.5, 'S');
     doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...gold);
-    doc.text('Services Breakdown', margin, y);
-    y += 4; doc.setFillColor(...teal); doc.rect(margin,y,40,1.5,'F'); y += 14;
+    doc.text('Services Breakdown', margin+8, y+3);
+    y += 7; doc.setFillColor(...teal); doc.rect(margin+8,y,40,1.5,'F'); y += 11;
     // Show base package description — context-aware for new builds vs refreshes
     const hasRefreshService = selected.some(s => ['conversion-audit','seo-overhaul','visual-redesign','funnel-integration','compliance-trust','copy-refresh'].includes(s.id));
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...white);
@@ -1909,9 +2012,13 @@
 
     // Payment Schedule
     y += 18; checkPage(40);
+    // Payment icon: calendar
+    doc.setDrawColor(...teal); doc.setLineWidth(0.3);
+    doc.rect(margin, y-5, 5, 5, 'S'); doc.line(margin, y-3.5, margin+5, y-3.5);
+    doc.line(margin+1.5, y-6, margin+1.5, y-4.5); doc.line(margin+3.5, y-6, margin+3.5, y-4.5);
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...gold);
-    doc.text('Payment Schedule', margin, y);
-    y += 3; doc.setFillColor(...teal); doc.rect(margin,y,30,1.5,'F'); y += 12;
+    doc.text('Payment Schedule', margin+8, y);
+    y += 3; doc.setFillColor(...teal); doc.rect(margin+8,y,30,1.5,'F'); y += 12;
     doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...white);
     if (projectTotal <= 1500 && projectTotal > 0) {
       doc.text(`Full Payment Required: $${projectTotal.toLocaleString()}`, margin, y); y += 7;
@@ -1925,9 +2032,13 @@
     }
     if (monthlyPlan && monthlyPlan.price > 0) {
       y += 10; checkPage(60);
+      // Monthly icon: refresh arrows
+      doc.setDrawColor(...teal); doc.setLineWidth(0.3);
+      doc.circle(margin+2.5, y-2.5, 3, 'S');
+      doc.line(margin+4, y-4.5, margin+5.5, y-4); doc.line(margin+4, y-4.5, margin+4.5, y-3);
       doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...gold);
-      doc.text('Monthly Management Plan', margin, y);
-      y += 3; doc.setFillColor(...teal); doc.rect(margin,y,30,1.5,'F'); y += 12;
+      doc.text('Monthly Management Plan', margin+9, y);
+      y += 3; doc.setFillColor(...teal); doc.rect(margin+9,y,30,1.5,'F'); y += 12;
       doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...white);
       doc.text(`${monthlyPlan.name} — $${monthlyPlan.price}/month`, margin, y); y += 10;
       doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
@@ -1943,9 +2054,14 @@
     // PAGE 3: Explanation of Services
     addPage();
     if (pbbLogoData) { try { doc.addImage(pbbLogoData,'PNG',w-margin-18,10,18,18); } catch(e){} }
+    // Section icon: open book
+    doc.setDrawColor(...teal); doc.setLineWidth(0.3);
+    doc.line(margin, y-1, margin+2.5, y-4); doc.line(margin+2.5, y-4, margin+5, y-1);
+    doc.line(margin, y-1, margin, y+3); doc.line(margin+5, y+3, margin+5, y-1);
+    doc.line(margin, y+3, margin+2.5, y+1.5); doc.line(margin+5, y+3, margin+2.5, y+1.5);
     doc.setFont('helvetica','bold'); doc.setFontSize(20); doc.setTextColor(...gold);
-    doc.text('Explanation of Services', margin, y);
-    y += 4; doc.setFillColor(...teal); doc.rect(margin,y,40,1.5,'F'); y += 10;
+    doc.text('Explanation of Services', margin+9, y+2);
+    y += 6; doc.setFillColor(...teal); doc.rect(margin+9,y,40,1.5,'F'); y += 10;
 
     // Clarification note
     doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...gray);
@@ -1981,9 +2097,14 @@
 
     // Disclosures
     checkPage(60); y += 6;
+    // Disclosure icon: shield with check
+    doc.setDrawColor(...teal); doc.setLineWidth(0.3);
+    doc.line(margin, y-3, margin+2.5, y-6); doc.line(margin+2.5, y-6, margin+5, y-3);
+    doc.line(margin+5, y-3, margin+5, y); doc.line(margin+5, y, margin+2.5, y+2);
+    doc.line(margin+2.5, y+2, margin, y); doc.line(margin, y, margin, y-3);
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...gold);
-    doc.text('Important Disclosures', margin, y);
-    y += 3; doc.setFillColor(...teal); doc.rect(margin,y,30,1.5,'F'); y += 12;
+    doc.text('Important Disclosures', margin+9, y);
+    y += 3; doc.setFillColor(...teal); doc.rect(margin+9,y,30,1.5,'F'); y += 12;
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...gray);
     const disclosures = [
       'This proposal outlines the scope and investment for services provided by Pure Broker Branding. Final scope is confirmed during the strategy kickoff call.',
