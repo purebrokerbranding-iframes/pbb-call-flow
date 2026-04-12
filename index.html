@@ -1153,6 +1153,7 @@
   // ══════════════════════════════════════
   // CONFIG
   // ══════════════════════════════════════
+  function fmtPrice(n) { return n % 1 === 0 ? n.toLocaleString() : n.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}); }
   const OWNER_PIN = '278262';
   const GUEST_PIN = '987789';
   const CALL_LOG_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7qjc75/';
@@ -1166,35 +1167,35 @@
   // ══════════════════════════════════════
   const PT_SERVICES = {
     base: [
-      { id:'web-design', name:'Custom Responsive Website Design', price:1500, desc:'Professionally crafted for all devices — built for conversions, not just aesthetics.', sell:'This is the foundation. Without a conversion-optimized site, everything else leaks leads. Every dollar they spend on marketing without this is wasted.' },
-      { id:'lead-capture', name:'Lead Capture System', price:350, desc:'Strategic CTAs, contact forms, and inquiry flows placed for maximum conversion.', sell:'Without this, their site is a brochure. This turns visitors into booked calls. Ask: "How many visitors hit your site and leave without you ever knowing?"' },
-      { id:'local-seo', name:'Local SEO Foundation', price:450, desc:'Keyword targeting, meta tags, schema markup, Google Business Profile optimization.', sell:'If they\'re not showing up in local search, their competitors are stealing their leads right now. This is how they get found.' },
-      { id:'chatbot-entry', name:'AI Chatbot — Entry Level', price:300, desc:'Automated FAQ responses and inquiry routing — qualifies leads 24/7.', sell:'Their site works while they sleep. This qualifies leads at 2am without lifting a finger. Ask: "What happens when someone visits your site at midnight?"' },
-      { id:'basic-automation', name:'Basic Lead Automation', price:200, desc:'Automated follow-up emails triggered when a form is submitted.', sell:'Speed to lead wins deals. Most businesses take 24+ hours to respond. This fires in seconds and keeps them top of mind.' },
+      { id:'web-design', name:'Custom Responsive Website Design', price:1499.99, desc:'Professionally crafted for all devices — built for conversions, not just aesthetics.', sell:'This is the foundation. Without a conversion-optimized site, everything else leaks leads. Every dollar they spend on marketing without this is wasted.' },
+      { id:'lead-capture', name:'Lead Capture System', price:549.49, desc:'Strategic CTAs, contact forms, and inquiry flows placed for maximum conversion.', sell:'Without this, their site is a brochure. This turns visitors into booked calls. Ask: "How many visitors hit your site and leave without you ever knowing?"' },
+      { id:'local-seo', name:'Local SEO Foundation', price:599.99, desc:'Keyword targeting, meta tags, schema markup, Google Business Profile optimization.', sell:'If they\'re not showing up in local search, their competitors are stealing their leads right now. This is how they get found.' },
+      { id:'chatbot-entry', name:'AI Chatbot — Entry Level', price:499.99, desc:'Automated FAQ responses and inquiry routing — qualifies leads 24/7.', sell:'Their site works while they sleep. This qualifies leads at 2am without lifting a finger. Ask: "What happens when someone visits your site at midnight?"' },
+      { id:'basic-automation', name:'Basic Lead Automation', price:349.49, desc:'Automated follow-up emails triggered when a form is submitted.', sell:'Speed to lead wins deals. Most businesses take 24+ hours to respond. This fires in seconds and keeps them top of mind.' },
     ],
     advanced: [
-      { id:'expanded-arch', name:'Expanded Site Architecture', price:800, desc:'Blog, Resources, Testimonials, Team pages + custom service sections.', sell:'More pages = more keywords = more traffic. Plus it positions them as the undeniable authority in their market.' },
-      { id:'adv-seo', name:'Advanced SEO Strategy', price:650, desc:'Competitor analysis, structured data, content strategy, and performance reporting.', sell:'This is how they outrank competitors who\'ve been around longer. Data-driven, not guesswork. Show them their competitor\'s ranking.' },
-      { id:'scheduling', name:'Appointment Scheduling Integration', price:400, desc:'Embedded booking calendar with automated reminders and confirmation flows.', sell:'Every extra step between "interested" and "booked" costs them clients. This removes all friction. One click to book.' },
-      { id:'chatbot-conversion', name:'AI Chatbot — Conversion Trained', price:750, desc:'Custom-trained to nurture leads, handle objections, and book calls directly.', sell:'This isn\'t a basic FAQ bot — it actually sells for them. It handles objections and pushes warm leads to book. Like a 24/7 sales rep.' },
-      { id:'lead-nurture', name:'Multi-Step Lead Nurture Automation', price:750, desc:'Email sequences, lead scoring, and CRM integration that works on autopilot.', sell:'Most leads need 5-7 touches before converting. This runs that entire follow-up sequence automatically while they focus on clients.' },
-      { id:'financial-tools', name:'Interactive Financial Tools', price:550, desc:'Custom calculators and planning tools that engage visitors and demonstrate value.', sell:'These keep visitors on the site 3x longer and generate warm leads who already see value. Perfect for financial advisors and mortgage brokers.' },
+      { id:'expanded-arch', name:'Expanded Site Architecture', price:799.99, desc:'Blog, Resources, Testimonials, Team pages + custom service sections.', sell:'More pages = more keywords = more traffic. Plus it positions them as the undeniable authority in their market.' },
+      { id:'adv-seo', name:'Advanced SEO Strategy', price:649.49, desc:'Competitor analysis, structured data, content strategy, and performance reporting.', sell:'This is how they outrank competitors who\'ve been around longer. Data-driven, not guesswork. Show them their competitor\'s ranking.' },
+      { id:'scheduling', name:'Appointment Scheduling Integration', price:399.99, desc:'Embedded booking calendar with automated reminders and confirmation flows.', sell:'Every extra step between "interested" and "booked" costs them clients. This removes all friction. One click to book.' },
+      { id:'chatbot-conversion', name:'AI Chatbot — Conversion Trained', price:749.49, desc:'Custom-trained to nurture leads, handle objections, and book calls directly.', sell:'This isn\'t a basic FAQ bot — it actually sells for them. It handles objections and pushes warm leads to book. Like a 24/7 sales rep.' },
+      { id:'lead-nurture', name:'Multi-Step Lead Nurture Automation', price:749.99, desc:'Email sequences, lead scoring, and CRM integration that works on autopilot.', sell:'Most leads need 5-7 touches before converting. This runs that entire follow-up sequence automatically while they focus on clients.' },
+      { id:'financial-tools', name:'Interactive Financial Tools', price:549.49, desc:'Custom calculators and planning tools that engage visitors and demonstrate value.', sell:'These keep visitors on the site 3x longer and generate warm leads who already see value. Perfect for financial advisors and mortgage brokers.' },
     ],
     premium: [
-      { id:'brand-strategy', name:'Bespoke Brand Strategy', price:1800, desc:'Full identity, guidelines, motion design, and custom visual language.', sell:'This is what separates the top 1% from everyone else. A complete brand system that commands premium pricing and instant recognition.' },
-      { id:'ai-ecosystem', name:'AI — Full Ecosystem Integration', price:2500, desc:'Predictive analytics, personalized content delivery, and custom AI models.', sell:'Enterprise-level intelligence built into their business. Personalized experiences for every visitor. This is the competitive moat no one can copy.' },
-      { id:'business-automation', name:'End-to-End Business Automation', price:2000, desc:'CRM sync, compliance tools, portfolio platforms, and custom API workflows.', sell:'Their entire operation runs on autopilot. Less overhead, faster growth, zero manual busywork. Ask: "How many hours a week do you spend on admin?"' },
-      { id:'client-portal', name:'Advanced Client Portal', price:1500, desc:'Secure document vault, e-signatures, encrypted messaging, and custom dashboards.', sell:'This is what high-value clients expect. It screams professionalism and keeps them sticky. Reduces churn and increases lifetime value.' },
-      { id:'perf-dashboard', name:'Performance Tracking Dashboard', price:750, desc:'Custom analytics dashboard showing leads, conversions, traffic sources, and ROI.', sell:'They can see exactly what their investment is returning. Full transparency = full trust. No more guessing if marketing is working.' },
-      { id:'strategy-team', name:'Dedicated Strategy Team', price:1200, desc:'Priority support, quarterly growth reviews, and ongoing performance optimization.', sell:'They get a team in their corner, not just a vendor. Proactive growth planning, not reactive fixes. This is the white-glove treatment.' },
+      { id:'brand-strategy', name:'Bespoke Brand Strategy', price:1799.99, desc:'Full identity, guidelines, motion design, and custom visual language.', sell:'This is what separates the top 1% from everyone else. A complete brand system that commands premium pricing and instant recognition.' },
+      { id:'ai-ecosystem', name:'AI — Full Ecosystem Integration', price:2499.49, desc:'Predictive analytics, personalized content delivery, and custom AI models.', sell:'Enterprise-level intelligence built into their business. Personalized experiences for every visitor. This is the competitive moat no one can copy.' },
+      { id:'business-automation', name:'End-to-End Business Automation', price:1999.99, desc:'CRM sync, compliance tools, portfolio platforms, and custom API workflows.', sell:'Their entire operation runs on autopilot. Less overhead, faster growth, zero manual busywork. Ask: "How many hours a week do you spend on admin?"' },
+      { id:'client-portal', name:'Advanced Client Portal', price:1499.49, desc:'Secure document vault, e-signatures, encrypted messaging, and custom dashboards.', sell:'This is what high-value clients expect. It screams professionalism and keeps them sticky. Reduces churn and increases lifetime value.' },
+      { id:'perf-dashboard', name:'Performance Tracking Dashboard', price:749.99, desc:'Custom analytics dashboard showing leads, conversions, traffic sources, and ROI.', sell:'They can see exactly what their investment is returning. Full transparency = full trust. No more guessing if marketing is working.' },
+      { id:'strategy-team', name:'Dedicated Strategy Team', price:1199.49, desc:'Priority support, quarterly growth reviews, and ongoing performance optimization.', sell:'They get a team in their corner, not just a vendor. Proactive growth planning, not reactive fixes. This is the white-glove treatment.' },
     ],
     refresh: [
-      { id:'conversion-audit', name:'Conversion Audit & Rebuild', price:600, desc:'Analyze traffic flow, fix drop-off points, rebuild sections costing you leads.', sell:'Their site is leaking leads somewhere. This finds exactly where and fixes it. Show them their bounce rate if you have it.' },
-      { id:'seo-overhaul', name:'SEO Overhaul', price:650, desc:'Fix keyword gaps, technical errors, metadata, site speed, and structured data.', sell:'If they\'re not on page 1, they\'re invisible. This diagnoses why and fixes it. Quick win they\'ll see results from fast.' },
-      { id:'visual-redesign', name:'Visual Redesign', price:800, desc:'Modernize design, improve visual hierarchy, and elevate the premium look.', sell:'First impressions happen in 3 seconds. If their site looks dated, prospects bounce before reading a word. This fixes that.' },
-      { id:'funnel-integration', name:'Lead Funnel Integration', price:500, desc:'Smart lead capture, AI chatbot, booking flows, and automated follow-up.', sell:'Retrofit their existing site with everything it needs to convert — without starting over. Maximum ROI, minimum disruption.' },
-      { id:'compliance-trust', name:'Compliance & Trust Signals', price:400, desc:'Disclosures, licensing badges, review integration, and credibility architecture.', sell:'In insurance and finance, trust is currency. This gives prospects the confidence to choose them. Missing this loses deals silently.' },
-      { id:'copy-refresh', name:'Content & Copy Refresh', price:450, desc:'Rewrite messaging to speak directly to ideal clients — clear, confident, converting.', sell:'Outdated copy kills conversions. New messaging written to convert browsers into booked calls. Words matter more than design.' },
+      { id:'conversion-audit', name:'Conversion Audit & Rebuild', price:599.99, desc:'Analyze traffic flow, fix drop-off points, rebuild sections costing you leads.', sell:'Their site is leaking leads somewhere. This finds exactly where and fixes it. Show them their bounce rate if you have it.' },
+      { id:'seo-overhaul', name:'SEO Overhaul', price:649.49, desc:'Fix keyword gaps, technical errors, metadata, site speed, and structured data.', sell:'If they\'re not on page 1, they\'re invisible. This diagnoses why and fixes it. Quick win they\'ll see results from fast.' },
+      { id:'visual-redesign', name:'Visual Redesign', price:799.99, desc:'Modernize design, improve visual hierarchy, and elevate the premium look.', sell:'First impressions happen in 3 seconds. If their site looks dated, prospects bounce before reading a word. This fixes that.' },
+      { id:'funnel-integration', name:'Lead Funnel Integration', price:499.49, desc:'Smart lead capture, AI chatbot, booking flows, and automated follow-up.', sell:'Retrofit their existing site with everything it needs to convert — without starting over. Maximum ROI, minimum disruption.' },
+      { id:'compliance-trust', name:'Compliance & Trust Signals', price:399.99, desc:'Disclosures, licensing badges, review integration, and credibility architecture.', sell:'In insurance and finance, trust is currency. This gives prospects the confidence to choose them. Missing this loses deals silently.' },
+      { id:'copy-refresh', name:'Content & Copy Refresh', price:449.49, desc:'Rewrite messaging to speak directly to ideal clients — clear, confident, converting.', sell:'Outdated copy kills conversions. New messaging written to convert browsers into booked calls. Words matter more than design.' },
     ]
   };
 
@@ -1694,7 +1695,7 @@
         <div class="pt-item-info">
           <div class="pt-item-top">
             <span class="pt-item-name">${s.name}</span>
-            <span class="pt-item-price">$${s.price.toLocaleString()}</span>
+            <span class="pt-item-price">$${fmtPrice(s.price)}</span>
           </div>
           <div class="pt-item-desc">${s.desc}</div>
           <div class="pt-item-sell">🎯 <strong>How to sell it:</strong> ${s.sell}</div>
@@ -1751,16 +1752,16 @@
     const projectTotal = serviceTotal;
 
     // Update right column calculator
-    document.getElementById('calc-total-display').textContent = '$' + projectTotal.toLocaleString();
-    document.getElementById('calc-service-total').textContent = '$' + serviceTotal.toLocaleString();
+    document.getElementById('calc-total-display').textContent = '$' + fmtPrice(projectTotal);
+    document.getElementById('calc-service-total').textContent = '$' + fmtPrice(serviceTotal);
     document.getElementById('calc-monthly-total').textContent = monthlyPrice > 0 ? '$' + monthlyPrice + '/mo' : 'None';
-    document.getElementById('calc-project-total').textContent = '$' + projectTotal.toLocaleString();
+    document.getElementById('calc-project-total').textContent = '$' + fmtPrice(projectTotal);
 
     // Tier badge
     const tierEl = document.getElementById('calc-tier-badge');
     if (serviceTotal > 0) {
       tierEl.style.display = 'block';
-      if (serviceTotal <= 2000) { tierEl.className = 'calc-tier-badge calc-tier-signature'; tierEl.textContent = 'Signature — Built to Launch'; }
+      if (serviceTotal <= 3500) { tierEl.className = 'calc-tier-badge calc-tier-signature'; tierEl.textContent = 'Signature — Built to Launch'; }
       else if (serviceTotal <= 8000) { tierEl.className = 'calc-tier-badge calc-tier-luminary'; tierEl.textContent = 'Luminary — Built to Scale'; }
       else { tierEl.className = 'calc-tier-badge calc-tier-sovereign'; tierEl.textContent = 'Sovereign — Built to Dominate'; }
     } else { tierEl.style.display = 'none'; }
@@ -1769,10 +1770,10 @@
     const schedEl = document.getElementById('calc-payment-schedule');
     if (projectTotal > 0) {
       if (projectTotal <= 1500) {
-        schedEl.innerHTML = `<div class="calc-pay-row"><span class="calc-pay-label">Full Payment Required</span><span class="calc-pay-val">$${projectTotal.toLocaleString()}</span></div><div style="font-size:.65rem;color:var(--gray);font-style:italic;margin-top:2px;">Per CSA — projects ≤$1,500 require full payment</div>`;
+        schedEl.innerHTML = `<div class="calc-pay-row"><span class="calc-pay-label">Full Payment Required</span><span class="calc-pay-val">$${fmtPrice(projectTotal)}</span></div><div style="font-size:.65rem;color:var(--gray);font-style:italic;margin-top:2px;">Per CSA — projects ≤$1,500 require full payment</div>`;
       } else {
-        const p1 = Math.round(projectTotal * 0.5), p2 = Math.round(projectTotal * 0.3), p3 = projectTotal - p1 - p2;
-        schedEl.innerHTML = `<div class="calc-pay-row"><span class="calc-pay-label">50% — Kickoff</span><span class="calc-pay-val">$${p1.toLocaleString()}</span></div><div class="calc-pay-row"><span class="calc-pay-label">30% — Design Approval</span><span class="calc-pay-val">$${p2.toLocaleString()}</span></div><div class="calc-pay-row"><span class="calc-pay-label">20% — Delivery</span><span class="calc-pay-val">$${p3.toLocaleString()}</span></div>`;
+        const p1 = Math.round(projectTotal * 0.5 * 100) / 100, p2 = Math.round(projectTotal * 0.3 * 100) / 100, p3 = Math.round((projectTotal - p1 - p2) * 100) / 100;
+        schedEl.innerHTML = `<div class="calc-pay-row"><span class="calc-pay-label">50% — Kickoff</span><span class="calc-pay-val">$${fmtPrice(p1)}</span></div><div class="calc-pay-row"><span class="calc-pay-label">30% — Design Approval</span><span class="calc-pay-val">$${fmtPrice(p2)}</span></div><div class="calc-pay-row"><span class="calc-pay-label">20% — Delivery</span><span class="calc-pay-val">$${fmtPrice(p3)}</span></div>`;
       }
     } else { schedEl.innerHTML = ''; }
 
@@ -1781,7 +1782,7 @@
     const itemsEl = document.getElementById('calc-selected-items');
     if (selectedList.length > 0) {
       listEl.style.display = 'block';
-      itemsEl.innerHTML = selectedList.map(s => `<div class="calc-selected-item"><span class="csi-name">${s.name}</span><span class="csi-price">$${s.price.toLocaleString()}</span></div>`).join('');
+      itemsEl.innerHTML = selectedList.map(s => `<div class="calc-selected-item"><span class="csi-name">${s.name}</span><span class="csi-price">$${fmtPrice(s.price)}</span></div>`).join('');
     } else { listEl.style.display = 'none'; }
   }
   function resetPricingTool() {
@@ -1819,7 +1820,7 @@
     const projectTotal = serviceTotal;
 
     const dark = [14,31,34], darkAlt = [18,40,44], gold = [205,188,139], teal = [0,110,132], white = [244,240,232], gray = [140,155,158];
-    let tierName = serviceTotal <= 2000 ? 'Signature' : serviceTotal <= 8000 ? 'Luminary' : 'Sovereign';
+    let tierName = serviceTotal <= 3500 ? 'Signature' : serviceTotal <= 8000 ? 'Luminary' : 'Sovereign';
 
     function addPage() { doc.addPage(); doc.setFillColor(...dark); doc.rect(0,0,w,h,'F'); y = margin; }
     function checkPage(needed) { if (y + needed > h - 25) addPage(); }
@@ -1830,6 +1831,7 @@
     }
 
     // PAGE 1: Premium Cover
+    const cx = w / 2; // True horizontal center
     doc.setFillColor(...dark); doc.rect(0,0,w,h,'F');
 
     // ── Top gold accent bar ──
@@ -1837,133 +1839,127 @@
 
     // ── Corner geometric accents ──
     doc.setDrawColor(...gold); doc.setLineWidth(0.4);
-    // Top-left corner bracket
     doc.line(margin-6, 14, margin-6, 28); doc.line(margin-6, 14, margin+8, 14);
-    // Top-right corner bracket
     doc.line(w-margin+6, 14, w-margin+6, 28); doc.line(w-margin+6, 14, w-margin-8, 14);
-    // Bottom-left corner bracket
     doc.line(margin-6, h-20, margin-6, h-34); doc.line(margin-6, h-20, margin+8, h-20);
-    // Bottom-right corner bracket
     doc.line(w-margin+6, h-20, w-margin+6, h-34); doc.line(w-margin+6, h-20, w-margin-8, h-20);
 
     // ── Logo centered ──
-    if (pbbLogoData) { try { doc.addImage(pbbLogoData,'PNG', w/2-18, 22, 36, 36); } catch(e){} }
+    const logoW = 34, logoH = 34;
+    if (pbbLogoData) { try { doc.addImage(pbbLogoData,'PNG', cx-logoW/2, 22, logoW, logoH); } catch(e){} }
 
-    // ── Decorative diamond separator under logo ──
-    y = 66;
-    doc.setFillColor(...gold);
+    // ── Decorative diamond separator ──
+    y = 64;
     const dSize = 2.2;
-    doc.rect(w/2-dSize/2, y, dSize, dSize, 'F'); // center diamond (rotated via small square)
+    doc.setFillColor(...gold); doc.rect(cx-dSize/2, y, dSize, dSize, 'F');
     doc.setFillColor(...teal);
-    doc.rect(w/2-12-dSize/2, y+0.4, dSize*0.6, dSize*0.6, 'F');
-    doc.rect(w/2+12-dSize/2, y+0.4, dSize*0.6, dSize*0.6, 'F');
+    doc.rect(cx-12-dSize*0.3, y+0.4, dSize*0.6, dSize*0.6, 'F');
+    doc.rect(cx+12-dSize*0.3, y+0.4, dSize*0.6, dSize*0.6, 'F');
     doc.setDrawColor(...gold); doc.setLineWidth(0.3);
-    doc.line(w/2-10, y+dSize/2, w/2-3, y+dSize/2);
-    doc.line(w/2+3, y+dSize/2, w/2+10, y+dSize/2);
+    doc.line(cx-10, y+dSize/2, cx-3, y+dSize/2);
+    doc.line(cx+3, y+dSize/2, cx+10, y+dSize/2);
 
     // ── Title block ──
-    y = 80;
+    y = 78;
     doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...teal);
-    doc.text('PURE BROKER BRANDING', w/2, y, {align:'center', charSpace:2.5});
+    doc.text('PURE BROKER BRANDING', cx, y, {align:'center', charSpace:2.5});
     y += 14;
     doc.setFont('helvetica','bold'); doc.setFontSize(36); doc.setTextColor(...gold);
-    doc.text('Custom Proposal', w/2, y, {align:'center'});
+    doc.text('Custom Proposal', cx, y, {align:'center'});
     y += 6;
-    doc.setFillColor(...gold); doc.rect(w/2-25, y, 50, 0.8, 'F');
+    doc.setFillColor(...gold); doc.rect(cx-25, y, 50, 0.8, 'F');
 
     // ── Prepared for section ──
-    y += 22;
+    y += 20;
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
-    doc.text('PREPARED FOR', w/2, y, {align:'center', charSpace:1.5});
+    doc.text('PREPARED FOR', cx, y, {align:'center', charSpace:1.5});
     y += 10;
     doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(...white);
-    doc.text(firstName, w/2, y, {align:'center'});
+    doc.text(firstName, cx, y, {align:'center'});
     if (bizName) {
       y += 10;
       doc.setFont('helvetica','normal'); doc.setFontSize(12); doc.setTextColor(...gray);
-      doc.text(bizName, w/2, y, {align:'center'});
+      doc.text(bizName, cx, y, {align:'center'});
     }
     y += 8;
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
-    doc.text(new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}), w/2, y, {align:'center'});
+    doc.text(new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}), cx, y, {align:'center'});
 
     // ── Investment card ──
-    y += 18;
-    const cardH = monthlyPlan && monthlyPlan.price > 0 ? 62 : 52;
+    y += 16;
+    const cardPad = 25;
+    const cardW = contentW - cardPad * 2 + margin * 2;
+    const cardX = cx - cardW / 2;
+    const cardH = monthlyPlan && monthlyPlan.price > 0 ? 60 : 48;
     const cardY = y;
-    // Card background with subtle border
-    doc.setFillColor(...darkAlt); doc.roundedRect(margin+10, cardY, contentW-20, cardH, 4, 4, 'F');
-    doc.setDrawColor(...teal); doc.setLineWidth(0.3); doc.roundedRect(margin+10, cardY, contentW-20, cardH, 4, 4, 'S');
-
-    // Icon: dollar sign circle (left of amount)
-    const iconY = cardY + 10;
-    doc.setDrawColor(...gold); doc.setLineWidth(0.5);
-    doc.circle(margin+22, iconY+6, 5, 'S');
-    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(...gold);
-    doc.text('$', margin+22, iconY+8.5, {align:'center'});
+    doc.setFillColor(...darkAlt); doc.roundedRect(cardX, cardY, cardW, cardH, 4, 4, 'F');
+    doc.setDrawColor(...teal); doc.setLineWidth(0.3); doc.roundedRect(cardX, cardY, cardW, cardH, 4, 4, 'S');
 
     // Investment amount
-    doc.setFont('helvetica','bold'); doc.setFontSize(44); doc.setTextColor(...gold);
-    doc.text(`$${projectTotal.toLocaleString()}`, w/2, cardY+18, {align:'center'});
+    doc.setFont('helvetica','bold'); doc.setFontSize(42); doc.setTextColor(...gold);
+    doc.text(`$${fmtPrice(projectTotal)}`, cx, cardY+16, {align:'center'});
 
     // Label
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
-    doc.text('PROJECT INVESTMENT', w/2, cardY+28, {align:'center', charSpace:1.2});
+    doc.text('PROJECT INVESTMENT', cx, cardY+26, {align:'center', charSpace:1.2});
 
     // Tier pill
     if (serviceTotal > 0) {
       const pillW = 52, pillH = 8;
-      doc.setFillColor(...teal); doc.roundedRect(w/2-pillW/2, cardY+33, pillW, pillH, 3, 3, 'F');
+      doc.setFillColor(...teal); doc.roundedRect(cx-pillW/2, cardY+31, pillW, pillH, 3, 3, 'F');
       doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(255,255,255);
-      doc.text(tierName + ' Tier', w/2, cardY+38.5, {align:'center'});
+      doc.text(tierName + ' Tier', cx, cardY+36.5, {align:'center'});
     }
 
     // Monthly plan line
     if (monthlyPlan && monthlyPlan.price > 0) {
       doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...teal);
-      doc.text(`+ $${monthlyPlan.price}/mo  \u2014  ${monthlyPlan.name}`, w/2, cardY+50, {align:'center'});
+      doc.text(`+ $${monthlyPlan.price}/mo  \u2014  ${monthlyPlan.name}`, cx, cardY+48, {align:'center'});
     }
-    y = cardY + cardH + 12;
+    y = cardY + cardH + 14;
 
-    // ── Stats row with icons ──
+    // ── Stats row — evenly spaced in thirds ──
     const statsY = y;
-    const col1 = margin + 20, col2 = w/2, col3 = w - margin - 20;
+    const third = contentW / 3;
+    const s1x = margin + third / 2;
+    const s2x = cx;
+    const s3x = w - margin - third / 2;
 
     // Stat 1: Services count (grid icon)
     doc.setDrawColor(...teal); doc.setLineWidth(0.3);
-    doc.rect(col1-8, statsY-4, 3, 3, 'S'); doc.rect(col1-4, statsY-4, 3, 3, 'S');
-    doc.rect(col1-8, statsY, 3, 3, 'S'); doc.rect(col1-4, statsY, 3, 3, 'S');
+    doc.rect(s1x-3.5, statsY-5, 3, 3, 'S'); doc.rect(s1x+0.5, statsY-5, 3, 3, 'S');
+    doc.rect(s1x-3.5, statsY-1, 3, 3, 'S'); doc.rect(s1x+0.5, statsY-1, 3, 3, 'S');
     doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(...white);
-    doc.text(`${selected.length}`, col1+6, statsY+2, {align:'center'});
+    doc.text(`${selected.length}`, s1x, statsY+10, {align:'center'});
     doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...gray);
-    doc.text(`Service${selected.length!==1?'s':''}`, col1+6, statsY+7, {align:'center'});
+    doc.text(`Service${selected.length!==1?'s':''}`, s1x, statsY+15, {align:'center'});
 
     // Stat 2: Tier (shield icon)
     doc.setDrawColor(...teal); doc.setLineWidth(0.3);
-    doc.line(col2-3, statsY-4, col2, statsY-7); doc.line(col2, statsY-7, col2+3, statsY-4);
-    doc.line(col2+3, statsY-4, col2+3, statsY); doc.line(col2+3, statsY, col2, statsY+3);
-    doc.line(col2, statsY+3, col2-3, statsY); doc.line(col2-3, statsY, col2-3, statsY-4);
+    doc.line(s2x-3, statsY-5, s2x, statsY-8); doc.line(s2x, statsY-8, s2x+3, statsY-5);
+    doc.line(s2x+3, statsY-5, s2x+3, statsY-1); doc.line(s2x+3, statsY-1, s2x, statsY+2);
+    doc.line(s2x, statsY+2, s2x-3, statsY-1); doc.line(s2x-3, statsY-1, s2x-3, statsY-5);
     doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...white);
-    doc.text(tierName, col2, statsY+12, {align:'center'});
+    doc.text(tierName, s2x, statsY+10, {align:'center'});
     doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...gray);
-    doc.text('Package Tier', col2, statsY+17, {align:'center'});
+    doc.text('Package Tier', s2x, statsY+15, {align:'center'});
 
     // Stat 3: Timeline (clock icon)
     doc.setDrawColor(...teal); doc.setLineWidth(0.3);
-    doc.circle(col3, statsY-1.5, 4, 'S');
-    doc.line(col3, statsY-1.5, col3, statsY-4); doc.line(col3, statsY-1.5, col3+2, statsY-0.5);
+    doc.circle(s3x, statsY-2, 4, 'S');
+    doc.line(s3x, statsY-2, s3x, statsY-5); doc.line(s3x, statsY-2, s3x+2, statsY-1);
     doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(...white);
-    doc.text('4\u20136 Wks', col3, statsY+12, {align:'center'});
+    doc.text('4\u20136 Wks', s3x, statsY+10, {align:'center'});
     doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(...gray);
-    doc.text('Est. Delivery', col3, statsY+17, {align:'center'});
+    doc.text('Est. Delivery', s3x, statsY+15, {align:'center'});
 
-    y = statsY + 26;
+    y = statsY + 24;
 
     // ── Bottom decorative line + tagline ──
-    doc.setFillColor(...teal); doc.rect(margin+20, y, contentW-40, 0.4, 'F');
+    doc.setFillColor(...teal); doc.rect(cx-40, y, 80, 0.4, 'F');
     y += 10;
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...gray);
-    doc.text('Turn Leads Into Clients', w/2, y, {align:'center', charSpace:1.5});
+    doc.text('Turn Leads Into Clients', cx, y, {align:'center', charSpace:1.5});
 
     addFooter();
 
@@ -1998,7 +1994,7 @@
         if (i%2===0) { doc.setFillColor(...darkAlt); doc.rect(margin-4,y-5,contentW+8,18,'F'); }
         doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(...white);
         doc.text(svc.name, margin, y);
-        doc.setTextColor(...gold); doc.text('$'+svc.price.toLocaleString(), w-margin, y, {align:'right'});
+        doc.setTextColor(...gold); doc.text('$'+fmtPrice(svc.price), w-margin, y, {align:'right'});
         y += 6;
         doc.setFont('helvetica','normal'); doc.setFontSize(8.5); doc.setTextColor(...gray);
         const dl = doc.splitTextToSize(svc.desc, contentW-30); doc.text(dl, margin, y); y += dl.length*4+8;
@@ -2008,7 +2004,7 @@
     doc.setFillColor(...teal); doc.rect(margin,y,contentW,1,'F'); y += 10;
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...white);
     doc.text('Project Total', margin, y);
-    doc.setTextColor(...gold); doc.text('$'+projectTotal.toLocaleString(), w-margin, y, {align:'right'});
+    doc.setTextColor(...gold); doc.text('$'+fmtPrice(projectTotal), w-margin, y, {align:'right'});
 
     // Payment Schedule
     y += 18; checkPage(40);
@@ -2021,12 +2017,12 @@
     y += 3; doc.setFillColor(...teal); doc.rect(margin+8,y,30,1.5,'F'); y += 12;
     doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...white);
     if (projectTotal <= 1500 && projectTotal > 0) {
-      doc.text(`Full Payment Required: $${projectTotal.toLocaleString()}`, margin, y); y += 7;
+      doc.text(`Full Payment Required: $${fmtPrice(projectTotal)}`, margin, y); y += 7;
       doc.setFontSize(8.5); doc.setTextColor(...gray);
       doc.text('Per Client Service Agreement, projects $1,500 or under require full payment at signing.', margin, y);
     } else if (projectTotal > 1500) {
-      const p1=Math.round(projectTotal*0.5), p2=Math.round(projectTotal*0.3), p3=projectTotal-p1-p2;
-      [['50% — Project Kickoff','$'+p1.toLocaleString()],['30% — Design / Component Approval','$'+p2.toLocaleString()],['20% — Delivery Call & Asset Transfer','$'+p3.toLocaleString()]].forEach(([l,v])=>{
+      const p1=Math.round(projectTotal*0.5*100)/100, p2=Math.round(projectTotal*0.3*100)/100, p3=Math.round((projectTotal-p1-p2)*100)/100;
+      [['50% — Project Kickoff','$'+fmtPrice(p1)],['30% — Design / Component Approval','$'+fmtPrice(p2)],['20% — Delivery Call & Asset Transfer','$'+fmtPrice(p3)]].forEach(([l,v])=>{
         doc.setTextColor(...white); doc.text(l,margin,y); doc.setTextColor(...gold); doc.text(v,w-margin,y,{align:'right'}); y+=8;
       });
     }
