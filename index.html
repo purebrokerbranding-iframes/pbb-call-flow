@@ -1315,6 +1315,7 @@
   // ══════════════════════════════════════
   let pbbLogoData = null;
   let pdfGenCount = 0; // tracks how many PDFs generated (up to 2 slots)
+  let pdfData = { pdf1: null, pdf2: null }; // stores { base64, filename } for each slot
   (function preloadLogo(){
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -1636,21 +1637,30 @@
     const succEl = document.getElementById('proposal-success');
     errEl.style.display = 'none'; succEl.style.display = 'none';
     if (!email) { errEl.textContent = 'Email is required to send the overview.'; errEl.style.display = 'block'; return; }
-    const pdf1 = document.getElementById('prop-pdf-1').value.trim();
-    const pdf2 = document.getElementById('prop-pdf-2').value.trim();
     const sendBtn = document.querySelector('.proposal-form .send-btn');
     const origText = sendBtn.textContent;
     sendBtn.textContent = 'Sending...'; sendBtn.classList.add('sending');
     const propPayload = {
-      prospect_email: email, prospect_name: name || '',
-      alternate_email: altEmail || '', update_phone: phone || '',
-      pdf_1: pdf1 || '', pdf_2: pdf2 || '',
+      prospect_email: email,
+      prospect_name: name || '',
+      alternate_email: altEmail || '',
+      update_phone: phone || '',
       sent_at: new Date().toISOString(),
       sent_by: document.getElementById('user-badge').textContent
     };
+    // Attach PDF base64 data + filenames if generated
+    if (pdfData.pdf1) {
+      propPayload.pdf_1_filename = pdfData.pdf1.filename;
+      propPayload.pdf_1_base64 = pdfData.pdf1.base64;
+    }
+    if (pdfData.pdf2) {
+      propPayload.pdf_2_filename = pdfData.pdf2.filename;
+      propPayload.pdf_2_base64 = pdfData.pdf2.base64;
+    }
     fetch(PROPOSAL_WEBHOOK, {
       method: 'POST',
-      body: new URLSearchParams(propPayload)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(propPayload)
     }).then(r => {
       if (!r.ok) throw new Error('Response not ok');
       sendBtn.textContent = origText; sendBtn.classList.remove('sending');
@@ -2272,23 +2282,23 @@
     const filename = `PBB-Project-Overview-${firstName.replace(/\s+/g,'-')}${bizName?'-'+bizName.replace(/\s+/g,'-'):''}.pdf`;
     doc.save(filename);
 
-    // Populate PDF link fields in Send Overview (up to 2 slots)
+    // Store base64 + blob for Send Overview
+    const base64 = doc.output('datauristring'); // full data URI
+    const rawBase64 = base64.split(',')[1]; // strip prefix for Zapier
     const blob = doc.output('blob');
     const blobUrl = URL.createObjectURL(blob);
+
     if (pdfGenCount === 0) {
-      document.getElementById('prop-pdf-1').value = blobUrl;
-      document.getElementById('prop-pdf-1').dataset.name = filename;
+      pdfData.pdf1 = { base64: rawBase64, filename: filename };
+      document.getElementById('prop-pdf-1').value = filename;
       const link1 = document.getElementById('prop-pdf-1-link');
-      link1.href = blobUrl; link1.textContent = filename; link1.style.display = 'inline';
+      link1.href = blobUrl; link1.textContent = 'View PDF'; link1.style.display = 'inline';
       pdfGenCount = 1;
     } else {
-      // Slot 2 — revision; revoke old slot 2 blob if exists
-      const prev = document.getElementById('prop-pdf-2').value;
-      if (prev && prev.startsWith('blob:')) try { URL.revokeObjectURL(prev); } catch(e){}
-      document.getElementById('prop-pdf-2').value = blobUrl;
-      document.getElementById('prop-pdf-2').dataset.name = filename;
+      pdfData.pdf2 = { base64: rawBase64, filename: filename };
+      document.getElementById('prop-pdf-2').value = filename;
       const link2 = document.getElementById('prop-pdf-2-link');
-      link2.href = blobUrl; link2.textContent = filename; link2.style.display = 'inline';
+      link2.href = blobUrl; link2.textContent = 'View PDF'; link2.style.display = 'inline';
       pdfGenCount = 2;
     }
   }
