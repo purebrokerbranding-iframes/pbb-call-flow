@@ -97,7 +97,7 @@
   .ci-field.locked .ci-copy-val { display:inline-block; }
   .ci-lock-btn {
     padding:5px 14px; border-radius:6px; font-weight:600; font-size:.75rem;
-    border:none; cursor:pointer; transition:all .2s; margin-left:auto;
+    border:none; cursor:pointer; transition:all .2s;
   }
   .ci-lock-btn.lock { background:var(--teal); color:#000; }
   .ci-lock-btn.unlock { background:var(--gold-dim); color:var(--gold); border:1px solid var(--gold-dim); }
@@ -112,9 +112,11 @@
   }
   .timer-btn {
     padding: 6px 18px; border-radius:8px; font-weight:600; font-size:.85rem;
-    border:none; cursor:pointer; transition: all .2s;
+    border:none; cursor:pointer; transition: all .15s;
   }
+  .timer-btn:active { transform:scale(.92); opacity:.8; }
   .timer-start { background: var(--green); color:#000; }
+  .timer-start.running { background: var(--teal-dim); color:var(--green); box-shadow:0 0 8px rgba(52,211,153,.3); }
   .timer-stop { background: var(--red); color:#fff; }
   .timer-reset { background: var(--dark2); color: var(--gray); border: 1px solid var(--teal-dim); }
   /* ── INDUSTRY FILTER ── */
@@ -356,11 +358,13 @@
   .sl-link-label { color:var(--gray); font-size:.7rem; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
   .sl-send-btn {
     background:var(--gold); color:var(--dark3); border:none; padding:10px 24px;
-    border-radius:8px; font-weight:700; font-size:.9rem; cursor:pointer; transition:all .2s;
+    border-radius:8px; font-weight:700; font-size:.9rem; cursor:pointer; transition:all .15s;
     width:100%;
   }
   .sl-send-btn:hover { background:var(--gold-light); }
-  .sl-success { color:var(--green); text-align:center; padding:8px; display:none; font-weight:600; font-size:.85rem; }
+  .sl-send-btn:active { transform:scale(.97); opacity:.8; }
+  .sl-send-btn.sending { background:var(--teal-dim); color:var(--teal-light); pointer-events:none; }
+  .sl-success { color:var(--green); text-align:center; padding:10px; display:none; font-weight:600; font-size:.85rem; background:rgba(52,211,153,.08); border:1px solid rgba(52,211,153,.2); border-radius:8px; margin-top:8px; }
   .sl-error { color:var(--red); text-align:center; padding:8px; display:none; font-size:.85rem; }
   .link-section-divider {
     border:none; border-top:1px solid var(--teal-dim); margin:20px 0;
@@ -1347,12 +1351,18 @@
   let timerSeconds = 0;
   function startTimer() {
     if (timerInterval) return;
+    const startBtn = document.querySelector('.timer-start');
+    startBtn.classList.add('running'); startBtn.textContent = '● Live';
     timerInterval = setInterval(() => {
       timerSeconds++;
       document.getElementById('timer-display').textContent = formatTime(timerSeconds);
     }, 1000);
   }
-  function stopTimer() { clearInterval(timerInterval); timerInterval = null; }
+  function stopTimer() {
+    clearInterval(timerInterval); timerInterval = null;
+    const startBtn = document.querySelector('.timer-start');
+    startBtn.classList.remove('running'); startBtn.textContent = '▶ Start';
+  }
   function resetTimer() { stopTimer(); timerSeconds = 0; document.getElementById('timer-display').textContent = '00:00'; }
   function formatTime(s) {
     const m = Math.floor(s / 60), sec = s % 60;
@@ -1420,20 +1430,27 @@
     errEl.style.display = 'none'; succEl.style.display = 'none';
     if (!link1 && !link2 && !link3) { errEl.textContent = 'Please paste at least one link to send.'; errEl.style.display = 'block'; return; }
     if (!email && !phone) { errEl.textContent = 'Please enter an email or phone number.'; errEl.style.display = 'block'; return; }
+    const sendBtn = document.querySelector('.sl-send-btn');
+    const origText = sendBtn.textContent;
+    sendBtn.textContent = 'Sending...'; sendBtn.classList.add('sending');
+    const payload = {
+      first_name: firstName || '', email: email || '', phone: phone || '',
+      link_1: link1 || '', link_2: link2 || '', link_3: link3 || '',
+      links_count: [link1,link2,link3].filter(l=>l).length,
+      sent_at: new Date().toISOString(),
+      sent_by: document.getElementById('user-badge').textContent
+    };
     fetch(SEND_LINK_WEBHOOK, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        first_name: firstName || '', email: email || '', phone: phone || '',
-        link_1: link1 || '', link_2: link2 || '', link_3: link3 || '',
-        links_count: [link1,link2,link3].filter(l=>l).length,
-        sent_at: new Date().toISOString(),
-        sent_by: document.getElementById('user-badge').textContent
-      })
+      body: new URLSearchParams(payload)
     }).then(() => {
+      sendBtn.textContent = origText; sendBtn.classList.remove('sending');
       succEl.style.display = 'block';
       ['sl-first-name','sl-email','sl-phone','sl-link-1','sl-link-2','sl-link-3'].forEach(id => document.getElementById(id).value = '');
-      setTimeout(() => succEl.style.display = 'none', 4000);
+      setTimeout(() => succEl.style.display = 'none', 5000);
+    }).catch(() => {
+      sendBtn.textContent = origText; sendBtn.classList.remove('sending');
+      errEl.textContent = 'Failed to send. Please try again.'; errEl.style.display = 'block';
     });
   }
 
@@ -1449,15 +1466,15 @@
     const succEl = document.getElementById('proposal-success');
     errEl.style.display = 'none'; succEl.style.display = 'none';
     if (!email) { errEl.textContent = 'Email is required to send the proposal.'; errEl.style.display = 'block'; return; }
+    const propPayload = {
+      prospect_email: email, prospect_name: name || '',
+      alternate_email: altEmail || '', update_phone: phone || '',
+      sent_at: new Date().toISOString(),
+      sent_by: document.getElementById('user-badge').textContent
+    };
     fetch(PROPOSAL_WEBHOOK, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        prospect_email: email, prospect_name: name || '',
-        alternate_email: altEmail || '', update_phone: phone || '',
-        sent_at: new Date().toISOString(),
-        sent_by: document.getElementById('user-badge').textContent
-      })
+      body: new URLSearchParams(propPayload)
     }).then(() => {
       succEl.style.display = 'block';
       ['prop-email','prop-name','prop-alt-email','prop-phone'].forEach(id => document.getElementById(id).value = '');
@@ -1487,8 +1504,7 @@
     document.getElementById('log-duration').value = document.getElementById('timer-display').textContent;
     fetch(CALL_LOG_WEBHOOK, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: new URLSearchParams(data)
     }).then(() => {
       document.getElementById('log-success').style.display = 'block';
       ['log-name','log-email','log-phone','log-notes','log-amount'].forEach(id => document.getElementById(id).value = '');
