@@ -107,11 +107,11 @@
     padding: 10px 20px; display:flex; align-items:center; justify-content:center; gap:16px;
   }
   #timer-display {
-    font-family: 'Courier New', monospace; font-size:1.5rem; font-weight:700;
-    color: var(--teal-light); min-width: 100px; text-align:center;
+    font-family: 'Courier New', monospace; font-size:1.2rem; font-weight:700;
+    color: var(--teal-light); min-width: 70px; text-align:center;
   }
   .timer-btn {
-    padding: 6px 18px; border-radius:8px; font-weight:600; font-size:.85rem;
+    padding: 5px 12px; border-radius:8px; font-weight:600; font-size:.78rem;
     border:none; cursor:pointer; transition: all .15s;
   }
   .timer-btn:active { transform:scale(.92); opacity:.8; }
@@ -592,6 +592,7 @@
     <div class="ci-field" id="ci-email"><input type="email" id="ci-email-input" placeholder="Email"><span class="ci-copy-val" id="ci-email-copy" onclick="copyCi(this)"></span></div>
     <div class="ci-field" id="ci-phone"><input type="tel" id="ci-phone-input" placeholder="Phone"><span class="ci-copy-val" id="ci-phone-copy" onclick="copyCi(this)"></span></div>
     <div class="ci-field" id="ci-biz"><input type="text" id="ci-biz-input" placeholder="Business Name"><span class="ci-copy-val" id="ci-biz-copy" onclick="copyCi(this)"></span></div>
+    <div class="ci-field" id="ci-launch"><input type="text" id="ci-launch-input" placeholder="Launch Date" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'"><span class="ci-copy-val" id="ci-launch-copy" onclick="copyCi(this)"></span></div>
     <button class="ci-lock-btn lock" id="ci-lock-btn" onclick="toggleCiLock()">🔒 Lock</button>
   </div>
   <div style="display:flex;align-items:center;gap:12px;">
@@ -721,13 +722,18 @@
     </div>
     <div class="card-body">
       <div class="script-block">
-        "So [Name], you told me [their pain point] — and I just showed you exactly how we solve that. The investment is [price], we build everything, we handle everything, and in 4 to 6 weeks you've got a site that's actually working for your business. What questions do you have before we get this going?"
+        "So [Name], you told me [their pain point] — and I just showed you exactly how we solve that. The investment starts at just [price], we build everything, we handle everything, and in 4 to 6 weeks you've got a system that's actually working for your business. What questions do you have before we lock in your launch date?"
       </div>
-      <p style="color:var(--gray);font-size:.85rem;margin:10px 0;">If they're ready:</p>
+      <p style="color:var(--gray);font-size:.85rem;margin:10px 0;">If they're feeling it — push for the full close today:</p>
       <div class="script-block">
-        "Let's lock it in. I'll send the project overview to your inbox right now — takes about 60 seconds. Once you're good on your end, we get to work immediately."
+        "Here's what I'd love to do right now — I'm going to send over a project overview so you can see exactly what's included, the pricing, the timeline, everything laid out clean. Take a quick look, and if it all checks out, we can knock out the final proposal right here on this call and lock in your build slot. The final proposal is the last step — once that's signed, we're off to the races. Sound good?"
       </div>
-      <div class="pro-tip"><strong>💡 Pro Tip:</strong> "What questions do you have before we get this going?" assumes the close. Don't ask "So what do you think?" — that invites hesitation. Assume the yes and handle objections as they come.</div>
+      <div class="pro-tip"><strong>💡 Pro Tip:</strong> "What questions do you have before we lock in your launch date?" assumes the close. Don't ask "So what do you think?" — that invites hesitation. The overview is the soft commitment, the final proposal is the real close. Push to complete both on this call.</div>
+      <p style="color:var(--gray);font-size:.85rem;margin:10px 0;">After they review the overview:</p>
+      <div class="script-block">
+        "Everything look good? Perfect. Let's get the final proposal done right now — it takes two minutes. This locks in your launch date and gets the team started. And just so you know, it's only 50% to get started — that secures your build slot and kicks everything off. The rest doesn't come until you've approved the direction and we deliver."
+      </div>
+      <div class="pro-tip"><strong>💡 Note on payment:</strong> Projects under $1,500 require full payment at signing. Everything above that is 50% to start, 30% at design approval, 20% at final delivery. Always frame the 50% as securing their spot — not a cost, an investment to lock in their timeline.</div>
     </div>
   </div>
   <div class="card">
@@ -736,14 +742,15 @@
       <span class="arrow">▼</span>
     </div>
     <div class="card-body">
+      <p style="color:var(--teal-light);font-size:.85rem;font-weight:600;margin-bottom:8px;">If they complete the final proposal on the call:</p>
       <div class="script-block">
-        "Perfect — here's what happens next. Your project overview is hitting your inbox right now. Once you sign off, we schedule your strategy kickoff within 48 hours. That's where we map out your site, your pages, your lead flow — everything. From there, we build it all out and you just watch it come together. You're gonna love this, [Name]."
+        "You're all set, [Name]. Here's what happens now — our team gets your strategy kickoff scheduled, we map out your entire build, and you'll start seeing progress fast. I'll be your point of contact the whole way through. Welcome aboard — you're gonna love what we put together."
       </div>
-      <p style="color:var(--gray);font-size:.85rem;margin:10px 0;">If they need time:</p>
+      <p style="color:var(--gray);font-size:.85rem;margin:10px 0;">If they want to review the overview first:</p>
       <div class="script-block">
-        "No rush — I'll send the overview over so you can sit with it. When's a good time to reconnect so I can answer anything that comes up? How about [day]?"
+        "Totally understand — I'm sending the overview to your inbox right now. Take a look, show your partner, do whatever you need to do. The final proposal is the last step to lock everything in, and we can knock it out over the phone in two minutes whenever you're ready. When's a good time to reconnect — how about [day] at [time]?"
       </div>
-      <div class="pro-tip"><strong>💡 Pro Tip:</strong> Always leave with a specific follow-up date. "I'll follow up next week" is a dead lead. "Let's reconnect Thursday at 2" keeps the deal alive. Use the Send Overview tab to fire it instantly.</div>
+      <div class="pro-tip"><strong>💡 Pro Tip:</strong> Always leave with a specific follow-up date and time. "I'll follow up next week" is a dead lead. "Let's reconnect Thursday at 2" keeps the deal alive. The overview builds trust, the final proposal closes it — your goal is to get both done on this call whenever possible.</div>
     </div>
   </div>
   </div><!-- /flow-left -->
@@ -1334,14 +1341,19 @@
   let ciLocked = false;
   function toggleCiLock() {
     ciLocked = !ciLocked;
-    const fields = ['ci-first','ci-last','ci-email','ci-phone','ci-biz'];
+    const fields = ['ci-first','ci-last','ci-email','ci-phone','ci-biz','ci-launch'];
     const btn = document.getElementById('ci-lock-btn');
     fields.forEach(id => {
       const field = document.getElementById(id);
       const input = field.querySelector('input');
       const copyEl = field.querySelector('.ci-copy-val');
       if (ciLocked) {
-        copyEl.textContent = input.value || '—';
+        let displayVal = input.value || '—';
+        if (id === 'ci-launch' && input.value) {
+          const d = new Date(input.value + 'T00:00:00');
+          displayVal = d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+        }
+        copyEl.textContent = displayVal;
         field.classList.add('locked');
       } else {
         field.classList.remove('locked');
