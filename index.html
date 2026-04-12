@@ -614,7 +614,7 @@
   <button class="active" onclick="openTab('flow',this)">📋 Call Flow</button>
   <button onclick="openTab('objections',this)">🛡 Objections</button>
   <button onclick="openTab('links',this)">🔗 Links</button>
-  <button onclick="openTab('proposal',this)">📩 Proposal</button>
+  <button onclick="openTab('proposal',this)">📩 Overview</button>
   <button onclick="openTab('log',this)">📝 Log Call</button>
   <button onclick="openTab('tracker',this)">📊 Tracker</button>
   <button onclick="openTab('playbook',this)">🧠 Playbook</button>
@@ -725,7 +725,7 @@
       </div>
       <p style="color:var(--gray);font-size:.85rem;margin:10px 0;">If they're ready:</p>
       <div class="script-block">
-        "Let's lock it in. I'll send the proposal to your inbox right now — takes about 60 seconds. Once you're good on your end, we get to work immediately."
+        "Let's lock it in. I'll send the project overview to your inbox right now — takes about 60 seconds. Once you're good on your end, we get to work immediately."
       </div>
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> "What questions do you have before we get this going?" assumes the close. Don't ask "So what do you think?" — that invites hesitation. Assume the yes and handle objections as they come.</div>
     </div>
@@ -737,13 +737,13 @@
     </div>
     <div class="card-body">
       <div class="script-block">
-        "Perfect — here's what happens next. Proposal's hitting your inbox right now. Once you sign off, we schedule your strategy kickoff within 48 hours. That's where we map out your site, your pages, your lead flow — everything. From there, we build it all out and you just watch it come together. You're gonna love this, [Name]."
+        "Perfect — here's what happens next. Your project overview is hitting your inbox right now. Once you sign off, we schedule your strategy kickoff within 48 hours. That's where we map out your site, your pages, your lead flow — everything. From there, we build it all out and you just watch it come together. You're gonna love this, [Name]."
       </div>
       <p style="color:var(--gray);font-size:.85rem;margin:10px 0;">If they need time:</p>
       <div class="script-block">
-        "No rush — I'll send the proposal over so you can sit with it. When's a good time to reconnect so I can answer anything that comes up? How about [day]?"
+        "No rush — I'll send the overview over so you can sit with it. When's a good time to reconnect so I can answer anything that comes up? How about [day]?"
       </div>
-      <div class="pro-tip"><strong>💡 Pro Tip:</strong> Always leave with a specific follow-up date. "I'll follow up next week" is a dead lead. "Let's reconnect Thursday at 2" keeps the deal alive. Use the Send Proposal tab to fire it instantly.</div>
+      <div class="pro-tip"><strong>💡 Pro Tip:</strong> Always leave with a specific follow-up date. "I'll follow up next week" is a dead lead. "Let's reconnect Thursday at 2" keeps the deal alive. Use the Send Overview tab to fire it instantly.</div>
     </div>
   </div>
   </div><!-- /flow-left -->
@@ -854,7 +854,7 @@
           <input type="text" id="pt-first-name" placeholder="First Name">
           <input type="text" id="pt-biz-name" placeholder="Business Name (Optional)">
         </div>
-        <button class="pt-generate-btn" onclick="generateProposalPDF()">📄 Create Final Proposal (PDF)</button>
+        <button class="pt-generate-btn" onclick="generateProposalPDF()">📄 Create Project Overview (PDF)</button>
         <button class="pt-reset-btn" onclick="resetPricingTool()">↺ Reset All Selections</button>
       </div>
     </div>
@@ -956,21 +956,31 @@
 <div id="proposal" class="tab-content">
   <div class="proposal-section">
     <div class="proposal-form">
-      <h3>📩 Send Proposal</h3>
-      <p class="form-desc">Enter the prospect's email to send their proposal. The Zap will fire immediately.</p>
+      <h3>📩 Send Overview</h3>
+      <p class="form-desc">Enter the prospect's email to send their project overview. The Zap will fire immediately.</p>
       <label>Prospect Email <span class="required-star">*</span></label>
       <input type="email" id="prop-email" placeholder="prospect@example.com">
       <label>Prospect Name</label>
       <input type="text" id="prop-name" placeholder="John Smith">
-      <button class="send-btn" onclick="sendProposal()">Send Proposal</button>
-      <div id="proposal-success" class="log-success">✅ Proposal sent successfully!</div>
+      <label>📄 Generated PDF 1</label>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+        <input type="text" id="prop-pdf-1" placeholder="Generate a PDF to auto-fill..." readonly style="flex:1;opacity:.7;">
+        <a id="prop-pdf-1-link" href="#" target="_blank" style="display:none;color:var(--teal-light);font-size:.8rem;white-space:nowrap;">View PDF</a>
+      </div>
+      <label>📄 Generated PDF 2 <span style="color:var(--gray);font-weight:400;">(optional — revision)</span></label>
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+        <input type="text" id="prop-pdf-2" placeholder="Generate a second version to fill..." readonly style="flex:1;opacity:.7;">
+        <a id="prop-pdf-2-link" href="#" target="_blank" style="display:none;color:var(--teal-light);font-size:.8rem;white-space:nowrap;">View PDF</a>
+      </div>
+      <button class="send-btn" onclick="sendProposal()">Send Overview</button>
+      <div id="proposal-success" class="log-success">✅ Overview sent successfully!</div>
       <div id="proposal-error" style="color:var(--red);text-align:center;padding:10px;display:none;font-weight:600;"></div>
       <div class="update-toggle" onclick="toggleUpdate(this)">
         <h4>📝 Update Contact Info (Optional)</h4>
         <span class="arrow">▼</span>
       </div>
       <div class="update-fields" id="update-fields">
-        <p class="update-note">Use these fields if the prospect wants the proposal sent to a different email or wants to update their phone number (e.g. another decision maker). Leave blank to keep existing info.</p>
+        <p class="update-note">Use these fields if the prospect wants the overview sent to a different email or wants to update their phone number (e.g. another decision maker). Leave blank to keep existing info.</p>
         <label>Alternate Email</label>
         <input type="email" id="prop-alt-email" placeholder="other-decision-maker@example.com">
         <label>Update Phone Number</label>
@@ -1006,7 +1016,7 @@
     <select id="log-result" onchange="toggleAmountField()">
       <option value="">Select result...</option>
       <option value="Closed — Signed">✅ Closed — Signed</option>
-      <option value="Proposal Sent — Following Up">📩 Proposal Sent — Following Up</option>
+      <option value="Overview Sent — Following Up">📩 Overview Sent — Following Up</option>
       <option value="Interested — Needs Time">🤔 Interested — Needs Time</option>
       <option value="Needs Partner Approval">👥 Needs Partner Approval</option>
       <option value="Callback Scheduled">📞 Callback Scheduled</option>
@@ -1059,7 +1069,7 @@
     <div class="playbook-card"><div class="pb-num">Principle 06</div><h4>Pain Over Features</h4><p>Nobody buys branding. They buy the solution to their pain: lost deals, weak online presence, blending in with competitors. Find the pain, amplify it, then present the bridge.</p></div>
     <div class="playbook-card"><div class="pb-num">Principle 07</div><h4>Assume the Close</h4><p>"What questions do you have before we get started?" is 10x stronger than "So what do you think?" Assume they're moving forward. Handle objections as they come — don't invite them.</p></div>
     <div class="playbook-card"><div class="pb-num">Principle 08</div><h4>Objections = Interest</h4><p>A prospect who objects is a prospect who's engaged. Someone truly not interested just ends the call. Every objection is an invitation to go deeper. Welcome them.</p></div>
-    <div class="playbook-card"><div class="pb-num">Principle 09</div><h4>Speed to Follow-Up</h4><p>Send the proposal within 60 seconds of ending the call. Text a confirmation within 5 minutes. Speed signals professionalism and keeps the momentum alive. Every minute you wait, the close rate drops.</p></div>
+    <div class="playbook-card"><div class="pb-num">Principle 09</div><h4>Speed to Follow-Up</h4><p>Send the overview within 60 seconds of ending the call. Text a confirmation within 5 minutes. Speed signals professionalism and keeps the momentum alive. Every minute you wait, the close rate drops.</p></div>
     <div class="playbook-card"><div class="pb-num">Principle 10</div><h4>Detach From the Outcome</h4><p>Desperation kills deals. If you need every call to convert, you'll push too hard. Approach every call like you don't need it. Paradoxically, that confidence is exactly what makes people say yes.</p></div>
   </div>
 </div>
@@ -1214,6 +1224,7 @@
   // PRELOAD LOGO FOR PDF
   // ══════════════════════════════════════
   let pbbLogoData = null;
+  let pdfGenCount = 0; // tracks how many PDFs generated (up to 2 slots)
   (function preloadLogo(){
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -1524,10 +1535,13 @@
     const errEl = document.getElementById('proposal-error');
     const succEl = document.getElementById('proposal-success');
     errEl.style.display = 'none'; succEl.style.display = 'none';
-    if (!email) { errEl.textContent = 'Email is required to send the proposal.'; errEl.style.display = 'block'; return; }
+    if (!email) { errEl.textContent = 'Email is required to send the overview.'; errEl.style.display = 'block'; return; }
+    const pdf1 = document.getElementById('prop-pdf-1').value.trim();
+    const pdf2 = document.getElementById('prop-pdf-2').value.trim();
     const propPayload = {
       prospect_email: email, prospect_name: name || '',
       alternate_email: altEmail || '', update_phone: phone || '',
+      pdf_1: pdf1 || '', pdf_2: pdf2 || '',
       sent_at: new Date().toISOString(),
       sent_by: document.getElementById('user-badge').textContent
     };
@@ -1640,7 +1654,7 @@
     if (!result) return '';
     const r = result.toLowerCase();
     if (r.includes('closed')) return 'tc-result-closed';
-    if (r.includes('proposal')) return 'tc-result-proposal';
+    if (r.includes('overview') || r.includes('proposal')) return 'tc-result-proposal';
     if (r.includes('interested')) return 'tc-result-interested';
     if (r.includes('callback')) return 'tc-result-callback';
     if (r.includes('not a fit')) return 'tc-result-nofit';
@@ -1881,7 +1895,7 @@
     doc.text('P U R E   B R O K E R   B R A N D I N G', cx, y, {align:'center'});
     y += 14;
     doc.setFont('helvetica','bold'); doc.setFontSize(36); doc.setTextColor(...gold);
-    doc.text('Custom Proposal', cx, y, {align:'center'});
+    doc.text('Project Overview', cx, y, {align:'center'});
     y += 6;
     doc.setFillColor(...gold); doc.rect(cx-25, y, 50, 0.8, 'F');
 
@@ -1904,7 +1918,7 @@
     y += 16;
     const cardW = w - 50; // 25mm inset each side
     const cardX = cx - cardW / 2;
-    const cardH = monthlyPlan && monthlyPlan.price > 0 ? 60 : 48;
+    const cardH = monthlyPlan && monthlyPlan.price > 0 ? 68 : 56;
     const cardY = y;
     doc.setFillColor(...darkAlt); doc.roundedRect(cardX, cardY, cardW, cardH, 4, 4, 'F');
     doc.setDrawColor(...teal); doc.setLineWidth(0.3); doc.roundedRect(cardX, cardY, cardW, cardH, 4, 4, 'S');
@@ -1930,11 +1944,11 @@
       doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...teal);
       doc.text(`+ $${monthlyPlan.price}/mo  \u2014  ${monthlyPlan.name}`, cx, cardY+48, {align:'center'});
     }
-    // Tagline under card
-    y = cardY + cardH + 6;
-    doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...white);
-    doc.text('Built specifically for your business, market, and growth goals', cx, y, {align:'center'});
-    y += 10;
+    // Tagline inside card
+    const tagY = monthlyPlan && monthlyPlan.price > 0 ? cardY+58 : cardY+48;
+    doc.setFont('helvetica','italic'); doc.setFontSize(7.5); doc.setTextColor(...white);
+    doc.text('Built specifically for your business, market, and growth goals', cx, tagY, {align:'center'});
+    y = cardY + cardH + 10;
 
     // ── Stats row — evenly spaced in thirds ──
     const statsY = y;
@@ -1998,7 +2012,7 @@
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...white);
     let baseNote;
     if (hasRefreshService) {
-      baseNote = 'This proposal covers improvements and additions to your existing website. Your project scope includes only the services listed below — this is not a full site rebuild unless specifically included as a line item. Each service is applied on top of your current site to improve performance, conversions, and functionality.';
+      baseNote = 'This overview covers improvements and additions to your existing website. Your project scope includes only the services listed below — this is not a full site rebuild unless specifically included as a line item. Each service is applied on top of your current site to improve performance, conversions, and functionality.';
     } else {
       baseNote = 'Every new build starts with your Custom Responsive Website Design — a fully custom, conversion-optimized site built from scratch around your business, market, and goals. This includes professional design for all devices, mobile optimization, branded visual identity integration, strategic page structure, and launch-ready deployment.';
     }
@@ -2081,7 +2095,7 @@
 
     // Clarification note
     doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...gray);
-    const clarNote = 'The following explains the services referenced in your proposal above. This section is a general reference guide — it does not represent everything we are building for your business specifically. Your custom scope is outlined in the Services Breakdown on the previous page.';
+    const clarNote = 'The following explains the services referenced in your overview above. This section is a general reference guide — it does not represent everything we are building for your business specifically. Your custom scope is outlined in the Services Breakdown on the previous page.';
     const cnLines = doc.splitTextToSize(clarNote, contentW);
     doc.text(cnLines, margin, y); y += cnLines.length * 3.8 + 10;
 
@@ -2123,13 +2137,13 @@
     y += 3; doc.setFillColor(...teal); doc.rect(margin+9,y,30,1.5,'F'); y += 12;
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...gray);
     const disclosures = [
-      'This proposal outlines the scope and investment for services provided by Pure Broker Branding. Final scope is confirmed during the strategy kickoff call.',
+      'This overview outlines the scope and investment for services provided by Pure Broker Branding. Final scope is confirmed during the strategy kickoff call.',
       'Pure Broker Branding does not cover hosting charges, domain registration fees, or third-party platform subscription costs. These include but are not limited to: web hosting platforms (Shopify, WordPress, Squarespace), communication systems (Twilio, Grasshopper), chatbot providers, CRM licenses, email marketing platforms, and any other third-party tools required to fulfill the site\'s functionality.',
       'We build, configure, optimize, and integrate these systems on your behalf. Ongoing subscription costs for third-party services are the client\'s responsibility.',
       'Monthly Management Plans are billed monthly with no long-term contracts required. Plans can be adjusted or canceled with 30 days written notice.',
       'All custom work product (designs, code, content) is owned by the client upon final payment. Source files and assets are transferred during the delivery call.',
       'Project timelines are estimated and may vary based on client responsiveness, scope changes, and third-party dependencies.',
-      'This proposal is valid for 30 days from the date issued. Pricing and availability may change after this period.',
+      'This overview is valid for 30 days from the date issued. Pricing and availability may change after this period.',
     ];
     disclosures.forEach(d => {
       checkPage(16);
@@ -2137,8 +2151,28 @@
     });
     addFooter();
 
-    const filename = `PBB-Proposal-${firstName.replace(/\s+/g,'-')}${bizName?'-'+bizName.replace(/\s+/g,'-'):''}.pdf`;
+    const filename = `PBB-Project-Overview-${firstName.replace(/\s+/g,'-')}${bizName?'-'+bizName.replace(/\s+/g,'-'):''}.pdf`;
     doc.save(filename);
+
+    // Populate PDF link fields in Send Overview (up to 2 slots)
+    const blob = doc.output('blob');
+    const blobUrl = URL.createObjectURL(blob);
+    if (pdfGenCount === 0) {
+      document.getElementById('prop-pdf-1').value = filename;
+      document.getElementById('prop-pdf-1').dataset.url = blobUrl;
+      const link1 = document.getElementById('prop-pdf-1-link');
+      link1.href = blobUrl; link1.style.display = 'inline';
+      pdfGenCount = 1;
+    } else {
+      // Slot 2 — revision; revoke old slot 2 blob if exists
+      const prev = document.getElementById('prop-pdf-2').dataset.url;
+      if (prev) try { URL.revokeObjectURL(prev); } catch(e){}
+      document.getElementById('prop-pdf-2').value = filename;
+      document.getElementById('prop-pdf-2').dataset.url = blobUrl;
+      const link2 = document.getElementById('prop-pdf-2-link');
+      link2.href = blobUrl; link2.style.display = 'inline';
+      pdfGenCount = 2;
+    }
   }
 </script>
 </body>
