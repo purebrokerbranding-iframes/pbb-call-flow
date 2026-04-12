@@ -1421,7 +1421,7 @@
     if (!link1 && !link2 && !link3) { errEl.textContent = 'Please paste at least one link to send.'; errEl.style.display = 'block'; return; }
     if (!email && !phone) { errEl.textContent = 'Please enter an email or phone number.'; errEl.style.display = 'block'; return; }
     fetch(SEND_LINK_WEBHOOK, {
-      method: 'POST', mode: 'no-cors',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         first_name: firstName || '', email: email || '', phone: phone || '',
@@ -1450,7 +1450,7 @@
     errEl.style.display = 'none'; succEl.style.display = 'none';
     if (!email) { errEl.textContent = 'Email is required to send the proposal.'; errEl.style.display = 'block'; return; }
     fetch(PROPOSAL_WEBHOOK, {
-      method: 'POST', mode: 'no-cors',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         prospect_email: email, prospect_name: name || '',
@@ -1486,7 +1486,7 @@
     if (!data.prospect_name) { alert('Please enter the prospect name.'); return; }
     document.getElementById('log-duration').value = document.getElementById('timer-display').textContent;
     fetch(CALL_LOG_WEBHOOK, {
-      method: 'POST', mode: 'no-cors',
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     }).then(() => {
