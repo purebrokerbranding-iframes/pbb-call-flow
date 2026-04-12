@@ -1156,6 +1156,7 @@
   function fmtPrice(n) { return n % 1 === 0 ? n.toLocaleString() : n.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2}); }
   const OWNER_PIN = '278262';
   const GUEST_PIN = '987789';
+  let currentRole = 'owner'; // 'owner' or 'guest'
   const CALL_LOG_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7qjc75/';
   const PROPOSAL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7lo40e/';
   const SEND_LINK_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7lbhcb/';
@@ -1249,11 +1250,13 @@
     pinError.textContent = '';
     if (val.length === 6) {
       if (val === OWNER_PIN) {
+        currentRole = 'owner';
         pinRole.textContent = 'Welcome, Perry';
         pinRole.classList.add('show');
         document.getElementById('user-badge').textContent = 'Perry';
         setTimeout(unlock, 400);
       } else if (val === GUEST_PIN) {
+        currentRole = 'guest';
         pinRole.textContent = 'Welcome, Sales Rep';
         pinRole.classList.add('show');
         document.getElementById('user-badge').textContent = 'Sales Rep';
@@ -1824,10 +1827,11 @@
 
     function addPage() { doc.addPage(); doc.setFillColor(...dark); doc.rect(0,0,w,h,'F'); y = margin; }
     function checkPage(needed) { if (y + needed > h - 25) addPage(); }
+    const footerEmail = currentRole === 'guest' ? 'concierge@purebrokerbranding.com' : 'perry@purebrokerbranding.com';
     function addFooter() {
       doc.setFillColor(...teal); doc.rect(margin, h-16, contentW, 0.5, 'F');
       doc.setFontSize(7); doc.setTextColor(...gray);
-      doc.text('Pure Broker Branding  |  purebrokerbranding.com  |  perry@purebrokerbranding.com', w/2, h-10, {align:'center'});
+      doc.text('Pure Broker Branding  |  purebrokerbranding.com  |  ' + footerEmail, w/2, h-10, {align:'center'});
     }
 
     // PAGE 1: Premium Cover
@@ -1851,28 +1855,30 @@
     // ── Decorative diamond separator ──
     y = 64;
     const dSize = 2.2;
-    doc.setFillColor(...gold); doc.rect(cx-dSize/2, y, dSize, dSize, 'F');
+    const dHalf = dSize / 2;
+    doc.setFillColor(...gold); doc.rect(cx - dHalf, y, dSize, dSize, 'F');
+    const dotW = dSize * 0.6;
     doc.setFillColor(...teal);
-    doc.rect(cx-12-dSize*0.3, y+0.4, dSize*0.6, dSize*0.6, 'F');
-    doc.rect(cx+12-dSize*0.3, y+0.4, dSize*0.6, dSize*0.6, 'F');
+    doc.rect(cx - 12 - dotW/2, y + 0.4, dotW, dotW, 'F');
+    doc.rect(cx + 12 - dotW/2, y + 0.4, dotW, dotW, 'F');
     doc.setDrawColor(...gold); doc.setLineWidth(0.3);
-    doc.line(cx-10, y+dSize/2, cx-3, y+dSize/2);
-    doc.line(cx+3, y+dSize/2, cx+10, y+dSize/2);
+    doc.line(cx - 10, y + dHalf, cx - 3, y + dHalf);
+    doc.line(cx + 3, y + dHalf, cx + 10, y + dHalf);
 
     // ── Title block ──
     y = 78;
     doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(...teal);
-    doc.text('PURE BROKER BRANDING', cx, y, {align:'center', charSpace:2.5});
+    doc.text('P U R E   B R O K E R   B R A N D I N G', cx, y, {align:'center'});
     y += 14;
     doc.setFont('helvetica','bold'); doc.setFontSize(36); doc.setTextColor(...gold);
     doc.text('Custom Proposal', cx, y, {align:'center'});
     y += 6;
     doc.setFillColor(...gold); doc.rect(cx-25, y, 50, 0.8, 'F');
 
-    // ── Prepared for section ──
+    // ── Prepared for / by section ──
     y += 20;
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
-    doc.text('PREPARED FOR', cx, y, {align:'center', charSpace:1.5});
+    doc.text('P R E P A R E D   F O R', cx, y, {align:'center'});
     y += 10;
     doc.setFont('helvetica','bold'); doc.setFontSize(22); doc.setTextColor(...white);
     doc.text(firstName, cx, y, {align:'center'});
@@ -1884,11 +1890,9 @@
     y += 8;
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
     doc.text(new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}), cx, y, {align:'center'});
-
     // ── Investment card ──
     y += 16;
-    const cardPad = 25;
-    const cardW = contentW - cardPad * 2 + margin * 2;
+    const cardW = w - 50; // 25mm inset each side
     const cardX = cx - cardW / 2;
     const cardH = monthlyPlan && monthlyPlan.price > 0 ? 60 : 48;
     const cardY = y;
@@ -1901,7 +1905,7 @@
 
     // Label
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
-    doc.text('PROJECT INVESTMENT', cx, cardY+26, {align:'center', charSpace:1.2});
+    doc.text('P R O J E C T   I N V E S T M E N T', cx, cardY+26, {align:'center'});
 
     // Tier pill
     if (serviceTotal > 0) {
@@ -1956,10 +1960,12 @@
     y = statsY + 24;
 
     // ── Bottom decorative line + tagline ──
-    doc.setFillColor(...teal); doc.rect(cx-40, y, 80, 0.4, 'F');
+    doc.setFillColor(...teal); doc.rect(cx - 40, y, 80, 0.4, 'F');
     y += 10;
     doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(...gray);
-    doc.text('Turn Leads Into Clients', cx, y, {align:'center', charSpace:1.5});
+    doc.text('T u r n   L e a d s   I n t o   C l i e n t s', cx, y, {align:'center'});
+    y += 5;
+    doc.setFillColor(...teal); doc.rect(cx - 40, y, 80, 0.4, 'F');
 
     addFooter();
 
