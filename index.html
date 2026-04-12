@@ -1115,6 +1115,20 @@
       <label>Amount Closed ($)</label>
       <input type="text" id="log-amount" placeholder="e.g. 5000">
     </div>
+    <label>Tier Interest</label>
+    <select id="log-tier">
+      <option value="">Select tier...</option>
+      <option value="Signature">Signature</option>
+      <option value="Luminary">Luminary</option>
+      <option value="Sovereign">Sovereign</option>
+      <option value="Website Refresh">Website Refresh</option>
+      <option value="Subscription — Starter">Subscription — Starter</option>
+      <option value="Subscription — Growth">Subscription — Growth</option>
+      <option value="Subscription — Premium">Subscription — Premium</option>
+      <option value="General Call">General Call</option>
+      <option value="Support">Support</option>
+      <option value="No Interest">No Interest</option>
+    </select>
     <label>Desired Launch Date</label>
     <input type="date" id="log-launch">
     <label>Follow-Up Date (if applicable)</label>
@@ -1696,8 +1710,7 @@
     const now = new Date();
     const dateStr = (now.getMonth()+1) + '/' + now.getDate() + '/' + now.getFullYear();
     const timeStr = now.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit', hour12:false});
-    const tierEl = document.getElementById('calc-tier-badge');
-    const tierText = tierEl && tierEl.style.display !== 'none' ? tierEl.textContent.split('—')[0].trim() : '';
+    const tierText = document.getElementById('log-tier').value;
     const data = {
       date: dateStr,
       time: timeStr,
@@ -1726,6 +1739,7 @@
       ['log-name','log-email','log-phone','log-notes','log-amount'].forEach(id => document.getElementById(id).value = '');
       document.getElementById('log-industry').selectedIndex = 0;
       document.getElementById('log-result').selectedIndex = 0;
+      document.getElementById('log-tier').selectedIndex = 0;
       document.getElementById('log-followup').value = '';
       document.getElementById('log-duration').value = '';
       document.getElementById('amount-row').classList.remove('show');
@@ -1929,11 +1943,18 @@
 
     // Tier badge
     const tierEl = document.getElementById('calc-tier-badge');
+    const logTier = document.getElementById('log-tier');
     if (serviceTotal > 0) {
       tierEl.style.display = 'block';
-      if (serviceTotal <= 3500) { tierEl.className = 'calc-tier-badge calc-tier-signature'; tierEl.textContent = 'Signature — Built to Launch'; }
-      else if (serviceTotal <= 8000) { tierEl.className = 'calc-tier-badge calc-tier-luminary'; tierEl.textContent = 'Luminary — Built to Scale'; }
-      else { tierEl.className = 'calc-tier-badge calc-tier-sovereign'; tierEl.textContent = 'Sovereign — Built to Dominate'; }
+      // Check if only refresh services are selected
+      const refreshIds = PT_SERVICES.refresh.map(s => s.id);
+      const onlyRefresh = selectedServices.length > 0 && selectedServices.every(id => refreshIds.includes(id));
+      if (onlyRefresh) {
+        tierEl.className = 'calc-tier-badge calc-tier-signature'; tierEl.textContent = 'Website Refresh';
+        logTier.value = 'Website Refresh';
+      } else if (serviceTotal <= 3500) { tierEl.className = 'calc-tier-badge calc-tier-signature'; tierEl.textContent = 'Signature — Built to Launch'; logTier.value = 'Signature'; }
+      else if (serviceTotal <= 8000) { tierEl.className = 'calc-tier-badge calc-tier-luminary'; tierEl.textContent = 'Luminary — Built to Scale'; logTier.value = 'Luminary'; }
+      else { tierEl.className = 'calc-tier-badge calc-tier-sovereign'; tierEl.textContent = 'Sovereign — Built to Dominate'; logTier.value = 'Sovereign'; }
     } else { tierEl.style.display = 'none'; }
 
     // Payment schedule
