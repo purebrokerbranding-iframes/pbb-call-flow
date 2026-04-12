@@ -1333,6 +1333,26 @@
     });
     btn.innerHTML = ciLocked ? '✏️ Edit' : '🔒 Lock';
     btn.className = ciLocked ? 'ci-lock-btn unlock' : 'ci-lock-btn lock';
+    if (ciLocked) prefillForms();
+  }
+  function prefillForms() {
+    const first = document.getElementById('ci-first-input').value.trim();
+    const last = document.getElementById('ci-last-input').value.trim();
+    const fullName = (first + ' ' + last).trim();
+    const email = document.getElementById('ci-email-input').value.trim();
+    const phone = document.getElementById('ci-phone-input').value.trim();
+    // Send Links tab
+    if (first) document.getElementById('sl-first-name').value = first;
+    if (email) document.getElementById('sl-email').value = email;
+    if (phone) document.getElementById('sl-phone').value = phone;
+    // Proposal tab
+    if (fullName) document.getElementById('prop-name').value = fullName;
+    if (email) document.getElementById('prop-email').value = email;
+    if (phone) document.getElementById('prop-phone').value = phone;
+    // Call Log tab
+    if (fullName) document.getElementById('log-name').value = fullName;
+    if (email) document.getElementById('log-email').value = email;
+    if (phone) document.getElementById('log-phone').value = phone;
   }
   function copyCi(el) {
     const val = el.textContent;
