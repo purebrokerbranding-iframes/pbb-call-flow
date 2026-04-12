@@ -291,6 +291,8 @@
     width:100%;
   }
   .proposal-form .send-btn:hover { background:var(--gold-light); }
+  .proposal-form .send-btn:active { transform:scale(.97); opacity:.8; }
+  .proposal-form .send-btn.sending { background:var(--teal-dim); color:var(--teal-light); pointer-events:none; }
   .update-toggle {
     background: var(--dark2); border:1px solid var(--teal-dim); border-radius:var(--radius);
     padding: 14px 18px; margin-top:16px; cursor:pointer; display:flex; justify-content:space-between; align-items:center;
@@ -685,7 +687,7 @@
   <button class="active" onclick="openTab('flow',this)">📋 Call Flow</button>
   <button onclick="openTab('objections',this)">🛡 Objections</button>
   <button onclick="openTab('links',this)">🔗 Links</button>
-  <button onclick="openTab('proposal',this)">📩 Overview</button>
+  <button onclick="openTab('proposal',this)">📩 Send Overview</button>
   <button onclick="openTab('log',this)">📝 Log Call</button>
   <button onclick="openTab('tracker',this)">📊 Tracker</button>
   <button onclick="openTab('playbook',this)">🧠 Playbook</button>
@@ -814,7 +816,7 @@
     <div class="card-body">
       <p style="color:var(--teal-light);font-size:.85rem;font-weight:600;margin-bottom:8px;">If they complete the final proposal on the call:</p>
       <div class="script-block">
-        "You're all set, [Name]. Here's what happens now — our team gets your strategy kickoff scheduled, we map out your entire build, and you'll start seeing progress fast. I'll be your point of contact the whole way through. Welcome aboard — you're gonna love what we put together."
+        "You're all set, [Name]. Here's what happens now — once payment goes through, you'll automatically get an invite to your own Client Portal. That's where you can message us directly through chat, upload any files we need — logos, headshots, content — and check your project progress in real time. Our team gets your strategy kickoff scheduled from there, we map out your entire build, and you'll start seeing things come together fast. Welcome aboard — you're gonna love this."
       </div>
       <p style="color:var(--gray);font-size:.85rem;margin:10px 0;">If they want to review the overview first:</p>
       <div class="script-block">
@@ -950,8 +952,8 @@
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I need to think about it." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Totally respect that — I'd never want you to rush. Just so I understand, when you say 'think about it,' is it the investment, the timing, or whether this is the right fit? That way I can get you exactly what you need to make a decision."</div></div></div>
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"It's too expensive / I don't have the budget." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"I hear you — and honestly, that's the #1 thing our clients worried about before they started. But here's what they found: not investing in their brand was costing them more in lost deals than the investment itself. If this brings you even 2-3 new clients, what's that worth to your business?"</div></div></div>
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I already have a website." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's great — having a website is step one. But the question is: is it actually working for you? Is it bringing in leads, building trust, and making people choose you over competitors? There's a big difference between a website and a brand that converts."</div></div></div>
-  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I need to talk to my partner / spouse." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Absolutely — that's smart. Just so you can have the best conversation with them, let me send the proposal over with everything we discussed. That way you can walk them through it. Would it help if I hopped on a quick call with both of you? I'm happy to answer their questions directly."</div><div class="pro-tip"><strong>💡 Pro Tip:</strong> Offering to get on a call with the decision maker shows confidence and keeps you in the loop instead of letting the prospect sell it for you (they won't).</div></div></div>
-  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"Can you send me the proposal and I'll look it over?" <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Of course — I'll fire it over right now. Before I do, is there anything specific you want me to include or any questions I can answer right now while we're both here? I want to make sure it addresses everything we talked about."</div><div class="pro-tip"><strong>💡 Pro Tip:</strong> Don't just send and pray. Get their real objection before they hang up. Then set a specific follow-up: "Let's touch base Thursday — 10am or 2pm work?"</div></div></div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I need to talk to my partner / spouse." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Absolutely — that's smart. Just so you can have the best conversation with them, let me send the overview over with everything we discussed. That way you can walk them through it. Would it help if I hopped on a quick call with both of you? I'm happy to answer their questions directly."</div><div class="pro-tip"><strong>💡 Pro Tip:</strong> Offering to get on a call with the decision maker shows confidence and keeps you in the loop instead of letting the prospect sell it for you (they won't).</div></div></div>
+  <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"Can you send me the overview and I'll look it over?" <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Of course — I'll fire it over right now. Before I do, is there anything specific you want me to include or any questions I can answer right now while we're both here? I want to make sure it addresses everything we talked about."</div><div class="pro-tip"><strong>💡 Pro Tip:</strong> Don't just send and pray. Get their real objection before they hang up. Then set a specific follow-up: "Let's touch base Thursday — 10am or 2pm work?"</div></div></div>
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I've been burned before by agencies." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"I'm sorry to hear that — and honestly, that's one of the biggest reasons people come to us. Most agencies are generic, slow, and don't understand your industry. We specialize exclusively in [insurance/financial/real estate] professionals. That's all we do. And you've already seen the quality of what we build — this isn't a gamble."</div></div></div>
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I get all my business from referrals." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's awesome — referrals mean you're great at what you do. But here's the thing: even your referrals are Googling you before they call. If your online presence doesn't match the reputation your referral partner gave you, you're losing deals you don't even know about."</div></div></div>
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"How are you different from other agencies?" <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Great question. Three things: 1) We only work with [industry] professionals — we're not a generalist agency trying to figure out your market. 2) We build everything — brand, website, content, marketing — as one system, not piecemeal. 3) Our clients actually see results because we focus on conversion, not just making things look pretty."</div></div></div>
@@ -960,12 +962,21 @@
   <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"My carrier provides marketing." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"They do — and so does every other agent's carrier. That's the problem. When every agent in your market has the same carrier templates, who stands out? Nobody. A custom brand is what separates the top 1% of agents from the rest."</div></div></div>
   <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"My book of business is big enough." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's great — but are you retaining those clients as well as you'd like? A strong brand doesn't just attract new clients, it keeps existing ones loyal. When your clients see competitors marketing to them, your brand is the reason they stay."</div></div></div>
   <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"I only work with referrals from agents." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's a great channel — but even the agents referring you are looking you up online before they send their clients your way. If your brand doesn't look the part, you're missing referrals you'll never know about."</div></div></div>
+  <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"I'm an independent agent — I don't need branding." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Actually, that's exactly why you need it more. Captive agents have a national brand behind them — State Farm, Allstate, those names carry weight. As an independent, your name IS your brand. If your brand doesn't command trust on its own, you're losing to the agents with a logo people recognize."</div></div></div>
+  <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"I don't sell online — my clients come from events and networking." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Love that — events are great for the first impression. But here's what happens after: every single person you hand a card to goes home and Googles you. If your site looks like it was built in 2015, that warm lead goes cold. Your digital presence closes the deal your handshake started."</div></div></div>
+  <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"I'm focused on renewals, not new business." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Renewals are the backbone — smart. But your clients are getting hit with competitor ads, direct mail, and online marketing every single day. A strong brand keeps you top of mind at renewal time. Without it, you're hoping loyalty is enough — and in this market, hope isn't a strategy."</div></div></div>
   <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"Compliance won't approve it." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Totally understand — compliance is real. We've worked with advisors across multiple BDs and RIAs. We build everything to be compliance-friendly and work directly with your compliance team if needed. You won't have to worry about that part."</div></div></div>
   <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"My BD provides a website." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"They do — and it looks exactly like every other advisor's at your BD. When a prospect with $2M to invest is comparing three advisors and all three have the same cookie-cutter BD site, who do they pick? The one with a real brand."</div></div></div>
   <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"My AUM is big enough, I don't need marketing." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's impressive. But here's the question: if you could attract higher-net-worth clients or build a recognizable brand that commands premium fees, wouldn't that be worth it? We're not about volume — we're about positioning you for the next level."</div></div></div>
+  <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"I get all my clients through seminars and dinner events." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Seminars are a powerhouse — but what happens after the event? Every attendee goes home and looks you up. If your website is generic or outdated, you just spent $5K on a dinner that didn't convert. Your online presence is the second meeting they have with you — make sure it closes."</div></div></div>
+  <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"I'm already paying for a marketing service." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Good — that tells me you already value marketing. The question is, are you seeing real results? Most advisor marketing services send generic drip emails and pre-built content. We build a brand system around YOU — custom to your niche, your voice, your ideal client. There's a difference between having marketing and having a brand."</div></div></div>
+  <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"My clients are older — they don't look at websites." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That might have been true five years ago, but not anymore. Adults 55+ are the fastest-growing demographic online. And their adult children? They're absolutely Googling you before they let Mom and Dad move their retirement savings. Your brand has to impress two generations now."</div></div></div>
   <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"I just use Zillow / Realtor.com for leads." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Those platforms work — but you're renting leads where you're competing with 20 other agents for the same prospect. A strong brand means people come to YOU directly. Zillow leads cost money and loyalty. Your brand builds equity."</div></div></div>
   <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"My brokerage handles my marketing." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Your brokerage markets the brokerage — not you. When you leave or switch, that marketing goes away. Your personal brand follows you everywhere. The top producers in every market have their own brand identity."</div></div></div>
   <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"The market is slow right now." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's exactly when you should be investing in your brand. When the market is slow, the agents who show up looking professional and trustworthy get the few deals that are happening. The agents who build their brand in a downturn dominate the upswing."</div></div></div>
+  <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"I just do social media — Instagram and TikTok work fine." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Social media is great for awareness — but it doesn't close. When a seller with a $800K listing is deciding between you and another agent, they're checking your website, not your Reels. Social gets attention. Your brand closes the listing appointment."</div></div></div>
+  <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"I'm a new agent — I should wait until I close a few deals first." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"I get that instinct, but the agents who build their brand from day one close faster than the ones who wait. You're competing against 20-year veterans — your brand is the equalizer. Walk into a listing appointment looking like a top producer and they'll treat you like one. You won't get a second chance at a first impression."</div></div></div>
+  <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"My sphere of influence is all I need." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Sphere is gold — but it has a ceiling. At some point, you've tapped everyone you know and their referrals slow down. A brand brings in people who have never met you and makes them feel like they already trust you. It's the difference between capping out at 15 deals a year and scaling to 40+."</div></div></div>
 </div>
 
 <!-- ═══ TAB 3: LINKS (Send Link + Payment Links + Quick Links) ═══ -->
@@ -1029,12 +1040,12 @@
   </div>
 </div>
 
-<!-- ═══ TAB 4: SEND PROPOSAL ═══ -->
+<!-- ═══ TAB 4: SEND OVERVIEW ═══ -->
 <div id="proposal" class="tab-content">
   <div class="proposal-section">
     <div class="proposal-form">
       <h3>📩 Send Overview</h3>
-      <p class="form-desc">Enter the prospect's email to send their project overview. The Zap will fire immediately.</p>
+      <p class="form-desc">Enter the prospect's details and hit send to deliver the project overview.</p>
       <label>Prospect Email <span class="required-star">*</span></label>
       <input type="email" id="prop-email" placeholder="prospect@example.com">
       <label>Prospect Name</label>
@@ -1104,6 +1115,8 @@
       <label>Amount Closed ($)</label>
       <input type="text" id="log-amount" placeholder="e.g. 5000">
     </div>
+    <label>Desired Launch Date</label>
+    <input type="date" id="log-launch">
     <label>Follow-Up Date (if applicable)</label>
     <input type="date" id="log-followup">
     <label>Call Duration</label>
@@ -1475,6 +1488,9 @@
     if (first) document.getElementById('pt-first-name').value = first;
     const biz = document.getElementById('ci-biz-input').value.trim();
     if (biz) document.getElementById('pt-biz-name').value = biz;
+    // Launch date sync
+    const launch = document.getElementById('ci-launch-input').value;
+    if (launch) document.getElementById('log-launch').value = launch;
   }
   function copyCi(el) {
     const val = el.textContent;
@@ -1620,6 +1636,9 @@
     if (!email) { errEl.textContent = 'Email is required to send the overview.'; errEl.style.display = 'block'; return; }
     const pdf1 = document.getElementById('prop-pdf-1').value.trim();
     const pdf2 = document.getElementById('prop-pdf-2').value.trim();
+    const sendBtn = document.querySelector('.proposal-form .send-btn');
+    const origText = sendBtn.textContent;
+    sendBtn.textContent = 'Sending...'; sendBtn.classList.add('sending');
     const propPayload = {
       prospect_email: email, prospect_name: name || '',
       alternate_email: altEmail || '', update_phone: phone || '',
@@ -1630,10 +1649,15 @@
     fetch(PROPOSAL_WEBHOOK, {
       method: 'POST',
       body: new URLSearchParams(propPayload)
-    }).then(() => {
+    }).then(r => {
+      if (!r.ok) throw new Error('Response not ok');
+      sendBtn.textContent = origText; sendBtn.classList.remove('sending');
       succEl.style.display = 'block';
       ['prop-email','prop-name','prop-alt-email','prop-phone'].forEach(id => document.getElementById(id).value = '');
-      setTimeout(() => succEl.style.display = 'none', 4000);
+      setTimeout(() => succEl.style.display = 'none', 5000);
+    }).catch(() => {
+      sendBtn.textContent = origText; sendBtn.classList.remove('sending');
+      errEl.textContent = 'Failed to send. Please try again.'; errEl.style.display = 'block';
     });
   }
 
@@ -1649,6 +1673,7 @@
       industry: document.getElementById('log-industry').value,
       call_result: document.getElementById('log-result').value,
       amount_closed: document.getElementById('log-amount').value.trim() || '',
+      desired_launch_date: document.getElementById('log-launch').value,
       follow_up_date: document.getElementById('log-followup').value,
       call_duration: document.getElementById('timer-display').textContent,
       call_summary: document.getElementById('log-notes').value.trim(),
@@ -1996,6 +2021,15 @@
     y += 8;
     doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...gray);
     doc.text(new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}), cx, y, {align:'center'});
+    // Desired launch date
+    const launchVal = document.getElementById('ci-launch-input').value;
+    if (launchVal) {
+      y += 8;
+      const ld = new Date(launchVal + 'T00:00:00');
+      const launchStr = 'Desired Launch: ' + ld.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+      doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...teal);
+      doc.text(launchStr, cx, y, {align:'center'});
+    }
     // ── Investment card ──
     y += 16;
     const cardW = w - 50; // 25mm inset each side
