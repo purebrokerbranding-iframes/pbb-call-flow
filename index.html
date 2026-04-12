@@ -5,11 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PBB — Sales Call Flow</title>
 <meta name="robots" content="noindex, nofollow">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
-
   * { margin:0; padding:0; box-sizing:border-box; }
-
   :root {
     --dark: #12282c;
     --dark2: #1a363c;
@@ -29,7 +28,6 @@
     --orange: #fbbf24;
     --radius: 12px;
   }
-
   body {
     font-family: 'Inter', sans-serif;
     background: var(--dark3);
@@ -37,7 +35,6 @@
     line-height: 1.6;
     min-height: 100vh;
   }
-
   /* ── PIN SCREEN ── */
   #pin-screen {
     position: fixed; inset:0; z-index:9999;
@@ -60,7 +57,6 @@
   #pin-error { color: var(--red); font-size:.85rem; min-height:20px; }
   .pin-role { color: var(--teal-light); font-size: .85rem; opacity:0; transition: opacity .3s; }
   .pin-role.show { opacity:1; }
-
   /* ── HEADER ── */
   header {
     background: var(--dark);
@@ -76,7 +72,6 @@
     background: var(--teal-dim); color: var(--teal-light);
     padding: 4px 14px; border-radius: 20px; font-size:.8rem; font-weight:600;
   }
-
   /* ── CALL TIMER ── */
   .timer-bar {
     background: var(--dark); border-bottom: 1px solid var(--teal-dim);
@@ -93,7 +88,6 @@
   .timer-start { background: var(--green); color:#000; }
   .timer-stop { background: var(--red); color:#fff; }
   .timer-reset { background: var(--dark2); color: var(--gray); border: 1px solid var(--teal-dim); }
-
   /* ── INDUSTRY FILTER ── */
   .industry-bar {
     background: var(--dark2); padding: 12px 20px;
@@ -107,7 +101,6 @@
     cursor:pointer; transition: all .2s;
   }
   .ind-btn.active { background: var(--teal); color: #fff; border-color: var(--teal); }
-
   /* ── TABS ── */
   .tab-bar {
     display:flex; background: var(--dark); border-bottom: 2px solid var(--teal-dim);
@@ -121,7 +114,6 @@
   .tab-bar button.active { color: var(--gold); border-bottom-color: var(--teal); }
   .tab-content { display:none; padding: 20px; max-width: 900px; margin: 0 auto; }
   .tab-content.active { display:block; }
-
   /* ── CARDS ── */
   .card {
     background: var(--dark); border: 1px solid var(--teal-dim); border-radius: var(--radius);
@@ -163,7 +155,6 @@
   .tag-fin { background: rgba(251,191,36,.15); color: var(--orange); }
   .tag-re { background: rgba(248,113,113,.15); color: var(--red); }
   .tag-all { background: var(--teal-dim); color: var(--teal-light); }
-
   /* ── OBJECTION FILTERS ── */
   .obj-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
   .obj-btn {
@@ -172,7 +163,6 @@
     cursor:pointer; transition:all .2s;
   }
   .obj-btn.active { background:var(--teal); color:#fff; border-color:var(--teal); }
-
   /* ── QUICK LINKS ── */
   .link-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:12px; }
   .link-card {
@@ -188,7 +178,6 @@
   }
   .copy-btn:hover { background: var(--teal-light); }
   .copy-btn.copied { background: var(--green); color:#000; }
-
   /* ── PROPOSAL FORM ── */
   .proposal-section { max-width: 600px; margin: 0 auto; }
   .proposal-form {
@@ -221,7 +210,6 @@
   .update-fields { display:none; padding:16px 0 0; }
   .update-fields.open { display:block; }
   .update-note { color:var(--gray); font-size:.8rem; font-style:italic; margin-bottom:12px; }
-
   /* ── LOG FORM ── */
   .log-form { max-width: 600px; margin: 0 auto; }
   .log-form label { display:block; color:var(--gray); font-size:.8rem; font-weight:600; margin-bottom:4px; text-transform:uppercase; letter-spacing:.5px; }
@@ -247,7 +235,6 @@
   .client-id-display .cid-label { color:var(--gray); font-size:.75rem; font-weight:600; text-transform:uppercase; }
   .amount-row { display:none; }
   .amount-row.show { display:block; }
-
   /* ── TRACKER ── */
   .tracker-section { max-width: 900px; margin: 0 auto; }
   .tracker-search {
@@ -306,7 +293,6 @@
   }
   .tracker-setup-msg p { color:var(--gray); font-size:.9rem; margin-bottom:10px; }
   .tracker-setup-msg code { color:var(--gold); background:var(--dark2); padding:2px 8px; border-radius:4px; font-size:.85rem; }
-
   /* ── PLAYBOOK ── */
   .playbook-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:14px; }
   .playbook-card {
@@ -317,6 +303,190 @@
   .playbook-card h4 { color:var(--gold); font-size:1rem; margin-bottom:8px; }
   .playbook-card p { color:var(--gray); font-size:.85rem; line-height:1.5; }
 
+  /* ═══════════════════════════════════════════
+     NEW: SEND LINK SECTION
+     ═══════════════════════════════════════════ */
+  .send-link-box {
+    background: var(--dark); border:1px solid var(--gold-dim); border-radius:var(--radius);
+    padding: 20px; margin-bottom: 20px;
+  }
+  .send-link-box h3 { color:var(--gold); font-family:'Playfair Display',serif; font-size:1rem; margin-bottom:4px; }
+  .send-link-box .sl-desc { color:var(--gray); font-size:.8rem; margin-bottom:14px; }
+  .sl-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+  .sl-row input {
+    flex:1; min-width:140px; padding:10px 14px; border-radius:8px;
+    border:1px solid var(--teal-dim); background:var(--dark2); color:var(--white);
+    font-size:.85rem; outline:none;
+  }
+  .sl-row input:focus { border-color:var(--teal); }
+  .sl-link-input {
+    width:100%; padding:10px 14px; border-radius:8px;
+    border:1px solid var(--teal-dim); background:var(--dark2); color:var(--teal-light);
+    font-size:.85rem; outline:none; margin-bottom:10px;
+  }
+  .sl-link-input:focus { border-color:var(--teal); }
+  .sl-send-btn {
+    background:var(--gold); color:var(--dark3); border:none; padding:10px 24px;
+    border-radius:8px; font-weight:700; font-size:.9rem; cursor:pointer; transition:all .2s;
+    width:100%;
+  }
+  .sl-send-btn:hover { background:var(--gold-light); }
+  .sl-success { color:var(--green); text-align:center; padding:8px; display:none; font-weight:600; font-size:.85rem; }
+  .sl-error { color:var(--red); text-align:center; padding:8px; display:none; font-size:.85rem; }
+  .link-section-divider {
+    border:none; border-top:1px solid var(--teal-dim); margin:20px 0;
+  }
+  .link-section-label {
+    color:var(--gold); font-family:'Playfair Display',serif; font-size:.95rem; margin-bottom:12px;
+  }
+
+  /* ═══════════════════════════════════════════
+     NEW: DESKTOP SPLIT LAYOUT (Flow + Pricing)
+     ═══════════════════════════════════════════ */
+  @media (min-width: 1200px) {
+    #flow.tab-content.active { display:flex; gap:20px; max-width:1600px; }
+    .flow-left { flex:1; min-width:0; max-width:560px; }
+    .flow-right { width:520px; flex-shrink:0; position:sticky; top:0; max-height:calc(100vh - 200px); overflow-y:auto; }
+    .flow-right::-webkit-scrollbar { width:6px; }
+    .flow-right::-webkit-scrollbar-track { background:var(--dark3); }
+    .flow-right::-webkit-scrollbar-thumb { background:var(--teal-dim); border-radius:3px; }
+  }
+  @media (max-width: 1199px) {
+    .flow-right { margin-top:20px; }
+  }
+
+  /* ═══════════════════════════════════════════
+     NEW: LIVE PRICING TOOL
+     ═══════════════════════════════════════════ */
+  .pt-panel {
+    background: var(--dark); border:1px solid var(--teal-dim); border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .pt-header {
+    background: linear-gradient(135deg, var(--dark2), var(--dark));
+    padding:16px 18px; border-bottom:1px solid var(--teal-dim);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .pt-header h3 { color:var(--gold); font-family:'Playfair Display',serif; font-size:1rem; }
+  .pt-total-badge {
+    background:var(--gold); color:var(--dark3); padding:4px 14px; border-radius:20px;
+    font-weight:700; font-size:.95rem;
+  }
+  .pt-section {
+    border-bottom:1px solid var(--teal-dim); padding:14px 18px;
+  }
+  .pt-section:last-of-type { border-bottom:none; }
+  .pt-section-title {
+    color:var(--teal-light); font-size:.75rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .pt-section-title .pt-tier-tag {
+    background:var(--teal-dim); color:var(--teal-light); padding:1px 8px;
+    border-radius:8px; font-size:.65rem;
+  }
+  .pt-item {
+    display:flex; align-items:flex-start; gap:10px; padding:8px 0;
+    border-bottom:1px solid rgba(255,255,255,0.03);
+  }
+  .pt-item:last-child { border-bottom:none; }
+  .pt-item input[type="checkbox"] {
+    margin-top:3px; accent-color: var(--teal); width:16px; height:16px; cursor:pointer; flex-shrink:0;
+  }
+  .pt-item-info { flex:1; min-width:0; }
+  .pt-item-top { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .pt-item-name { color:var(--white); font-size:.85rem; font-weight:600; }
+  .pt-item-price { color:var(--gold); font-size:.85rem; font-weight:700; white-space:nowrap; }
+  .pt-item-desc { color:var(--gray); font-size:.75rem; margin-top:2px; }
+  .pt-item-sell {
+    background:rgba(201,168,76,0.08); border-left:2px solid var(--gold-dim);
+    padding:4px 10px; margin-top:6px; border-radius:0 6px 6px 0;
+    font-size:.73rem; color:var(--gold-light); display:none;
+  }
+  .pt-item.selected .pt-item-sell { display:block; }
+  .pt-item.selected { background:rgba(42,161,152,0.05); border-radius:6px; margin:0 -8px; padding:8px; }
+  /* Monthly care in pricing */
+  .pt-care-cards { display:flex; flex-direction:column; gap:8px; }
+  .pt-care-card {
+    background:var(--dark2); border:1px solid var(--teal-dim); border-radius:8px;
+    padding:12px 14px; cursor:pointer; transition:all .2s; position:relative;
+  }
+  .pt-care-card.selected { border-color:var(--teal); background:rgba(42,161,152,0.08); }
+  .pt-care-card.popular::after {
+    content:'Popular'; position:absolute; top:-8px; right:12px;
+    background:var(--teal); color:#fff; font-size:.6rem; font-weight:700;
+    padding:2px 8px; border-radius:8px; text-transform:uppercase; letter-spacing:.5px;
+  }
+  .pt-care-top { display:flex; justify-content:space-between; align-items:center; }
+  .pt-care-name { color:var(--white); font-size:.85rem; font-weight:600; }
+  .pt-care-price { color:var(--gold); font-size:.9rem; font-weight:700; }
+  .pt-care-features { color:var(--gray); font-size:.7rem; margin-top:4px; line-height:1.4; }
+  .pt-care-card.none-card { border-style:dashed; }
+  /* Summary & Proposal */
+  .pt-summary {
+    background:var(--dark2); padding:16px 18px; border-top:2px solid var(--teal-dim);
+  }
+  .pt-summary-row { display:flex; justify-content:space-between; align-items:center; padding:4px 0; }
+  .pt-summary-row.total { border-top:2px solid var(--teal); padding-top:10px; margin-top:8px; }
+  .pt-summary-label { color:var(--gray); font-size:.8rem; }
+  .pt-summary-val { color:var(--white); font-size:.85rem; font-weight:600; }
+  .pt-summary-row.total .pt-summary-label { color:var(--white); font-weight:700; font-size:.9rem; }
+  .pt-summary-row.total .pt-summary-val { color:var(--gold); font-size:1.1rem; font-weight:700; }
+  .pt-payment-schedule { margin-top:10px; padding-top:10px; border-top:1px solid var(--teal-dim); }
+  .pt-pay-row { display:flex; justify-content:space-between; padding:2px 0; }
+  .pt-pay-label { color:var(--gray); font-size:.73rem; }
+  .pt-pay-val { color:var(--teal-light); font-size:.73rem; font-weight:600; }
+  .pt-proposal-section { padding:14px 18px; }
+  .pt-proposal-row { display:flex; gap:8px; margin-bottom:8px; }
+  .pt-proposal-row input {
+    flex:1; padding:10px 12px; border-radius:8px; border:1px solid var(--teal-dim);
+    background:var(--dark2); color:var(--white); font-size:.85rem; outline:none;
+  }
+  .pt-proposal-row input:focus { border-color:var(--teal); }
+  .pt-generate-btn {
+    background:var(--gold); color:var(--dark3); border:none; padding:12px;
+    border-radius:8px; font-weight:700; font-size:.9rem; cursor:pointer; width:100%;
+    transition:all .2s;
+  }
+  .pt-generate-btn:hover { background:var(--gold-light); }
+  .pt-reset-btn {
+    background:transparent; color:var(--gray); border:1px solid var(--teal-dim);
+    padding:8px; border-radius:8px; font-size:.75rem; cursor:pointer; width:100%;
+    margin-top:6px; transition:all .2s;
+  }
+  .pt-reset-btn:hover { color:var(--white); border-color:var(--teal); }
+  .pt-suggested {
+    background:rgba(42,161,152,0.08); border:1px solid var(--teal-dim);
+    border-radius:8px; padding:8px 12px; margin:10px 0; font-size:.75rem;
+  }
+  .pt-suggested strong { color:var(--teal-light); }
+  .pt-suggested span { color:var(--gray); }
+
+  /* ═══════════════════════════════════════════
+     NEW: COMPLIANCE TAB
+     ═══════════════════════════════════════════ */
+  .compliance-section { max-width:800px; margin:0 auto; }
+  .comp-filters { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+  .comp-btn {
+    padding:6px 16px; border-radius:20px; font-size:.8rem; font-weight:600;
+    border:1px solid var(--teal-dim); background:transparent; color:var(--gray);
+    cursor:pointer; transition:all .2s;
+  }
+  .comp-btn.active { background:var(--teal); color:#fff; border-color:var(--teal); }
+  .comp-card {
+    background:var(--dark); border:1px solid var(--teal-dim); border-radius:var(--radius);
+    padding:20px; margin-bottom:14px;
+  }
+  .comp-card h4 { color:var(--gold); font-size:.95rem; margin-bottom:8px; font-family:'Playfair Display',serif; }
+  .comp-card p { color:var(--gray); font-size:.85rem; line-height:1.6; margin-bottom:8px; }
+  .comp-card ul { list-style:none; padding:0; }
+  .comp-card li { padding:5px 0 5px 20px; position:relative; color:var(--white); font-size:.85rem; }
+  .comp-card li::before { content:'✓'; position:absolute; left:0; color:var(--teal); font-weight:700; }
+  .comp-industry-badge {
+    display:inline-block; font-size:.65rem; padding:2px 8px; border-radius:10px;
+    font-weight:600; margin-bottom:10px;
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width:600px) {
     .tab-bar button { font-size:.65rem; padding:10px 5px; }
@@ -325,11 +495,11 @@
     header { padding: 12px 14px; }
     .tab-content { padding: 14px; }
     .tracker-card-row { grid-template-columns: 1fr; }
+    .sl-row { flex-direction:column; }
   }
 </style>
 </head>
 <body>
-
 <!-- ═══ PIN SCREEN ═══ -->
 <div id="pin-screen">
   <img src="https://purebrokerbranding.com/cdn/shop/files/Logo_Big_-_Pure_Broker-removebg-preview.png" alt="PBB">
@@ -340,10 +510,8 @@
     <div id="pin-error"></div>
   </div>
 </div>
-
 <!-- ═══ MAIN APP ═══ -->
 <div id="app" style="display:none;">
-
 <header>
   <div class="logo-area">
     <img src="https://purebrokerbranding.com/cdn/shop/files/Logo_Big_-_Pure_Broker-removebg-preview.png" alt="PBB">
@@ -351,7 +519,6 @@
   </div>
   <div class="user-badge" id="user-badge">Perry</div>
 </header>
-
 <!-- Timer -->
 <div class="timer-bar">
   <button class="timer-btn timer-start" onclick="startTimer()">▶ Start</button>
@@ -359,7 +526,6 @@
   <button class="timer-btn timer-stop" onclick="stopTimer()">⏸ Pause</button>
   <button class="timer-btn timer-reset" onclick="resetTimer()">↺ Reset</button>
 </div>
-
 <!-- Industry Filter -->
 <div class="industry-bar">
   <label>Industry:</label>
@@ -368,7 +534,6 @@
   <button class="ind-btn" onclick="setIndustry('financial',this)">Financial Advisor</button>
   <button class="ind-btn" onclick="setIndustry('realestate',this)">Real Estate / Mortgage</button>
 </div>
-
 <!-- Tabs -->
 <div class="tab-bar">
   <button class="active" onclick="openTab('flow',this)">📋 Call Flow</button>
@@ -378,11 +543,12 @@
   <button onclick="openTab('log',this)">📝 Log Call</button>
   <button onclick="openTab('tracker',this)">📊 Tracker</button>
   <button onclick="openTab('playbook',this)">🧠 Playbook</button>
+  <button onclick="openTab('compliance',this)">⚖️ Compliance</button>
 </div>
 
-<!-- ═══ TAB 1: CALL FLOW ═══ -->
+<!-- ═══ TAB 1: CALL FLOW + PRICING TOOL (Desktop Split) ═══ -->
 <div id="flow" class="tab-content active">
-
+  <div class="flow-left">
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">1</span> Start Here — Open the Call</h3>
@@ -395,7 +561,6 @@
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> Set the frame early — you're leading this call. "Sound good?" gets a micro-yes and gives you control of the conversation from the start.</div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">2</span> Set the Agenda</h3>
@@ -408,7 +573,6 @@
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> The agenda builds trust and lowers their guard. "No hard feelings" takes the pressure off — which paradoxically makes them more likely to buy.</div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">3</span> Dig In — Find Their Pain</h3>
@@ -440,7 +604,6 @@
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> "What made you book this call?" is the most powerful question. Their answer IS the pain — use their exact words later when you present the solution.</div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">4</span> Show the Gap</h3>
@@ -463,7 +626,6 @@
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> Use their exact words from discovery. "You said you're tired of [X] — that's the gap." When they hear their own words back, it hits different.</div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">5</span> Present the Solution</h3>
@@ -476,7 +638,6 @@
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> This is where you share your screen, show examples, walk through their specific deliverables. Tailor it to their pain from Step 3. Use the Quick Links tab to pull up relevant pages live.</div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">6</span> Close the Deal</h3>
@@ -493,7 +654,6 @@
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> "What questions do you have before we get started?" assumes the close. Don't ask "So what do you think?" — that invites hesitation. Assume the yes and handle objections as they come.</div>
     </div>
   </div>
-
   <div class="card">
     <div class="card-head" onclick="toggleCard(this)">
       <h3><span class="step-num">7</span> Lock In & Next Steps</h3>
@@ -510,7 +670,70 @@
       <div class="pro-tip"><strong>💡 Pro Tip:</strong> Always leave with a specific follow-up date. "I'll follow up next week" is a dead lead. "Let's reconnect Thursday at 2" keeps the deal alive. Use the Send Proposal tab to fire it instantly.</div>
     </div>
   </div>
+  </div><!-- /flow-left -->
 
+  <!-- ═══ LIVE PRICING TOOL (Right Side on Desktop) ═══ -->
+  <div class="flow-right">
+    <div class="pt-panel">
+      <div class="pt-header">
+        <h3>💰 Live Pricing Tool</h3>
+        <div class="pt-total-badge" id="pt-total-badge">$0</div>
+      </div>
+
+      <!-- Suggested Tier -->
+      <div class="pt-suggested" id="pt-suggested" style="display:none; margin:14px 18px 0;">
+        <strong>Suggested Tier: </strong><span id="pt-suggested-text"></span>
+      </div>
+
+      <!-- Base Services (Signature Tier) -->
+      <div class="pt-section">
+        <div class="pt-section-title">Foundation Services <span class="pt-tier-tag">Signature Tier</span></div>
+        <div id="pt-base-services"></div>
+      </div>
+
+      <!-- Advanced Services (Luminary Tier) -->
+      <div class="pt-section">
+        <div class="pt-section-title">Growth & Scale <span class="pt-tier-tag">Luminary Tier</span></div>
+        <div id="pt-advanced-services"></div>
+      </div>
+
+      <!-- Premium Services (Sovereign Tier) -->
+      <div class="pt-section">
+        <div class="pt-section-title">Premium & Enterprise <span class="pt-tier-tag">Sovereign Tier</span></div>
+        <div id="pt-premium-services"></div>
+      </div>
+
+      <!-- Website Refresh Services -->
+      <div class="pt-section">
+        <div class="pt-section-title">Website Refresh / Optimization <span class="pt-tier-tag">Existing Sites</span></div>
+        <div id="pt-refresh-services"></div>
+      </div>
+
+      <!-- Monthly Care Upsell -->
+      <div class="pt-section">
+        <div class="pt-section-title">Monthly Management Plans <span class="pt-tier-tag">Ongoing</span></div>
+        <div class="pt-care-cards" id="pt-care-cards"></div>
+      </div>
+
+      <!-- Summary -->
+      <div class="pt-summary" id="pt-summary">
+        <div class="pt-summary-row"><span class="pt-summary-label">Selected Services</span><span class="pt-summary-val" id="pt-service-total">$0</span></div>
+        <div class="pt-summary-row"><span class="pt-summary-label">Monthly Plan</span><span class="pt-summary-val" id="pt-monthly-total">None</span></div>
+        <div class="pt-summary-row total"><span class="pt-summary-label">Project Total</span><span class="pt-summary-val" id="pt-project-total">$0</span></div>
+        <div class="pt-payment-schedule" id="pt-payment-schedule"></div>
+      </div>
+
+      <!-- Generate Proposal -->
+      <div class="pt-proposal-section">
+        <div class="pt-proposal-row">
+          <input type="text" id="pt-first-name" placeholder="First Name">
+          <input type="text" id="pt-biz-name" placeholder="Business Name (Optional)">
+        </div>
+        <button class="pt-generate-btn" onclick="generateProposalPDF()">📄 Create Final Proposal (PDF)</button>
+        <button class="pt-reset-btn" onclick="resetPricingTool()">↺ Reset All Selections</button>
+      </div>
+    </div>
+  </div><!-- /flow-right -->
 </div>
 
 <!-- ═══ TAB 2: OBJECTIONS ═══ -->
@@ -522,50 +745,46 @@
     <button class="obj-btn" onclick="filterObj('financial',this)">Financial</button>
     <button class="obj-btn" onclick="filterObj('realestate',this)">Real Estate</button>
   </div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I need to think about it." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Totally respect that — I'd never want you to rush. Just so I understand, when you say 'think about it,' is it the investment, the timing, or whether this is the right fit? That way I can get you exactly what you need to make a decision."</div></div></div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"It's too expensive / I don't have the budget." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"I hear you — and honestly, that's the #1 thing our clients worried about before they started. But here's what they found: not investing in their brand was costing them more in lost deals than the investment itself. If this brings you even 2-3 new clients, what's that worth to your business?"</div></div></div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I already have a website." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's great — having a website is step one. But the question is: is it actually working for you? Is it bringing in leads, building trust, and making people choose you over competitors? There's a big difference between a website and a brand that converts."</div></div></div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I need to talk to my partner / spouse." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Absolutely — that's smart. Just so you can have the best conversation with them, let me send the proposal over with everything we discussed. That way you can walk them through it. Would it help if I hopped on a quick call with both of you? I'm happy to answer their questions directly."</div><div class="pro-tip"><strong>💡 Pro Tip:</strong> Offering to get on a call with the decision maker shows confidence and keeps you in the loop instead of letting the prospect sell it for you (they won't).</div></div></div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"Can you send me the proposal and I'll look it over?" <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Of course — I'll fire it over right now. Before I do, is there anything specific you want me to include or any questions I can answer right now while we're both here? I want to make sure it addresses everything we talked about."</div><div class="pro-tip"><strong>💡 Pro Tip:</strong> Don't just send and pray. Get their real objection before they hang up. Then set a specific follow-up: "Let's touch base Thursday — 10am or 2pm work?"</div></div></div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I've been burned before by agencies." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"I'm sorry to hear that — and honestly, that's one of the biggest reasons people come to us. Most agencies are generic, slow, and don't understand your industry. We specialize exclusively in [insurance/financial/real estate] professionals. That's all we do. And you've already seen the quality of what we build — this isn't a gamble."</div></div></div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I get all my business from referrals." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's awesome — referrals mean you're great at what you do. But here's the thing: even your referrals are Googling you before they call. If your online presence doesn't match the reputation your referral partner gave you, you're losing deals you don't even know about."</div></div></div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"How are you different from other agencies?" <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Great question. Three things: 1) We only work with [industry] professionals — we're not a generalist agency trying to figure out your market. 2) We build everything — brand, website, content, marketing — as one system, not piecemeal. 3) Our clients actually see results because we focus on conversion, not just making things look pretty."</div></div></div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"I can just do it myself / use DIY tools." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"You definitely could — Canva, Wix, all that stuff exists. But let me ask: would you tell your clients to handle their own [insurance/finances/real estate] because YouTube tutorials exist? Probably not. Your expertise is your business — ours is making your brand the most trusted name in your market."</div></div></div>
-
   <div class="card obj-card" data-cat="universal"><div class="card-head" onclick="toggleCard(this)"><h3>"The timing isn't right." <span class="industry-tag tag-all">Universal</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"I totally get that. But here's the thing — your competitors aren't waiting. Every day without a strong brand is another day prospects are choosing them over you. The best time to build your brand was a year ago. The second best time is right now. And we make the process completely hands-off for you."</div></div></div>
-
   <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"My carrier provides marketing." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"They do — and so does every other agent's carrier. That's the problem. When every agent in your market has the same carrier templates, who stands out? Nobody. A custom brand is what separates the top 1% of agents from the rest."</div></div></div>
-
   <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"My book of business is big enough." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's great — but are you retaining those clients as well as you'd like? A strong brand doesn't just attract new clients, it keeps existing ones loyal. When your clients see competitors marketing to them, your brand is the reason they stay."</div></div></div>
-
   <div class="card obj-card" data-cat="insurance"><div class="card-head" onclick="toggleCard(this)"><h3>"I only work with referrals from agents." <span class="industry-tag tag-ins">Insurance</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's a great channel — but even the agents referring you are looking you up online before they send their clients your way. If your brand doesn't look the part, you're missing referrals you'll never know about."</div></div></div>
-
   <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"Compliance won't approve it." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Totally understand — compliance is real. We've worked with advisors across multiple BDs and RIAs. We build everything to be compliance-friendly and work directly with your compliance team if needed. You won't have to worry about that part."</div></div></div>
-
   <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"My BD provides a website." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"They do — and it looks exactly like every other advisor's at your BD. When a prospect with $2M to invest is comparing three advisors and all three have the same cookie-cutter BD site, who do they pick? The one with a real brand."</div></div></div>
-
   <div class="card obj-card" data-cat="financial"><div class="card-head" onclick="toggleCard(this)"><h3>"My AUM is big enough, I don't need marketing." <span class="industry-tag tag-fin">Financial</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's impressive. But here's the question: if you could attract higher-net-worth clients or build a recognizable brand that commands premium fees, wouldn't that be worth it? We're not about volume — we're about positioning you for the next level."</div></div></div>
-
   <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"I just use Zillow / Realtor.com for leads." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Those platforms work — but you're renting leads where you're competing with 20 other agents for the same prospect. A strong brand means people come to YOU directly. Zillow leads cost money and loyalty. Your brand builds equity."</div></div></div>
-
   <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"My brokerage handles my marketing." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"Your brokerage markets the brokerage — not you. When you leave or switch, that marketing goes away. Your personal brand follows you everywhere. The top producers in every market have their own brand identity."</div></div></div>
-
   <div class="card obj-card" data-cat="realestate"><div class="card-head" onclick="toggleCard(this)"><h3>"The market is slow right now." <span class="industry-tag tag-re">Real Estate</span></h3><span class="arrow">▼</span></div><div class="card-body"><div class="script-block">"That's exactly when you should be investing in your brand. When the market is slow, the agents who show up looking professional and trustworthy get the few deals that are happening. The agents who build their brand in a downturn dominate the upswing."</div></div></div>
 </div>
 
-<!-- ═══ TAB 3: QUICK LINKS ═══ -->
+<!-- ═══ TAB 3: QUICK LINKS + SEND LINK ═══ -->
 <div id="links" class="tab-content">
+  <!-- SEND LINK SECTION -->
+  <div class="send-link-box">
+    <h3>📤 Send a Link</h3>
+    <p class="sl-desc">Copy a link from below, paste it here, and send it directly to the prospect's email or phone.</p>
+    <div class="sl-row">
+      <input type="text" id="sl-first-name" placeholder="First Name">
+      <input type="email" id="sl-email" placeholder="Email (optional)">
+      <input type="tel" id="sl-phone" placeholder="Phone (optional)">
+    </div>
+    <input type="text" class="sl-link-input" id="sl-link" placeholder="Paste link here...">
+    <button class="sl-send-btn" onclick="sendLink()">Send Link</button>
+    <div class="sl-success" id="sl-success">✅ Link sent successfully!</div>
+    <div class="sl-error" id="sl-error"></div>
+  </div>
+
   <h3 style="color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:16px;">Quick Links — Send to Prospect</h3>
-  <p style="color:var(--gray);font-size:.85rem;margin-bottom:16px;">Click "Copy Link" to copy the URL, then paste it into your chat or email with the prospect.</p>
+  <p style="color:var(--gray);font-size:.85rem;margin-bottom:16px;">Click "Copy Link" to copy the URL, then paste it into the Send a Link form above or share directly.</p>
   <div class="link-grid">
     <div class="link-card"><div class="link-info"><h4>Homepage</h4><p>Main site — overview of what we do</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com')">Copy Link</button></div>
     <div class="link-card"><div class="link-info"><h4>Our Solutions</h4><p>Full breakdown of services</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/solutions')">Copy Link</button></div>
@@ -583,6 +802,15 @@
     <div class="link-card"><div class="link-info"><h4>Facebook</h4><p>Social proof & community</p></div><button class="copy-btn" onclick="copyLink(this,'https://www.facebook.com/share/1FNjySPjNu/?mibextid=wwXIfr')">Copy Link</button></div>
     <div class="link-card"><div class="link-info"><h4>Instagram</h4><p>Visual portfolio & content</p></div><button class="copy-btn" onclick="copyLink(this,'https://www.instagram.com/purebrokerbranding/')">Copy Link</button></div>
     <div class="link-card"><div class="link-info"><h4>LinkedIn</h4><p>Professional presence</p></div><button class="copy-btn" onclick="copyLink(this,'https://www.linkedin.com/company/purebrokerbranding/')">Copy Link</button></div>
+  </div>
+
+  <!-- PAYMENT LINKS -->
+  <hr class="link-section-divider">
+  <h3 class="link-section-label">💳 Payment Links</h3>
+  <div class="link-grid">
+    <div class="link-card" style="border-color:var(--gold-dim);"><div class="link-info"><h4 style="color:var(--gold);">Starter Plan Payment</h4><p>$97/mo — Starter Care</p></div><button class="copy-btn" onclick="copyLink(this,'https://pay.purebrokerbranding.com/b/eVq28s1r57tN7Ms3Da0kE00')">Copy Link</button></div>
+    <div class="link-card" style="border-color:var(--teal);"><div class="link-info"><h4 style="color:var(--teal-light);">Growth Plan Payment</h4><p>$197/mo — Growth Care</p></div><button class="copy-btn" onclick="copyLink(this,'https://pay.purebrokerbranding.com/b/bJe9AUedR9BV6Ioa1y0kE02')">Copy Link</button></div>
+    <div class="link-card" style="border-color:var(--gold);"><div class="link-info"><h4 style="color:var(--gold-light);">Premium Plan Payment</h4><p>$297/mo — Premium Care</p></div><button class="copy-btn" onclick="copyLink(this,'https://pay.purebrokerbranding.com/b/14A6oI0n16pJ6IoehO0kE03')">Copy Link</button></div>
   </div>
 </div>
 
@@ -618,21 +846,16 @@
 <div id="log" class="tab-content">
   <h3 style="color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:16px;text-align:center;">Log This Call</h3>
   <div class="log-form">
-
     <div class="client-id-display">
       <div><span class="cid-label">Client ID</span><br><span id="client-id-value">—</span></div>
       <button class="copy-btn" onclick="copyClientId()" style="font-size:.75rem;">Copy ID</button>
     </div>
-
     <label>Prospect Name</label>
     <input type="text" id="log-name" placeholder="John Smith">
-
     <label>Prospect Email</label>
     <input type="email" id="log-email" placeholder="john@example.com">
-
     <label>Prospect Phone</label>
     <input type="tel" id="log-phone" placeholder="(555) 123-4567">
-
     <label>Industry</label>
     <select id="log-industry">
       <option value="">Select industry...</option>
@@ -641,7 +864,6 @@
       <option value="Real Estate / Mortgage">Real Estate / Mortgage</option>
       <option value="Other">Other</option>
     </select>
-
     <label>Call Result</label>
     <select id="log-result" onchange="toggleAmountField()">
       <option value="">Select result...</option>
@@ -653,21 +875,16 @@
       <option value="Not a Fit">❌ Not a Fit</option>
       <option value="No Show">📵 No Show</option>
     </select>
-
     <div class="amount-row" id="amount-row">
       <label>Amount Closed ($)</label>
       <input type="text" id="log-amount" placeholder="e.g. 5000">
     </div>
-
     <label>Follow-Up Date (if applicable)</label>
     <input type="date" id="log-followup">
-
     <label>Call Duration</label>
     <input type="text" id="log-duration" placeholder="Auto-filled from timer" readonly>
-
     <label>Call Summary & Notes</label>
     <textarea id="log-notes" placeholder="Key pain points, objections raised, what resonated, next steps..."></textarea>
-
     <button class="log-submit" onclick="submitLog()">Submit Call Log</button>
     <div id="log-success" class="log-success">✅ Call logged successfully!</div>
   </div>
@@ -677,16 +894,13 @@
 <div id="tracker" class="tab-content">
   <div class="tracker-section">
     <h3 style="color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:16px;">Close Tracker</h3>
-
     <div class="tracker-search">
       <input type="text" id="tracker-email-search" placeholder="Search by email...">
       <button onclick="searchByEmail()">Search</button>
       <button class="refresh-btn" onclick="loadTracker()">↻ Refresh</button>
     </div>
-
     <div id="tracker-status" class="tracker-status">Loading call data...</div>
     <div id="tracker-results"></div>
-
     <div id="tracker-setup" class="tracker-setup-msg" style="display:none;">
       <p><strong>Setup Required:</strong> To pull live data, publish your Google Sheet to the web.</p>
       <p>In Google Sheets: <strong>File → Share → Publish to web → Entire Document → CSV → Publish</strong></p>
@@ -712,6 +926,94 @@
   </div>
 </div>
 
+<!-- ═══ TAB 8: COMPLIANCE ═══ -->
+<div id="compliance" class="tab-content">
+  <div class="compliance-section">
+    <h3 style="color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:6px;">Compliance & Regulatory Support</h3>
+    <p style="color:var(--gray);font-size:.85rem;margin-bottom:16px;">How we handle compliance across industries. Use these talking points when prospects ask about regulatory concerns.</p>
+    <div class="comp-filters">
+      <button class="comp-btn active" onclick="filterComp('all',this)">All Industries</button>
+      <button class="comp-btn" onclick="filterComp('insurance',this)">Insurance</button>
+      <button class="comp-btn" onclick="filterComp('financial',this)">Financial Advisors</button>
+      <button class="comp-btn" onclick="filterComp('realestate',this)">Real Estate / Mortgage</button>
+      <button class="comp-btn" onclick="filterComp('general',this)">General</button>
+    </div>
+
+    <div class="comp-card" data-comp="general">
+      <span class="comp-industry-badge tag-all">All Industries</span>
+      <h4>Our Compliance-First Approach</h4>
+      <p>Every website and digital asset we build is designed with compliance in mind from day one. We work within your regulatory framework — not around it.</p>
+      <ul>
+        <li>All content is reviewed for industry-specific compliance requirements before launch</li>
+        <li>We coordinate directly with your compliance officer or team when needed</li>
+        <li>Proper disclosures, disclaimers, and legal language built into every site</li>
+        <li>Archiving-friendly design that supports regulatory record-keeping</li>
+        <li>ADA accessibility compliance (WCAG 2.1) included in every build</li>
+      </ul>
+    </div>
+
+    <div class="comp-card" data-comp="insurance">
+      <span class="comp-industry-badge tag-ins">Insurance</span>
+      <h4>Insurance Industry Compliance</h4>
+      <p>We understand state DOI requirements, carrier guidelines, and E&O considerations that insurance professionals face with marketing materials.</p>
+      <ul>
+        <li>State-specific licensing disclosures and required legal language</li>
+        <li>Carrier brand guideline compliance — we work within co-branding rules</li>
+        <li>E&O-conscious language — no guarantees, no misleading claims</li>
+        <li>NAIC advertising regulation adherence for digital marketing</li>
+        <li>Privacy policy and data collection compliance (state-specific where needed)</li>
+        <li>Proper disclaimer placement for quotes, coverage descriptions, and testimonials</li>
+      </ul>
+    </div>
+
+    <div class="comp-card" data-comp="financial">
+      <span class="comp-industry-badge tag-fin">Financial Advisors</span>
+      <h4>Financial Services Compliance</h4>
+      <p>We build for SEC, FINRA, and state-level regulatory requirements. Whether you're an RIA, IAR, or BD-affiliated advisor, we've got you covered.</p>
+      <ul>
+        <li>SEC/FINRA advertising rule compliance (Rule 206(4)-1, Rule 2210)</li>
+        <li>Required disclosures: ADV Part 2A brochure links, CRS references</li>
+        <li>Testimonial and endorsement compliance under the SEC Marketing Rule</li>
+        <li>Performance presentation guidelines — no cherry-picked returns</li>
+        <li>BD/RIA pre-approval workflow support — we submit for review before publish</li>
+        <li>Social media archiving compatibility for compliance record-keeping</li>
+        <li>Anti-fraud provisions and fair disclosure requirements</li>
+      </ul>
+    </div>
+
+    <div class="comp-card" data-comp="realestate">
+      <span class="comp-industry-badge tag-re">Real Estate / Mortgage</span>
+      <h4>Real Estate & Mortgage Compliance</h4>
+      <p>From RESPA and TILA to state licensing display requirements — we make sure your digital presence meets every regulation.</p>
+      <ul>
+        <li>RESPA compliance for mortgage marketing — no kickback-triggering language</li>
+        <li>TILA/Regulation Z advertising requirements for rate/APR disclosures</li>
+        <li>NMLS number display requirements on all mortgage marketing</li>
+        <li>State real estate commission licensing disclosure requirements</li>
+        <li>Fair Housing Act compliant language and imagery</li>
+        <li>Equal Housing Opportunity logos and required disclaimers</li>
+        <li>TCPA compliance for lead capture and automated follow-up</li>
+      </ul>
+    </div>
+
+    <div class="comp-card" data-comp="general">
+      <span class="comp-industry-badge tag-all">All Industries</span>
+      <h4>What We Don't Cover (Third-Party Responsibilities)</h4>
+      <p>We build and optimize — but certain operational costs and third-party platforms remain the client's responsibility:</p>
+      <ul>
+        <li>Web hosting charges (Shopify, WordPress hosting, etc.)</li>
+        <li>Domain registration and renewal fees</li>
+        <li>Third-party platform subscriptions (Twilio, chatbot providers, CRM licenses)</li>
+        <li>Email marketing platform fees (Mailchimp, ActiveCampaign, etc.)</li>
+        <li>SSL certificates (if not included with hosting)</li>
+        <li>Paid advertising spend (Google Ads, Meta Ads, etc.)</li>
+        <li>Professional photography or stock image licensing</li>
+      </ul>
+      <p style="margin-top:8px;">We integrate and configure all of these systems for you — we just don't cover the subscription costs themselves. Our Monthly Management Plans handle the ongoing optimization and maintenance.</p>
+    </div>
+  </div>
+</div>
+
 </div><!-- /app -->
 
 <script>
@@ -722,11 +1024,55 @@
   const GUEST_PIN = '987789';
   const CALL_LOG_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7qjc75/';
   const PROPOSAL_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7lo40e/';
-
-  // Google Sheet ID — Replace with your actual sheet ID after publishing
-  // Your sheet URL looks like: https://docs.google.com/spreadsheets/d/XXXXXX/edit
-  // Copy the XXXXXX part and paste it below
+  const SEND_LINK_WEBHOOK = 'https://hooks.zapier.com/hooks/catch/27001995/u7lbhcb/';
   const GOOGLE_SHEET_ID = 'YOUR_GOOGLE_SHEET_ID_HERE';
+
+  // ══════════════════════════════════════
+  // PRICING TOOL DATA
+  // ══════════════════════════════════════
+  const PT_SERVICES = {
+    base: [
+      { id:'web-design', name:'Custom Responsive Website Design', price:1200, desc:'Professionally crafted for all devices — built for conversions, not just aesthetics.', sell:'This is the foundation. Without a conversion-optimized site, everything else leaks leads. Every dollar they spend on marketing without this is wasted.' },
+      { id:'lead-capture', name:'Lead Capture System', price:350, desc:'Strategic CTAs, contact forms, and inquiry flows placed for maximum conversion.', sell:'Without this, their site is a brochure. This turns visitors into booked calls. Ask: "How many visitors hit your site and leave without you ever knowing?"' },
+      { id:'local-seo', name:'Local SEO Foundation', price:450, desc:'Keyword targeting, meta tags, schema markup, Google Business Profile optimization.', sell:'If they\'re not showing up in local search, their competitors are stealing their leads right now. This is how they get found.' },
+      { id:'chatbot-entry', name:'AI Chatbot — Entry Level', price:300, desc:'Automated FAQ responses and inquiry routing — qualifies leads 24/7.', sell:'Their site works while they sleep. This qualifies leads at 2am without lifting a finger. Ask: "What happens when someone visits your site at midnight?"' },
+      { id:'basic-automation', name:'Basic Lead Automation', price:200, desc:'Automated follow-up emails triggered when a form is submitted.', sell:'Speed to lead wins deals. Most businesses take 24+ hours to respond. This fires in seconds and keeps them top of mind.' },
+    ],
+    advanced: [
+      { id:'expanded-arch', name:'Expanded Site Architecture', price:800, desc:'Blog, Resources, Testimonials, Team pages + custom service sections.', sell:'More pages = more keywords = more traffic. Plus it positions them as the undeniable authority in their market.' },
+      { id:'adv-seo', name:'Advanced SEO Strategy', price:650, desc:'Competitor analysis, structured data, content strategy, and performance reporting.', sell:'This is how they outrank competitors who\'ve been around longer. Data-driven, not guesswork. Show them their competitor\'s ranking.' },
+      { id:'scheduling', name:'Appointment Scheduling Integration', price:400, desc:'Embedded booking calendar with automated reminders and confirmation flows.', sell:'Every extra step between "interested" and "booked" costs them clients. This removes all friction. One click to book.' },
+      { id:'chatbot-conversion', name:'AI Chatbot — Conversion Trained', price:750, desc:'Custom-trained to nurture leads, handle objections, and book calls directly.', sell:'This isn\'t a basic FAQ bot — it actually sells for them. It handles objections and pushes warm leads to book. Like a 24/7 sales rep.' },
+      { id:'lead-nurture', name:'Multi-Step Lead Nurture Automation', price:750, desc:'Email sequences, lead scoring, and CRM integration that works on autopilot.', sell:'Most leads need 5-7 touches before converting. This runs that entire follow-up sequence automatically while they focus on clients.' },
+      { id:'financial-tools', name:'Interactive Financial Tools', price:550, desc:'Custom calculators and planning tools that engage visitors and demonstrate value.', sell:'These keep visitors on the site 3x longer and generate warm leads who already see value. Perfect for financial advisors and mortgage brokers.' },
+    ],
+    premium: [
+      { id:'brand-strategy', name:'Bespoke Brand Strategy', price:1800, desc:'Full identity, guidelines, motion design, and custom visual language.', sell:'This is what separates the top 1% from everyone else. A complete brand system that commands premium pricing and instant recognition.' },
+      { id:'ai-ecosystem', name:'AI — Full Ecosystem Integration', price:2500, desc:'Predictive analytics, personalized content delivery, and custom AI models.', sell:'Enterprise-level intelligence built into their business. Personalized experiences for every visitor. This is the competitive moat no one can copy.' },
+      { id:'business-automation', name:'End-to-End Business Automation', price:2000, desc:'CRM sync, compliance tools, portfolio platforms, and custom API workflows.', sell:'Their entire operation runs on autopilot. Less overhead, faster growth, zero manual busywork. Ask: "How many hours a week do you spend on admin?"' },
+      { id:'client-portal', name:'Advanced Client Portal', price:1500, desc:'Secure document vault, e-signatures, encrypted messaging, and custom dashboards.', sell:'This is what high-value clients expect. It screams professionalism and keeps them sticky. Reduces churn and increases lifetime value.' },
+      { id:'perf-dashboard', name:'Performance Tracking Dashboard', price:750, desc:'Custom analytics dashboard showing leads, conversions, traffic sources, and ROI.', sell:'They can see exactly what their investment is returning. Full transparency = full trust. No more guessing if marketing is working.' },
+      { id:'strategy-team', name:'Dedicated Strategy Team', price:1200, desc:'Priority support, quarterly growth reviews, and ongoing performance optimization.', sell:'They get a team in their corner, not just a vendor. Proactive growth planning, not reactive fixes. This is the white-glove treatment.' },
+    ],
+    refresh: [
+      { id:'conversion-audit', name:'Conversion Audit & Rebuild', price:600, desc:'Analyze traffic flow, fix drop-off points, rebuild sections costing you leads.', sell:'Their site is leaking leads somewhere. This finds exactly where and fixes it. Show them their bounce rate if you have it.' },
+      { id:'seo-overhaul', name:'SEO Overhaul', price:650, desc:'Fix keyword gaps, technical errors, metadata, site speed, and structured data.', sell:'If they\'re not on page 1, they\'re invisible. This diagnoses why and fixes it. Quick win they\'ll see results from fast.' },
+      { id:'visual-redesign', name:'Visual Redesign', price:800, desc:'Modernize design, improve visual hierarchy, and elevate the premium look.', sell:'First impressions happen in 3 seconds. If their site looks dated, prospects bounce before reading a word. This fixes that.' },
+      { id:'funnel-integration', name:'Lead Funnel Integration', price:500, desc:'Smart lead capture, AI chatbot, booking flows, and automated follow-up.', sell:'Retrofit their existing site with everything it needs to convert — without starting over. Maximum ROI, minimum disruption.' },
+      { id:'compliance-trust', name:'Compliance & Trust Signals', price:400, desc:'Disclosures, licensing badges, review integration, and credibility architecture.', sell:'In insurance and finance, trust is currency. This gives prospects the confidence to choose them. Missing this loses deals silently.' },
+      { id:'copy-refresh', name:'Content & Copy Refresh', price:450, desc:'Rewrite messaging to speak directly to ideal clients — clear, confident, converting.', sell:'Outdated copy kills conversions. New messaging written to convert browsers into booked calls. Words matter more than design.' },
+    ]
+  };
+
+  const PT_MONTHLY = [
+    { id:'none', name:'No Monthly Plan', price:0, features:['Client handles their own maintenance'] },
+    { id:'starter-care', name:'Starter Care', price:97, features:['Monthly health check','Basic security monitoring','1 bug fix/mo','3 content updates/mo','Email support (48hr)'] },
+    { id:'growth-care', name:'Growth Care', price:197, popular:true, features:['Everything in Starter','3 bug fixes/mo','5 content updates/mo','Performance check','SEO updates','Conversion review','Priority email (24hr)'] },
+    { id:'premium-care', name:'Premium Care', price:297, features:['Everything in Growth','5 bug fixes/mo','10 content updates/mo','Conversion optimization','Landing page enhancements','Quarterly strategy call','Same-day support'] },
+  ];
+
+  let selectedServices = new Set();
+  let selectedMonthly = 'none';
 
   // ══════════════════════════════════════
   // GENERATE UNIQUE CLIENT ID
@@ -737,14 +1083,9 @@
     for (let i = 0; i < 6; i++) id += chars.charAt(Math.floor(Math.random() * chars.length));
     return id;
   }
-
-  // Generate a new client ID when Log Call tab loads
   let currentClientId = generateClientId();
   document.getElementById('client-id-value').textContent = currentClientId;
-
-  function copyClientId() {
-    navigator.clipboard.writeText(currentClientId);
-  }
+  function copyClientId() { navigator.clipboard.writeText(currentClientId); }
 
   // ══════════════════════════════════════
   // PIN AUTO-UNLOCK
@@ -752,7 +1093,6 @@
   const pinInput = document.getElementById('pin-input');
   const pinError = document.getElementById('pin-error');
   const pinRole = document.getElementById('pin-role');
-
   pinInput.addEventListener('input', function() {
     const val = this.value;
     pinError.textContent = '';
@@ -773,10 +1113,10 @@
       }
     }
   });
-
   function unlock() {
     document.getElementById('pin-screen').classList.add('hidden');
     document.getElementById('app').style.display = 'block';
+    initPricingTool();
     loadTracker();
   }
 
@@ -804,23 +1144,17 @@
     body.classList.toggle('open');
     arrow.classList.toggle('open');
   }
-
   function toggleUpdate(el) {
     const fields = document.getElementById('update-fields');
     const arrow = el.querySelector('.arrow');
     fields.classList.toggle('open');
     arrow.classList.toggle('open');
   }
-
   function toggleAmountField() {
     const result = document.getElementById('log-result').value;
     const row = document.getElementById('amount-row');
-    if (result === 'Closed — Signed') {
-      row.classList.add('show');
-    } else {
-      row.classList.remove('show');
-      document.getElementById('log-amount').value = '';
-    }
+    if (result === 'Closed — Signed') { row.classList.add('show'); }
+    else { row.classList.remove('show'); document.getElementById('log-amount').value = ''; }
   }
 
   // ══════════════════════════════════════
@@ -828,7 +1162,6 @@
   // ══════════════════════════════════════
   let timerInterval = null;
   let timerSeconds = 0;
-
   function startTimer() {
     if (timerInterval) return;
     timerInterval = setInterval(() => {
@@ -868,6 +1201,17 @@
   }
 
   // ══════════════════════════════════════
+  // COMPLIANCE FILTER
+  // ══════════════════════════════════════
+  function filterComp(cat, btn) {
+    document.querySelectorAll('.comp-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.comp-card').forEach(card => {
+      card.style.display = (cat === 'all' || card.dataset.comp === cat) ? '' : 'none';
+    });
+  }
+
+  // ══════════════════════════════════════
   // COPY LINK
   // ══════════════════════════════════════
   function copyLink(btn, url) {
@@ -875,6 +1219,37 @@
       btn.textContent = 'Copied!';
       btn.classList.add('copied');
       setTimeout(() => { btn.textContent = 'Copy Link'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  // ══════════════════════════════════════
+  // SEND LINK (NEW)
+  // ══════════════════════════════════════
+  function sendLink() {
+    const firstName = document.getElementById('sl-first-name').value.trim();
+    const email = document.getElementById('sl-email').value.trim();
+    const phone = document.getElementById('sl-phone').value.trim();
+    const link = document.getElementById('sl-link').value.trim();
+    const errEl = document.getElementById('sl-error');
+    const succEl = document.getElementById('sl-success');
+    errEl.style.display = 'none'; succEl.style.display = 'none';
+    if (!link) { errEl.textContent = 'Please paste a link to send.'; errEl.style.display = 'block'; return; }
+    if (!email && !phone) { errEl.textContent = 'Please enter an email or phone number.'; errEl.style.display = 'block'; return; }
+    fetch(SEND_LINK_WEBHOOK, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        first_name: firstName || '',
+        email: email || '',
+        phone: phone || '',
+        link: link,
+        sent_at: new Date().toISOString(),
+        sent_by: document.getElementById('user-badge').textContent
+      })
+    }).then(() => {
+      succEl.style.display = 'block';
+      ['sl-first-name','sl-email','sl-phone','sl-link'].forEach(id => document.getElementById(id).value = '');
+      setTimeout(() => succEl.style.display = 'none', 4000);
     });
   }
 
@@ -889,9 +1264,7 @@
     const errEl = document.getElementById('proposal-error');
     const succEl = document.getElementById('proposal-success');
     errEl.style.display = 'none'; succEl.style.display = 'none';
-
     if (!email) { errEl.textContent = 'Email is required to send the proposal.'; errEl.style.display = 'block'; return; }
-
     fetch(PROPOSAL_WEBHOOK, {
       method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
@@ -926,10 +1299,8 @@
       logged_at: new Date().toISOString(),
       logged_by: document.getElementById('user-badge').textContent
     };
-
     if (!data.prospect_name) { alert('Please enter the prospect name.'); return; }
     document.getElementById('log-duration').value = document.getElementById('timer-display').textContent;
-
     fetch(CALL_LOG_WEBHOOK, {
       method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
@@ -952,38 +1323,26 @@
   // CLOSE TRACKER — Google Sheets Integration
   // ══════════════════════════════════════
   let trackerData = [];
-
   function loadTracker() {
     const statusEl = document.getElementById('tracker-status');
     const resultsEl = document.getElementById('tracker-results');
     const setupEl = document.getElementById('tracker-setup');
     resultsEl.innerHTML = '';
-
     if (GOOGLE_SHEET_ID === 'YOUR_GOOGLE_SHEET_ID_HERE') {
-      statusEl.style.display = 'none';
-      setupEl.style.display = 'block';
-      return;
+      statusEl.style.display = 'none'; setupEl.style.display = 'block'; return;
     }
-
-    setupEl.style.display = 'none';
-    statusEl.style.display = 'block';
+    setupEl.style.display = 'none'; statusEl.style.display = 'block';
     statusEl.textContent = 'Loading call data...';
-
     const url = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:csv`;
-
-    fetch(url)
-      .then(res => res.text())
-      .then(csv => {
-        trackerData = parseCSV(csv);
-        displayTracker(trackerData.slice(-10).reverse());
-        statusEl.style.display = 'none';
-      })
-      .catch(err => {
-        statusEl.textContent = 'Could not load data. Make sure the sheet is published to the web.';
-        console.error(err);
-      });
+    fetch(url).then(res => res.text()).then(csv => {
+      trackerData = parseCSV(csv);
+      displayTracker(trackerData.slice(-10).reverse());
+      statusEl.style.display = 'none';
+    }).catch(err => {
+      statusEl.textContent = 'Could not load data. Make sure the sheet is published to the web.';
+      console.error(err);
+    });
   }
-
   function parseCSV(csv) {
     const lines = csv.split('\n');
     if (lines.length < 2) return [];
@@ -998,27 +1357,16 @@
     }
     return rows;
   }
-
   function parseCSVLine(line) {
-    const result = [];
-    let current = '';
-    let inQuotes = false;
+    const result = []; let current = ''; let inQuotes = false;
     for (let i = 0; i < line.length; i++) {
       const c = line[i];
-      if (c === '"') {
-        if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
-        else { inQuotes = !inQuotes; }
-      } else if (c === ',' && !inQuotes) {
-        result.push(current.trim());
-        current = '';
-      } else {
-        current += c;
-      }
+      if (c === '"') { if (inQuotes && line[i+1] === '"') { current += '"'; i++; } else { inQuotes = !inQuotes; } }
+      else if (c === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+      else { current += c; }
     }
-    result.push(current.trim());
-    return result;
+    result.push(current.trim()); return result;
   }
-
   function searchByEmail() {
     const query = document.getElementById('tracker-email-search').value.trim().toLowerCase();
     if (!query) { displayTracker(trackerData.slice(-10).reverse()); return; }
@@ -1030,7 +1378,6 @@
     });
     displayTracker(matches.reverse());
   }
-
   function getResultClass(result) {
     if (!result) return '';
     const r = result.toLowerCase();
@@ -1043,18 +1390,10 @@
     if (r.includes('partner')) return 'tc-result-partner';
     return '';
   }
-
   function displayTracker(rows) {
     const resultsEl = document.getElementById('tracker-results');
     const statusEl = document.getElementById('tracker-status');
-
-    if (rows.length === 0) {
-      statusEl.style.display = 'block';
-      statusEl.textContent = 'No calls found.';
-      resultsEl.innerHTML = '';
-      return;
-    }
-
+    if (rows.length === 0) { statusEl.style.display = 'block'; statusEl.textContent = 'No calls found.'; resultsEl.innerHTML = ''; return; }
     statusEl.style.display = 'none';
     resultsEl.innerHTML = rows.map(row => {
       const name = row.prospect_name || row.name || 'Unknown';
@@ -1070,31 +1409,444 @@
       const loggedAt = row.logged_at || row.date || '—';
       const loggedBy = row.logged_by || '—';
       const resultClass = getResultClass(result);
-
-      return `<div class="tracker-card">
-        <div class="tracker-card-header">
-          <span class="tc-name">${name}</span>
-          <span class="tc-id">${cid}</span>
-        </div>
-        <div class="tracker-card-row">
-          <div><span class="tc-label">Email</span><div class="tc-value">${email}</div></div>
-          <div><span class="tc-label">Phone</span><div class="tc-value">${phone}</div></div>
-          <div><span class="tc-label">Industry</span><div class="tc-value">${industry}</div></div>
-          <div><span class="tc-label">Result</span><div class="tc-value"><span class="tc-result ${resultClass}">${result}</span></div></div>
-          ${amount ? `<div><span class="tc-label">Amount Closed</span><div class="tc-value tc-amount">$${amount}</div></div>` : ''}
-          <div><span class="tc-label">Duration</span><div class="tc-value">${duration}</div></div>
-          <div><span class="tc-label">Follow-Up</span><div class="tc-value">${followup}</div></div>
-          <div><span class="tc-label">Logged</span><div class="tc-value">${loggedAt}</div></div>
-          <div><span class="tc-label">Logged By</span><div class="tc-value">${loggedBy}</div></div>
-        </div>
-        <div class="tc-summary">
-          <span class="tc-label">Call Summary</span>
-          <div class="tc-value">${summary}</div>
-        </div>
-      </div>`;
+      return `<div class="tracker-card"><div class="tracker-card-header"><span class="tc-name">${name}</span><span class="tc-id">${cid}</span></div><div class="tracker-card-row"><div><span class="tc-label">Email</span><div class="tc-value">${email}</div></div><div><span class="tc-label">Phone</span><div class="tc-value">${phone}</div></div><div><span class="tc-label">Industry</span><div class="tc-value">${industry}</div></div><div><span class="tc-label">Result</span><div class="tc-value"><span class="tc-result ${resultClass}">${result}</span></div></div>${amount ? `<div><span class="tc-label">Amount Closed</span><div class="tc-value tc-amount">$${amount}</div></div>` : ''}<div><span class="tc-label">Duration</span><div class="tc-value">${duration}</div></div><div><span class="tc-label">Follow-Up</span><div class="tc-value">${followup}</div></div><div><span class="tc-label">Logged</span><div class="tc-value">${loggedAt}</div></div><div><span class="tc-label">Logged By</span><div class="tc-value">${loggedBy}</div></div></div><div class="tc-summary"><span class="tc-label">Call Summary</span><div class="tc-value">${summary}</div></div></div>`;
     }).join('');
   }
-</script>
 
+  // ══════════════════════════════════════
+  // LIVE PRICING TOOL
+  // ══════════════════════════════════════
+  function initPricingTool() {
+    renderServiceSection('pt-base-services', PT_SERVICES.base);
+    renderServiceSection('pt-advanced-services', PT_SERVICES.advanced);
+    renderServiceSection('pt-premium-services', PT_SERVICES.premium);
+    renderServiceSection('pt-refresh-services', PT_SERVICES.refresh);
+    renderMonthlyCards();
+    updatePricingSummary();
+  }
+
+  function renderServiceSection(containerId, services) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = services.map(s => `
+      <div class="pt-item" id="pt-item-${s.id}">
+        <input type="checkbox" id="pt-cb-${s.id}" onchange="toggleService('${s.id}')">
+        <div class="pt-item-info">
+          <div class="pt-item-top">
+            <span class="pt-item-name">${s.name}</span>
+            <span class="pt-item-price">$${s.price.toLocaleString()}</span>
+          </div>
+          <div class="pt-item-desc">${s.desc}</div>
+          <div class="pt-item-sell">🎯 <strong>How to sell it:</strong> ${s.sell}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderMonthlyCards() {
+    const container = document.getElementById('pt-care-cards');
+    container.innerHTML = PT_MONTHLY.map(p => `
+      <div class="pt-care-card ${p.id === 'none' ? 'none-card selected' : ''} ${p.popular ? 'popular' : ''}" id="pt-care-${p.id}" onclick="selectMonthly('${p.id}')">
+        <div class="pt-care-top">
+          <span class="pt-care-name">${p.name}</span>
+          <span class="pt-care-price">${p.price > 0 ? '$' + p.price + '/mo' : '—'}</span>
+        </div>
+        <div class="pt-care-features">${p.features.join(' · ')}</div>
+      </div>
+    `).join('');
+  }
+
+  function toggleService(id) {
+    const el = document.getElementById('pt-item-' + id);
+    const cb = document.getElementById('pt-cb-' + id);
+    if (cb.checked) {
+      selectedServices.add(id);
+      el.classList.add('selected');
+    } else {
+      selectedServices.delete(id);
+      el.classList.remove('selected');
+    }
+    updatePricingSummary();
+  }
+
+  function selectMonthly(id) {
+    selectedMonthly = id;
+    document.querySelectorAll('.pt-care-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('pt-care-' + id).classList.add('selected');
+    updatePricingSummary();
+  }
+
+  function getAllServices() {
+    return [...PT_SERVICES.base, ...PT_SERVICES.advanced, ...PT_SERVICES.premium, ...PT_SERVICES.refresh];
+  }
+
+  function updatePricingSummary() {
+    const allServices = getAllServices();
+    let serviceTotal = 0;
+    selectedServices.forEach(id => {
+      const svc = allServices.find(s => s.id === id);
+      if (svc) serviceTotal += svc.price;
+    });
+    const monthlyPlan = PT_MONTHLY.find(p => p.id === selectedMonthly);
+    const monthlyPrice = monthlyPlan ? monthlyPlan.price : 0;
+    const projectTotal = serviceTotal;
+
+    document.getElementById('pt-total-badge').textContent = '$' + projectTotal.toLocaleString();
+    document.getElementById('pt-service-total').textContent = '$' + serviceTotal.toLocaleString();
+    document.getElementById('pt-monthly-total').textContent = monthlyPrice > 0 ? '$' + monthlyPrice + '/mo' : 'None';
+    document.getElementById('pt-project-total').textContent = '$' + projectTotal.toLocaleString();
+
+    // Payment schedule
+    const schedEl = document.getElementById('pt-payment-schedule');
+    if (projectTotal > 0) {
+      if (projectTotal <= 1500) {
+        schedEl.innerHTML = `<div class="pt-pay-row"><span class="pt-pay-label">Full Payment Required (≤$1,500)</span><span class="pt-pay-val">$${projectTotal.toLocaleString()}</span></div><div class="pt-pay-row"><span class="pt-pay-label" style="font-style:italic;font-size:.68rem;">Per Client Service Agreement — projects $1,500 or under require full payment</span><span class="pt-pay-val"></span></div>`;
+      } else {
+        const p1 = Math.round(projectTotal * 0.5);
+        const p2 = Math.round(projectTotal * 0.3);
+        const p3 = projectTotal - p1 - p2;
+        schedEl.innerHTML = `
+          <div class="pt-pay-row"><span class="pt-pay-label">50% — Project Kickoff</span><span class="pt-pay-val">$${p1.toLocaleString()}</span></div>
+          <div class="pt-pay-row"><span class="pt-pay-label">30% — Design / Component Approval</span><span class="pt-pay-val">$${p2.toLocaleString()}</span></div>
+          <div class="pt-pay-row"><span class="pt-pay-label">20% — Delivery Call & Asset Transfer</span><span class="pt-pay-val">$${p3.toLocaleString()}</span></div>`;
+      }
+    } else {
+      schedEl.innerHTML = '';
+    }
+
+    // Suggested tier
+    const sugEl = document.getElementById('pt-suggested');
+    const sugText = document.getElementById('pt-suggested-text');
+    if (serviceTotal > 0) {
+      sugEl.style.display = 'block';
+      if (serviceTotal <= 2000) { sugText.textContent = 'Signature — Built to Launch (Starting at $1,500)'; }
+      else if (serviceTotal <= 8000) { sugText.textContent = 'Luminary — Built to Scale ($3,500 – $8,000)'; }
+      else { sugText.textContent = 'Sovereign — Built to Dominate (Custom Pricing)'; }
+    } else {
+      sugEl.style.display = 'none';
+    }
+  }
+
+  function resetPricingTool() {
+    selectedServices.clear();
+    selectedMonthly = 'none';
+    document.querySelectorAll('.pt-item input[type="checkbox"]').forEach(cb => { cb.checked = false; });
+    document.querySelectorAll('.pt-item').forEach(el => el.classList.remove('selected'));
+    document.querySelectorAll('.pt-care-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('pt-care-none').classList.add('selected');
+    document.getElementById('pt-first-name').value = '';
+    document.getElementById('pt-biz-name').value = '';
+    updatePricingSummary();
+  }
+
+  // ══════════════════════════════════════
+  // GENERATE PROPOSAL PDF
+  // ══════════════════════════════════════
+  function generateProposalPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+    const w = doc.internal.pageSize.getWidth();
+    const h = doc.internal.pageSize.getHeight();
+    const margin = 20;
+    const contentW = w - margin * 2;
+    let y = 0;
+
+    const firstName = document.getElementById('pt-first-name').value.trim() || 'Valued Client';
+    const bizName = document.getElementById('pt-biz-name').value.trim();
+
+    const allServices = getAllServices();
+    const selected = [];
+    let serviceTotal = 0;
+    selectedServices.forEach(id => {
+      const svc = allServices.find(s => s.id === id);
+      if (svc) { selected.push(svc); serviceTotal += svc.price; }
+    });
+    const monthlyPlan = PT_MONTHLY.find(p => p.id === selectedMonthly);
+    const projectTotal = serviceTotal;
+
+    // Colors
+    const dark = [14, 31, 34];
+    const gold = [201, 168, 76];
+    const teal = [42, 161, 152];
+    const white = [244, 240, 232];
+    const gray = [163, 176, 179];
+
+    // Helper: add new page with dark bg
+    function addPage() {
+      doc.addPage();
+      doc.setFillColor(...dark);
+      doc.rect(0, 0, w, h, 'F');
+      y = margin;
+    }
+
+    function checkPage(needed) {
+      if (y + needed > h - 20) addPage();
+    }
+
+    // ── PAGE 1: Cover ──
+    doc.setFillColor(...dark);
+    doc.rect(0, 0, w, h, 'F');
+
+    // Gold accent line
+    doc.setFillColor(...gold);
+    doc.rect(margin, 30, 50, 2, 'F');
+
+    y = 50;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(28);
+    doc.setTextColor(...gold);
+    doc.text('Pure Broker Branding', margin, y);
+
+    y += 14;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(14);
+    doc.setTextColor(...white);
+    doc.text('Custom Proposal', margin, y);
+
+    y += 30;
+    doc.setFillColor(...teal);
+    doc.rect(margin, y, contentW, 1, 'F');
+
+    y += 16;
+    doc.setFontSize(18);
+    doc.setTextColor(...white);
+    doc.text(`Prepared for: ${firstName}`, margin, y);
+    if (bizName) {
+      y += 10;
+      doc.setFontSize(13);
+      doc.setTextColor(...gray);
+      doc.text(bizName, margin, y);
+    }
+
+    y += 10;
+    doc.setFontSize(11);
+    doc.setTextColor(...gray);
+    doc.text(`Date: ${new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' })}`, margin, y);
+
+    y += 30;
+    doc.setFontSize(36);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...gold);
+    doc.text(`$${projectTotal.toLocaleString()}`, margin, y);
+    y += 10;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...gray);
+    doc.text('Project Investment', margin, y);
+    if (monthlyPlan && monthlyPlan.price > 0) {
+      y += 8;
+      doc.text(`+ $${monthlyPlan.price}/mo — ${monthlyPlan.name}`, margin, y);
+    }
+
+    // ── PAGE 2: Services Breakdown ──
+    addPage();
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(...gold);
+    doc.text('Services Breakdown', margin, y);
+    y += 4;
+    doc.setFillColor(...teal);
+    doc.rect(margin, y, 40, 1.5, 'F');
+    y += 14;
+
+    if (selected.length === 0) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      doc.setTextColor(...gray);
+      doc.text('No services selected. Use the pricing tool to build your package.', margin, y);
+    } else {
+      selected.forEach((svc, i) => {
+        checkPage(22);
+        // Row background
+        if (i % 2 === 0) {
+          doc.setFillColor(18, 40, 44);
+          doc.rect(margin - 4, y - 5, contentW + 8, 18, 'F');
+        }
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setTextColor(...white);
+        doc.text(svc.name, margin, y);
+        doc.setTextColor(...gold);
+        doc.text('$' + svc.price.toLocaleString(), w - margin, y, { align:'right' });
+
+        y += 6;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8.5);
+        doc.setTextColor(...gray);
+        const descLines = doc.splitTextToSize(svc.desc, contentW - 30);
+        doc.text(descLines, margin, y);
+        y += descLines.length * 4 + 8;
+      });
+    }
+
+    // Total line
+    checkPage(30);
+    y += 4;
+    doc.setFillColor(...teal);
+    doc.rect(margin, y, contentW, 1, 'F');
+    y += 10;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...white);
+    doc.text('Project Total', margin, y);
+    doc.setTextColor(...gold);
+    doc.text('$' + projectTotal.toLocaleString(), w - margin, y, { align:'right' });
+
+    // ── Payment Schedule ──
+    y += 18;
+    checkPage(40);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...gold);
+    doc.text('Payment Schedule', margin, y);
+    y += 3;
+    doc.setFillColor(...teal);
+    doc.rect(margin, y, 30, 1.5, 'F');
+    y += 12;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(...white);
+
+    if (projectTotal <= 1500 && projectTotal > 0) {
+      doc.text(`Full Payment Required: $${projectTotal.toLocaleString()}`, margin, y);
+      y += 7;
+      doc.setFontSize(8.5);
+      doc.setTextColor(...gray);
+      doc.text('Per Client Service Agreement, projects $1,500 or under require full payment at signing.', margin, y);
+    } else if (projectTotal > 1500) {
+      const p1 = Math.round(projectTotal * 0.5);
+      const p2 = Math.round(projectTotal * 0.3);
+      const p3 = projectTotal - p1 - p2;
+      const payments = [
+        ['50% — Project Kickoff', '$' + p1.toLocaleString()],
+        ['30% — Design / Component Approval', '$' + p2.toLocaleString()],
+        ['20% — Delivery Call & Asset Transfer', '$' + p3.toLocaleString()],
+      ];
+      payments.forEach(([label, val]) => {
+        doc.setTextColor(...white);
+        doc.text(label, margin, y);
+        doc.setTextColor(...gold);
+        doc.text(val, w - margin, y, { align:'right' });
+        y += 8;
+      });
+    }
+
+    // ── Monthly Plan ──
+    if (monthlyPlan && monthlyPlan.price > 0) {
+      y += 10;
+      checkPage(40);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.setTextColor(...gold);
+      doc.text('Monthly Management Plan', margin, y);
+      y += 3;
+      doc.setFillColor(...teal);
+      doc.rect(margin, y, 30, 1.5, 'F');
+      y += 12;
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(...white);
+      doc.text(`${monthlyPlan.name} — $${monthlyPlan.price}/month`, margin, y);
+      y += 10;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(...gray);
+      monthlyPlan.features.forEach(f => {
+        checkPage(8);
+        doc.text('  •  ' + f, margin, y);
+        y += 6;
+      });
+    }
+
+    // ── Explanation of Services ──
+    addPage();
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(...gold);
+    doc.text('Explanation of Services', margin, y);
+    y += 4;
+    doc.setFillColor(...teal);
+    doc.rect(margin, y, 40, 1.5, 'F');
+    y += 14;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...white);
+
+    const explanations = [
+      ['Custom Responsive Website Design', 'A fully custom, conversion-optimized website built from scratch around your brand, market, and business goals. Designed to look premium on every device and engineered to turn visitors into leads.'],
+      ['Lead Capture System', 'Strategic placement of calls-to-action, contact forms, and inquiry flows throughout your site. Every touchpoint is designed to capture visitor information and move them toward a booked call.'],
+      ['Local SEO Foundation', 'Keyword research, meta descriptions, title tags, schema markup, and Google Business Profile optimization — setting you up to appear in local search results from day one.'],
+      ['AI Chatbot', 'An intelligent assistant embedded in your website that engages visitors, answers questions, captures lead information, and can book appointments — running 24/7 without staff involvement.'],
+      ['Lead Automation', 'Automated email sequences and follow-up workflows triggered by visitor actions. From simple confirmation emails to multi-step nurture campaigns that convert over time.'],
+      ['Advanced SEO Strategy', 'In-depth competitor analysis, content strategy, structured data, and ongoing optimization designed to help you rank above established competitors in your market.'],
+      ['Brand Strategy', 'Complete brand development including visual identity, typography, color systems, brand guidelines, and a cohesive design language that commands premium positioning.'],
+      ['Client Portal', 'A secure, branded platform where clients can access documents, sign agreements, communicate securely, and view personalized dashboards — elevating the client experience.'],
+      ['Monthly Management Plans', 'Ongoing website maintenance, security monitoring, content updates, performance optimization, and priority support to keep your digital presence running at peak performance.'],
+    ];
+
+    explanations.forEach(([title, desc]) => {
+      checkPage(24);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.5);
+      doc.setTextColor(...teal);
+      doc.text(title, margin, y);
+      y += 6;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8.5);
+      doc.setTextColor(...gray);
+      const lines = doc.splitTextToSize(desc, contentW);
+      doc.text(lines, margin, y);
+      y += lines.length * 4 + 8;
+    });
+
+    // ── Disclosures ──
+    checkPage(60);
+    y += 6;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(...gold);
+    doc.text('Important Disclosures', margin, y);
+    y += 3;
+    doc.setFillColor(...teal);
+    doc.rect(margin, y, 30, 1.5, 'F');
+    y += 12;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(...gray);
+
+    const disclosures = [
+      'This proposal outlines the scope and investment for services provided by Pure Broker Branding. Final scope is confirmed during the strategy kickoff call.',
+      'Pure Broker Branding does not cover hosting charges, domain registration fees, or third-party platform subscription costs. These include but are not limited to: web hosting platforms (Shopify, WordPress, Squarespace), communication systems (Twilio, Grasshopper), chatbot providers, CRM licenses, email marketing platforms, and any other third-party tools required to fulfill the site\'s functionality.',
+      'We build, configure, optimize, and integrate these systems on your behalf. Ongoing subscription costs for third-party services are the client\'s responsibility.',
+      'Monthly Management Plans are billed monthly with no long-term contracts required. Plans can be adjusted or canceled with 30 days written notice.',
+      'All custom work product (designs, code, content) is owned by the client upon final payment. Source files and assets are transferred during the delivery call.',
+      'Project timelines are estimated and may vary based on client responsiveness, scope changes, and third-party dependencies.',
+      'This proposal is valid for 30 days from the date issued. Pricing and availability may change after this period.',
+    ];
+
+    disclosures.forEach(d => {
+      checkPage(16);
+      const lines = doc.splitTextToSize('• ' + d, contentW);
+      doc.text(lines, margin, y);
+      y += lines.length * 3.8 + 4;
+    });
+
+    // Footer on last page
+    y = h - 20;
+    doc.setFillColor(...teal);
+    doc.rect(margin, y, contentW, 0.5, 'F');
+    y += 6;
+    doc.setFontSize(8);
+    doc.setTextColor(...gray);
+    doc.text('Pure Broker Branding | purebrokerbranding.com | purebrokerbranding@gmail.com', w / 2, y, { align:'center' });
+
+    // Save
+    const filename = `PBB-Proposal-${firstName.replace(/\s+/g,'-')}${bizName ? '-' + bizName.replace(/\s+/g,'-') : ''}.pdf`;
+    doc.save(filename);
+  }
+</script>
 </body>
 </html>
