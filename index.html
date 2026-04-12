@@ -328,6 +328,13 @@
   .client-id-display .cid-label { color:var(--gray); font-size:.75rem; font-weight:600; text-transform:uppercase; }
   .amount-row { display:none; }
   .amount-row.show { display:block; }
+  .log-payment-section { background:rgba(0,110,132,0.08); border:1px solid var(--teal-dim); border-radius:8px; padding:14px; margin:12px 0; }
+  .log-payment-header { color:var(--teal-light); font-weight:700; font-size:0.85rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; text-align:center; }
+  .log-payment-section label { font-size:0.75rem; color:var(--muted); margin-bottom:2px; }
+  .log-payment-section input { background:var(--dark-alt); border:1px solid var(--teal-dim); color:var(--gold); font-weight:600; text-align:center; }
+  .log-payment-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:8px; }
+  .log-payment-col label { display:block; font-size:0.7rem; text-align:center; }
+  .log-payment-col input { font-size:0.85rem; padding:6px; }
   /* ── TRACKER ── */
   .tracker-section { max-width: 900px; margin: 0 auto; }
   .tracker-search {
@@ -1129,6 +1136,25 @@
       <option value="Support">Support</option>
       <option value="No Interest">No Interest</option>
     </select>
+    <div class="log-payment-section">
+      <div class="log-payment-header">Payment Breakdown</div>
+      <label>Total Quoted</label>
+      <input type="text" id="log-total-quoted" placeholder="Auto-filled from quote tool" readonly>
+      <div class="log-payment-grid">
+        <div class="log-payment-col">
+          <label>Deposit (50%)</label>
+          <input type="text" id="log-deposit-amount" placeholder="—" readonly>
+        </div>
+        <div class="log-payment-col">
+          <label>Approval (30%)</label>
+          <input type="text" id="log-approval-amount" placeholder="—" readonly>
+        </div>
+        <div class="log-payment-col">
+          <label>Final (20%)</label>
+          <input type="text" id="log-final-amount" placeholder="—" readonly>
+        </div>
+      </div>
+    </div>
     <label>Desired Launch Date</label>
     <input type="date" id="log-launch">
     <label>Follow-Up Date (if applicable)</label>
@@ -1728,7 +1754,11 @@
       source: 'Sales Call Flow',
       amount_closed: document.getElementById('log-amount').value.trim() || '',
       desired_launch_date: document.getElementById('log-launch').value,
-      client_id: currentClientId
+      client_id: currentClientId,
+      total_quoted: document.getElementById('log-total-quoted').value || '',
+      deposit_amount: document.getElementById('log-deposit-amount').value || '',
+      approval_amount: document.getElementById('log-approval-amount').value || '',
+      final_amount: document.getElementById('log-final-amount').value || ''
     };
     document.getElementById('log-duration').value = document.getElementById('timer-display').textContent;
     fetch(CALL_LOG_WEBHOOK, {
@@ -1737,6 +1767,10 @@
     }).then(() => {
       document.getElementById('log-success').style.display = 'block';
       ['log-name','log-email','log-phone','log-notes','log-amount'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('log-total-quoted').value = '';
+      document.getElementById('log-deposit-amount').value = '';
+      document.getElementById('log-approval-amount').value = '';
+      document.getElementById('log-final-amount').value = '';
       document.getElementById('log-industry').selectedIndex = 0;
       document.getElementById('log-result').selectedIndex = 0;
       document.getElementById('log-tier').selectedIndex = 0;
@@ -2345,6 +2379,23 @@
       const link2 = document.getElementById('prop-pdf-2-link');
       link2.href = blobUrl; link2.textContent = 'View PDF'; link2.style.display = 'inline';
       pdfGenCount = 2;
+    }
+
+    // Auto-populate call log payment fields
+    if (projectTotal > 0) {
+      document.getElementById('log-total-quoted').value = '$' + fmtPrice(projectTotal);
+      if (projectTotal <= 1500) {
+        document.getElementById('log-deposit-amount').value = '$' + fmtPrice(projectTotal);
+        document.getElementById('log-approval-amount').value = '$0';
+        document.getElementById('log-final-amount').value = '$0';
+      } else {
+        const dep = Math.round(projectTotal * 0.50);
+        const appr = Math.round(projectTotal * 0.30);
+        const fin = projectTotal - dep - appr;
+        document.getElementById('log-deposit-amount').value = '$' + fmtPrice(dep);
+        document.getElementById('log-approval-amount').value = '$' + fmtPrice(appr);
+        document.getElementById('log-final-amount').value = '$' + fmtPrice(fin);
+      }
     }
   }
 </script>
