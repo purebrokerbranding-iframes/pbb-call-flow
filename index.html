@@ -1461,7 +1461,11 @@
   function toggleAmountField() {
     const result = document.getElementById('log-result').value;
     const row = document.getElementById('amount-row');
-    if (result === 'Closed — Signed') { row.classList.add('show'); }
+    if (result === 'Closed — Signed') {
+      row.classList.add('show');
+      const totalQuoted = document.getElementById('log-total-quoted').value;
+      if (totalQuoted) document.getElementById('log-amount').value = totalQuoted;
+    }
     else { row.classList.remove('show'); document.getElementById('log-amount').value = ''; }
   }
 
