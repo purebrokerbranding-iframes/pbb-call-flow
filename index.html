@@ -1688,22 +1688,35 @@
   // SUBMIT CALL LOG
   // ══════════════════════════════════════
   function submitLog() {
+    const fullName = document.getElementById('log-name').value.trim();
+    if (!fullName) { alert('Please enter the prospect name.'); return; }
+    const nameParts = fullName.split(' ');
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
+    const now = new Date();
+    const dateStr = (now.getMonth()+1) + '/' + now.getDate() + '/' + now.getFullYear();
+    const timeStr = now.toLocaleTimeString('en-US', {hour:'numeric', minute:'2-digit', hour12:false});
+    const tierEl = document.getElementById('calc-tier-badge');
+    const tierText = tierEl && tierEl.style.display !== 'none' ? tierEl.textContent.split('—')[0].trim() : '';
     const data = {
-      client_id: currentClientId,
-      prospect_name: document.getElementById('log-name').value.trim(),
-      prospect_email: document.getElementById('log-email').value.trim(),
-      prospect_phone: document.getElementById('log-phone').value.trim(),
+      date: dateStr,
+      time: timeStr,
+      agent: document.getElementById('user-badge').textContent,
+      first_name: firstName,
+      last_name: lastName,
+      email: document.getElementById('log-email').value.trim(),
+      phone: document.getElementById('log-phone').value.trim(),
       industry: document.getElementById('log-industry').value,
-      call_result: document.getElementById('log-result').value,
+      duration: document.getElementById('timer-display').textContent,
+      outcome: document.getElementById('log-result').value,
+      tier_interest: tierText,
+      notes: document.getElementById('log-notes').value.trim(),
+      follow_up_date: document.getElementById('log-followup').value,
+      source: 'Sales Call Flow',
       amount_closed: document.getElementById('log-amount').value.trim() || '',
       desired_launch_date: document.getElementById('log-launch').value,
-      follow_up_date: document.getElementById('log-followup').value,
-      call_duration: document.getElementById('timer-display').textContent,
-      call_summary: document.getElementById('log-notes').value.trim(),
-      logged_at: new Date().toISOString(),
-      logged_by: document.getElementById('user-badge').textContent
+      client_id: currentClientId
     };
-    if (!data.prospect_name) { alert('Please enter the prospect name.'); return; }
     document.getElementById('log-duration').value = document.getElementById('timer-display').textContent;
     fetch(CALL_LOG_WEBHOOK, {
       method: 'POST',
