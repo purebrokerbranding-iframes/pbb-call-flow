@@ -1920,7 +1920,11 @@
       doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(...teal);
       doc.text(`+ $${monthlyPlan.price}/mo  \u2014  ${monthlyPlan.name}`, cx, cardY+48, {align:'center'});
     }
-    y = cardY + cardH + 14;
+    // Tagline under card
+    y = cardY + cardH + 6;
+    doc.setFont('helvetica','italic'); doc.setFontSize(8); doc.setTextColor(...white);
+    doc.text('Built specifically for your business, market, and growth goals', cx, y, {align:'center'});
+    y += 10;
 
     // ── Stats row — evenly spaced in thirds ──
     const statsY = y;
@@ -2009,7 +2013,7 @@
     checkPage(30); y += 4;
     doc.setFillColor(...teal); doc.rect(margin,y,contentW,1,'F'); y += 10;
     doc.setFont('helvetica','bold'); doc.setFontSize(14); doc.setTextColor(...white);
-    doc.text('Project Total', margin, y);
+    doc.text('Total Project Investment', margin, y);
     doc.setTextColor(...gold); doc.text('$'+fmtPrice(projectTotal), w-margin, y, {align:'right'});
 
     // Payment Schedule
@@ -2028,7 +2032,7 @@
       doc.text('Per Client Service Agreement, projects $1,500 or under require full payment at signing.', margin, y);
     } else if (projectTotal > 1500) {
       const p1=Math.round(projectTotal*0.5*100)/100, p2=Math.round(projectTotal*0.3*100)/100, p3=Math.round((projectTotal-p1-p2)*100)/100;
-      [['50% — Project Kickoff','$'+fmtPrice(p1)],['30% — Design / Component Approval','$'+fmtPrice(p2)],['20% — Delivery Call & Asset Transfer','$'+fmtPrice(p3)]].forEach(([l,v])=>{
+      [['50% — To Start & Secure Your Build Slot','$'+fmtPrice(p1)],['30% — After You Approve The Build Direction','$'+fmtPrice(p2)],['20% — Final Delivery & Launch','$'+fmtPrice(p3)]].forEach(([l,v])=>{
         doc.setTextColor(...white); doc.text(l,margin,y); doc.setTextColor(...gold); doc.text(v,w-margin,y,{align:'right'}); y+=8;
       });
     }
