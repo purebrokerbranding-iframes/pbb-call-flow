@@ -1429,6 +1429,16 @@
         el.style.display = (ind === 'all' || ind === tag) ? '' : 'none';
       });
     });
+    // Auto-fill call log industry dropdown
+    const logInd = document.getElementById('log-industry');
+    const map = { insurance:'Insurance', financial:'Financial Advisor', realestate:'Real Estate / Mortgage' };
+    logInd.value = map[ind] || '';
+    // Sync objection filter
+    const objMatch = document.querySelector(`.obj-btn[onclick*="'${ind}'"]`) || document.querySelector('.obj-btn[onclick*="\'all\'"]');
+    if (objMatch) filterObj(ind === 'all' ? 'all' : ind, objMatch);
+    // Sync compliance filter
+    const compMatch = document.querySelector(`.comp-btn[onclick*="'${ind}'"]`) || document.querySelector('.comp-btn[onclick*="\'all\'"]');
+    if (compMatch) filterComp(ind === 'all' ? 'all' : ind, compMatch);
   }
 
   // ══════════════════════════════════════
