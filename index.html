@@ -1982,7 +1982,8 @@
       tierEl.style.display = 'block';
       // Check if only refresh services are selected
       const refreshIds = PT_SERVICES.refresh.map(s => s.id);
-      const onlyRefresh = selectedServices.length > 0 && selectedServices.every(id => refreshIds.includes(id));
+      const selArr = [...selectedServices];
+      const onlyRefresh = selArr.length > 0 && selArr.every(id => refreshIds.includes(id));
       if (onlyRefresh) {
         tierEl.className = 'calc-tier-badge calc-tier-signature'; tierEl.textContent = 'Website Refresh';
         logTier.value = 'Website Refresh';
