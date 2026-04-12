@@ -591,6 +591,7 @@
     <div class="ci-field" id="ci-last"><input type="text" id="ci-last-input" placeholder="Last Name"><span class="ci-copy-val" id="ci-last-copy" onclick="copyCi(this)"></span></div>
     <div class="ci-field" id="ci-email"><input type="email" id="ci-email-input" placeholder="Email"><span class="ci-copy-val" id="ci-email-copy" onclick="copyCi(this)"></span></div>
     <div class="ci-field" id="ci-phone"><input type="tel" id="ci-phone-input" placeholder="Phone"><span class="ci-copy-val" id="ci-phone-copy" onclick="copyCi(this)"></span></div>
+    <div class="ci-field" id="ci-biz"><input type="text" id="ci-biz-input" placeholder="Business Name"><span class="ci-copy-val" id="ci-biz-copy" onclick="copyCi(this)"></span></div>
     <button class="ci-lock-btn lock" id="ci-lock-btn" onclick="toggleCiLock()">🔒 Lock</button>
   </div>
   <div style="display:flex;align-items:center;gap:12px;">
@@ -1318,7 +1319,7 @@
   let ciLocked = false;
   function toggleCiLock() {
     ciLocked = !ciLocked;
-    const fields = ['ci-first','ci-last','ci-email','ci-phone'];
+    const fields = ['ci-first','ci-last','ci-email','ci-phone','ci-biz'];
     const btn = document.getElementById('ci-lock-btn');
     fields.forEach(id => {
       const field = document.getElementById(id);
@@ -1335,24 +1336,48 @@
     btn.className = ciLocked ? 'ci-lock-btn unlock' : 'ci-lock-btn lock';
     if (ciLocked) prefillForms();
   }
+  function formatE164(raw) {
+    const digits = raw.replace(/\D/g, '');
+    if (digits.length === 10) return '+1' + digits;
+    if (digits.length === 11 && digits[0] === '1') return '+' + digits;
+    if (digits.startsWith('+')) return digits;
+    return raw;
+  }
+  function formatDisplay(raw) {
+    const digits = raw.replace(/\D/g, '');
+    if (digits.length === 10) return '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
+    if (digits.length === 11 && digits[0] === '1') return '(' + digits.slice(1,4) + ') ' + digits.slice(4,7) + '-' + digits.slice(7);
+    return raw;
+  }
   function prefillForms() {
     const first = document.getElementById('ci-first-input').value.trim();
     const last = document.getElementById('ci-last-input').value.trim();
     const fullName = (first + ' ' + last).trim();
     const email = document.getElementById('ci-email-input').value.trim();
-    const phone = document.getElementById('ci-phone-input').value.trim();
+    const rawPhone = document.getElementById('ci-phone-input').value.trim();
+    // Format phone display in the locked bar
+    if (rawPhone) {
+      const pretty = formatDisplay(rawPhone);
+      document.getElementById('ci-phone-input').value = pretty;
+      document.getElementById('ci-phone-copy').textContent = pretty;
+    }
+    const e164Phone = rawPhone ? formatE164(rawPhone) : '';
     // Send Links tab
     if (first) document.getElementById('sl-first-name').value = first;
     if (email) document.getElementById('sl-email').value = email;
-    if (phone) document.getElementById('sl-phone').value = phone;
+    if (e164Phone) document.getElementById('sl-phone').value = e164Phone;
     // Proposal tab
     if (fullName) document.getElementById('prop-name').value = fullName;
     if (email) document.getElementById('prop-email').value = email;
-    if (phone) document.getElementById('prop-phone').value = phone;
+    if (e164Phone) document.getElementById('prop-phone').value = e164Phone;
     // Call Log tab
     if (fullName) document.getElementById('log-name').value = fullName;
     if (email) document.getElementById('log-email').value = email;
-    if (phone) document.getElementById('log-phone').value = phone;
+    if (e164Phone) document.getElementById('log-phone').value = e164Phone;
+    // Live Quote / PDF tab
+    if (first) document.getElementById('pt-first-name').value = first;
+    const biz = document.getElementById('ci-biz-input').value.trim();
+    if (biz) document.getElementById('pt-biz-name').value = biz;
   }
   function copyCi(el) {
     const val = el.textContent;
