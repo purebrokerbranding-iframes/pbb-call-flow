@@ -1108,7 +1108,7 @@
       <option value="Other">Other</option>
     </select>
     <label>Call Result</label>
-    <select id="log-result" onchange="toggleAmountField()">
+    <select id="log-result" onchange="toggleAmountField();toggleReasonField();">
       <option value="">Select result...</option>
       <option value="Closed — Signed">✅ Closed — Signed</option>
       <option value="Overview Sent — Following Up">📩 Overview Sent — Following Up</option>
@@ -1118,6 +1118,20 @@
       <option value="Not a Fit">❌ Not a Fit</option>
       <option value="No Show">📵 No Show</option>
     </select>
+    <div class="amount-row" id="reason-row">
+      <label>Reason(s) Didn't Close <span style="font-weight:400;color:rgba(255,255,255,0.4);font-size:.75rem;">(select all that apply)</span></label>
+      <div id="reason-checkboxes" style="display:flex;flex-direction:column;gap:8px;padding:4px 0;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--white);cursor:pointer;"><input type="checkbox" class="reason-cb" value="Price Too High" style="accent-color:#CDBC8A;width:16px;height:16px;"> Price Too High</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--white);cursor:pointer;"><input type="checkbox" class="reason-cb" value="Needs Partner Approval" style="accent-color:#CDBC8A;width:16px;height:16px;"> Needs Partner / Spouse Approval</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--white);cursor:pointer;"><input type="checkbox" class="reason-cb" value="Timing Not Right" style="accent-color:#CDBC8A;width:16px;height:16px;"> Timing Not Right</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--white);cursor:pointer;"><input type="checkbox" class="reason-cb" value="Already Has Provider" style="accent-color:#CDBC8A;width:16px;height:16px;"> Already Has a Provider</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--white);cursor:pointer;"><input type="checkbox" class="reason-cb" value="Doesn't See Value" style="accent-color:#CDBC8A;width:16px;height:16px;"> Doesn't See the Value</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--white);cursor:pointer;"><input type="checkbox" class="reason-cb" value="Wants DIY" style="accent-color:#CDBC8A;width:16px;height:16px;"> Wants to DIY</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--white);cursor:pointer;"><input type="checkbox" class="reason-cb" value="No Budget" style="accent-color:#CDBC8A;width:16px;height:16px;"> No Budget Right Now</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--white);cursor:pointer;"><input type="checkbox" class="reason-cb" value="No Show" style="accent-color:#CDBC8A;width:16px;height:16px;"> No Show / Ghosted</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--white);cursor:pointer;"><input type="checkbox" class="reason-cb" value="Other" style="accent-color:#CDBC8A;width:16px;height:16px;"> Other</label>
+      </div>
+    </div>
     <div class="amount-row" id="amount-row">
       <label>Amount Closed ($)</label>
       <input type="text" id="log-amount" placeholder="e.g. 5000">
@@ -1135,6 +1149,15 @@
       <option value="General Call">General Call</option>
       <option value="Support">Support</option>
       <option value="No Interest">No Interest</option>
+    </select>
+    <label>Monthly Plan Interest</label>
+    <select id="log-monthly-plan">
+      <option value="">Select plan...</option>
+      <option value="Starter">Starter — $97/mo</option>
+      <option value="Growth">Growth — $197/mo</option>
+      <option value="Premium">Premium — $297/mo</option>
+      <option value="Not Interested">Not Interested</option>
+      <option value="Undecided">Undecided</option>
     </select>
     <div class="log-payment-section">
       <div class="log-payment-header">Payment Breakdown</div>
@@ -1468,6 +1491,12 @@
     }
     else { row.classList.remove('show'); document.getElementById('log-amount').value = ''; }
   }
+  function toggleReasonField() {
+    const result = document.getElementById('log-result').value;
+    const row = document.getElementById('reason-row');
+    if (result && result !== 'Closed — Signed') { row.classList.add('show'); }
+    else { row.classList.remove('show'); document.querySelectorAll('.reason-cb').forEach(cb => cb.checked = false); }
+  }
 
   // ══════════════════════════════════════
   // CUSTOMER INFO LOCK/COPY
@@ -1768,7 +1797,9 @@
       deposit_amount: document.getElementById('log-deposit-amount').value || '',
       deposit_paid: document.getElementById('log-deposit-paid').value,
       approval_amount: document.getElementById('log-approval-amount').value || '',
-      final_amount: document.getElementById('log-final-amount').value || ''
+      final_amount: document.getElementById('log-final-amount').value || '',
+      reasons_didnt_close: Array.from(document.querySelectorAll('.reason-cb:checked')).map(cb => cb.value).join(', '),
+      monthly_plan_interest: document.getElementById('log-monthly-plan').value
     };
     document.getElementById('log-duration').value = document.getElementById('timer-display').textContent;
     fetch(CALL_LOG_WEBHOOK, {
@@ -1785,6 +1816,9 @@
       document.getElementById('log-industry').selectedIndex = 0;
       document.getElementById('log-result').selectedIndex = 0;
       document.getElementById('log-tier').selectedIndex = 0;
+      document.getElementById('log-monthly-plan').selectedIndex = 0;
+      document.querySelectorAll('.reason-cb').forEach(cb => cb.checked = false);
+      document.getElementById('reason-row').classList.remove('show');
       document.getElementById('log-followup').value = '';
       document.getElementById('log-duration').value = '';
       document.getElementById('amount-row').classList.remove('show');
