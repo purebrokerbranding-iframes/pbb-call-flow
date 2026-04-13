@@ -269,6 +269,12 @@
   }
   .copy-btn:hover { background: var(--teal-light); }
   .copy-btn.copied { background: var(--green); color:#000; }
+  .copy-btn.link-added { background: var(--gold); color:#000; }
+  .copy-btn.link-added:hover { background: var(--gold-light); }
+  .copy-btn.slots-full { opacity:.4; cursor:not-allowed; }
+  .sl-slot-indicators { display:flex; gap:6px; margin-bottom:12px; }
+  .sl-slot-dot { width:10px; height:10px; border-radius:50%; background:var(--dark3); border:1px solid var(--teal-dim); transition:all .2s; }
+  .sl-slot-dot.filled { background:var(--gold); border-color:var(--gold); }
   /* ── PROPOSAL FORM ── */
   .proposal-section { max-width: 600px; margin: 0 auto; }
   .proposal-form {
@@ -991,18 +997,19 @@
   <!-- SEND LINK SECTION (3 links) -->
   <div class="send-link-box">
     <h3>📤 Send Links to Prospect</h3>
-    <p class="sl-desc">Copy links from below, paste them here, and send up to 3 links directly to the prospect's email or phone.</p>
+    <p class="sl-desc">Click "Add Link" on any link below to auto-fill slots 1–3, then send directly to the prospect's email or phone.</p>
     <div class="sl-row">
       <input type="text" id="sl-first-name" placeholder="First Name">
       <input type="email" id="sl-email" placeholder="Email (optional)">
       <input type="tel" id="sl-phone" placeholder="Phone (optional)">
     </div>
+    <div class="sl-slot-indicators"><div class="sl-slot-dot" id="sl-dot-1"></div><div class="sl-slot-dot" id="sl-dot-2"></div><div class="sl-slot-dot" id="sl-dot-3"></div><span style="color:var(--gray);font-size:.7rem;margin-left:4px;" id="sl-slot-count">0 / 3 links added</span></div>
     <div class="sl-link-label">Link 1</div>
-    <input type="text" class="sl-link-input" id="sl-link-1" placeholder="Paste first link here...">
+    <input type="text" class="sl-link-input" id="sl-link-1" placeholder="Click 'Add Link' below or paste here..." oninput="syncSlotUI()">
     <div class="sl-link-label">Link 2 (optional)</div>
-    <input type="text" class="sl-link-input" id="sl-link-2" placeholder="Paste second link here...">
+    <input type="text" class="sl-link-input" id="sl-link-2" placeholder="Click 'Add Link' below or paste here..." oninput="syncSlotUI()">
     <div class="sl-link-label">Link 3 (optional)</div>
-    <input type="text" class="sl-link-input" id="sl-link-3" placeholder="Paste third link here...">
+    <input type="text" class="sl-link-input" id="sl-link-3" placeholder="Click 'Add Link' below or paste here..." oninput="syncSlotUI()">
     <button class="sl-send-btn" onclick="sendLink()">Send Links</button>
     <div class="sl-success" id="sl-success">✅ Links sent successfully!</div>
     <div class="sl-error" id="sl-error"></div>
@@ -1011,39 +1018,39 @@
   <!-- MONTHLY PAYMENT LINKS -->
   <h3 class="link-section-label">💳 Monthly Payment Links <span style="color:var(--gray);font-size:.75rem;font-weight:400;">(Monthly Management Plan subscriptions — billed separately from project pricing)</span></h3>
   <div class="link-grid">
-    <div class="link-card" style="border-color:var(--gold-dim);"><div class="link-info"><h4 style="color:var(--gold);">Starter Plan Payment</h4><p>$97/mo — Starter Care</p></div><button class="copy-btn" onclick="copyLink(this,'https://pay.purebrokerbranding.com/b/eVq28s1r57tN7Ms3Da0kE00')">Copy Link</button></div>
-    <div class="link-card" style="border-color:var(--teal);"><div class="link-info"><h4 style="color:var(--teal-light);">Growth Plan Payment</h4><p>$197/mo — Growth Care</p></div><button class="copy-btn" onclick="copyLink(this,'https://pay.purebrokerbranding.com/b/bJe9AUedR9BV6Ioa1y0kE02')">Copy Link</button></div>
-    <div class="link-card" style="border-color:var(--gold);"><div class="link-info"><h4 style="color:var(--gold-light);">Premium Plan Payment</h4><p>$297/mo — Premium Care</p></div><button class="copy-btn" onclick="copyLink(this,'https://pay.purebrokerbranding.com/b/14A6oI0n16pJ6IoehO0kE03')">Copy Link</button></div>
+    <div class="link-card" style="border-color:var(--gold-dim);"><div class="link-info"><h4 style="color:var(--gold);">Starter Plan Payment</h4><p>$97/mo — Starter Care</p></div><button class="copy-btn" onclick="addLink(this,'https://pay.purebrokerbranding.com/b/eVq28s1r57tN7Ms3Da0kE00')">Add Link</button></div>
+    <div class="link-card" style="border-color:var(--teal);"><div class="link-info"><h4 style="color:var(--teal-light);">Growth Plan Payment</h4><p>$197/mo — Growth Care</p></div><button class="copy-btn" onclick="addLink(this,'https://pay.purebrokerbranding.com/b/bJe9AUedR9BV6Ioa1y0kE02')">Add Link</button></div>
+    <div class="link-card" style="border-color:var(--gold);"><div class="link-info"><h4 style="color:var(--gold-light);">Premium Plan Payment</h4><p>$297/mo — Premium Care</p></div><button class="copy-btn" onclick="addLink(this,'https://pay.purebrokerbranding.com/b/14A6oI0n16pJ6IoehO0kE03')">Add Link</button></div>
   </div>
 
   <!-- PROJECT INVESTMENT TIERS -->
   <h3 class="link-section-label" style="margin-top:24px;">🏗️ Project Investment Tiers <span style="color:var(--gray);font-size:.75rem;font-weight:400;">(One-time custom project pricing — send to prospects for reference)</span></h3>
   <div class="link-grid">
-    <div class="link-card" style="border-color:var(--gold-dim);"><div class="link-info"><h4 style="color:var(--gold);">Signature Tier</h4><p>Starting at $1,500 — Built to Launch</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/investment')">Copy Link</button></div>
-    <div class="link-card" style="border-color:var(--teal);"><div class="link-info"><h4 style="color:var(--teal-light);">Luminary Tier</h4><p>$3,500 – $8,000 — Built to Scale</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/investment')">Copy Link</button></div>
-    <div class="link-card" style="border-color:var(--gold);"><div class="link-info"><h4 style="color:var(--gold-light);">Sovereign Tier</h4><p>Custom Pricing — Built to Dominate</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/investment')">Copy Link</button></div>
+    <div class="link-card" style="border-color:var(--gold-dim);"><div class="link-info"><h4 style="color:var(--gold);">Signature Tier</h4><p>Starting at $1,500 — Built to Launch</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/investment')">Add Link</button></div>
+    <div class="link-card" style="border-color:var(--teal);"><div class="link-info"><h4 style="color:var(--teal-light);">Luminary Tier</h4><p>$3,500 – $8,000 — Built to Scale</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/investment')">Add Link</button></div>
+    <div class="link-card" style="border-color:var(--gold);"><div class="link-info"><h4 style="color:var(--gold-light);">Sovereign Tier</h4><p>Custom Pricing — Built to Dominate</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/investment')">Add Link</button></div>
   </div>
 
   <hr class="link-section-divider">
 
   <h3 style="color:var(--gold);font-family:'Playfair Display',serif;margin-bottom:16px;">Quick Links — Send to Prospect</h3>
-  <p style="color:var(--gray);font-size:.85rem;margin-bottom:16px;">Click "Copy Link" to copy the URL, then paste it into the Send Links form above or share directly.</p>
+  <p style="color:var(--gray);font-size:.85rem;margin-bottom:16px;">Click "Add Link" to auto-fill it into the next available slot above (max 3). Click again to remove.</p>
   <div class="link-grid">
-    <div class="link-card"><div class="link-info"><h4>Homepage</h4><p>Main site — overview of what we do</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Our Solutions</h4><p>Full breakdown of services</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/solutions')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>The Experience</h4><p>What it's like working with us</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/the-experience')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Book a Strategy Call</h4><p>Direct booking page</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/booking-page')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Get in Touch</h4><p>Contact page</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/get-in-touch')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Inquire Now</h4><p>Start the onboarding process</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/inquire-pure-broker-branding')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>The Broker Brief (Blog)</h4><p>Industry insights & articles</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/blogs/the-broker-brief')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Press & Media</h4><p>News coverage & features</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/press')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Management Plans</h4><p>Monthly care packages</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/monthly-care-pricing-page')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Insurance Broker FAQ</h4><p>Industry-specific info</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/insurance-broker-faqs-pure-broker-branding')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Financial Advisor FAQ</h4><p>Industry-specific info</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/financial-advisor-faqs-pure-broker-branding')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Mortgage Broker FAQ</h4><p>Industry-specific info</p></div><button class="copy-btn" onclick="copyLink(this,'https://purebrokerbranding.com/pages/mortgage-broker-faqs')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Facebook</h4><p>Social proof & community</p></div><button class="copy-btn" onclick="copyLink(this,'https://www.facebook.com/share/1FNjySPjNu/?mibextid=wwXIfr')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>Instagram</h4><p>Visual portfolio & content</p></div><button class="copy-btn" onclick="copyLink(this,'https://www.instagram.com/purebrokerbranding/')">Copy Link</button></div>
-    <div class="link-card"><div class="link-info"><h4>LinkedIn</h4><p>Professional presence</p></div><button class="copy-btn" onclick="copyLink(this,'https://www.linkedin.com/company/purebrokerbranding/')">Copy Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Homepage</h4><p>Main site — overview of what we do</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Our Solutions</h4><p>Full breakdown of services</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/solutions')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>The Experience</h4><p>What it's like working with us</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/the-experience')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Book a Strategy Call</h4><p>Direct booking page</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/booking-page')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Get in Touch</h4><p>Contact page</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/get-in-touch')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Inquire Now</h4><p>Start the onboarding process</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/inquire-pure-broker-branding')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>The Broker Brief (Blog)</h4><p>Industry insights & articles</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/blogs/the-broker-brief')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Press & Media</h4><p>News coverage & features</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/press')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Management Plans</h4><p>Monthly care packages</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/monthly-care-pricing-page')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Insurance Broker FAQ</h4><p>Industry-specific info</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/insurance-broker-faqs-pure-broker-branding')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Financial Advisor FAQ</h4><p>Industry-specific info</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/financial-advisor-faqs-pure-broker-branding')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Mortgage Broker FAQ</h4><p>Industry-specific info</p></div><button class="copy-btn" onclick="addLink(this,'https://purebrokerbranding.com/pages/mortgage-broker-faqs')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Facebook</h4><p>Social proof & community</p></div><button class="copy-btn" onclick="addLink(this,'https://www.facebook.com/share/1FNjySPjNu/?mibextid=wwXIfr')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>Instagram</h4><p>Visual portfolio & content</p></div><button class="copy-btn" onclick="addLink(this,'https://www.instagram.com/purebrokerbranding/')">Add Link</button></div>
+    <div class="link-card"><div class="link-info"><h4>LinkedIn</h4><p>Professional presence</p></div><button class="copy-btn" onclick="addLink(this,'https://www.linkedin.com/company/purebrokerbranding/')">Add Link</button></div>
   </div>
 </div>
 
@@ -1527,10 +1534,15 @@
     if (ciLocked) prefillForms();
   }
   function formatE164(raw) {
-    const digits = raw.replace(/\D/g, '');
+    if (!raw) return '';
+    // Strip everything except digits
+    let digits = raw.replace(/\D/g, '');
+    // Remove leading 1s that would cause +1+1 duplication (e.g. someone enters +1 and raw already has 11 digits)
+    if (digits.length === 12 && digits.startsWith('11')) digits = digits.slice(1);
     if (digits.length === 10) return '+1' + digits;
     if (digits.length === 11 && digits[0] === '1') return '+' + digits;
-    if (digits.startsWith('+')) return digits;
+    // Fallback: if it looks like a valid number with country code, just prefix +
+    if (digits.length >= 10 && digits.length <= 15) return '+' + digits;
     return raw;
   }
   function formatDisplay(raw) {
@@ -1655,13 +1667,56 @@
   }
 
   // ══════════════════════════════════════
-  // COPY LINK
+  // ADD LINK (fills slots 1-3 automatically)
   // ══════════════════════════════════════
-  function copyLink(btn, url) {
-    navigator.clipboard.writeText(url).then(() => {
-      btn.textContent = 'Copied!';
-      btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = 'Copy Link'; btn.classList.remove('copied'); }, 2000);
+  function addLink(btn, url) {
+    // If already added, deselect it
+    if (btn.classList.contains('link-added')) {
+      const slotId = btn.dataset.slotId;
+      if (slotId) { document.getElementById(slotId).value = ''; }
+      btn.textContent = 'Add Link';
+      btn.classList.remove('link-added');
+      btn.dataset.slotId = '';
+      syncSlotUI();
+      return;
+    }
+    // Find next empty slot
+    const slots = ['sl-link-1','sl-link-2','sl-link-3'];
+    let filled = null;
+    for (const id of slots) {
+      if (!document.getElementById(id).value.trim()) { filled = id; break; }
+    }
+    if (!filled) { return; } // all 3 full, button should already be disabled
+    document.getElementById(filled).value = url;
+    btn.textContent = '✓ Added';
+    btn.classList.add('link-added');
+    btn.dataset.slotId = filled;
+    syncSlotUI();
+  }
+
+  function syncSlotUI() {
+    const slots = ['sl-link-1','sl-link-2','sl-link-3'];
+    let count = 0;
+    slots.forEach((id, i) => {
+      const hasVal = document.getElementById(id).value.trim() !== '';
+      if (hasVal) count++;
+      const dot = document.getElementById('sl-dot-' + (i+1));
+      if (dot) dot.classList.toggle('filled', hasVal);
+    });
+    document.getElementById('sl-slot-count').textContent = count + ' / 3 links added';
+    // Sync all Add Link buttons — disable if 3 full, re-check removed slots
+    document.querySelectorAll('.copy-btn').forEach(b => {
+      if (b.classList.contains('link-added')) {
+        // Verify its slot still has matching value
+        const sid = b.dataset.slotId;
+        if (sid && document.getElementById(sid).value.trim() === '') {
+          b.textContent = 'Add Link'; b.classList.remove('link-added'); b.dataset.slotId = '';
+        }
+      }
+      if (!b.classList.contains('link-added')) {
+        b.classList.toggle('slots-full', count >= 3);
+        if (count >= 3) { b.textContent = 'Full'; } else { b.textContent = 'Add Link'; }
+      }
     });
   }
 
@@ -1684,7 +1739,7 @@
     const origText = sendBtn.textContent;
     sendBtn.textContent = 'Sending...'; sendBtn.classList.add('sending');
     const payload = {
-      first_name: firstName || '', email: email || '', phone: phone || '',
+      first_name: firstName || '', email: email || '', phone: phone ? formatE164(phone) : '',
       link_1: link1 || '', link_2: link2 || '', link_3: link3 || '',
       links_count: [link1,link2,link3].filter(l=>l).length,
       sent_at: new Date().toISOString(),
@@ -1697,6 +1752,8 @@
       sendBtn.textContent = origText; sendBtn.classList.remove('sending');
       succEl.style.display = 'block';
       ['sl-first-name','sl-email','sl-phone','sl-link-1','sl-link-2','sl-link-3'].forEach(id => document.getElementById(id).value = '');
+      document.querySelectorAll('.copy-btn.link-added').forEach(b => { b.textContent = 'Add Link'; b.classList.remove('link-added'); b.dataset.slotId = ''; });
+      syncSlotUI();
       setTimeout(() => succEl.style.display = 'none', 5000);
     }).catch(() => {
       sendBtn.textContent = origText; sendBtn.classList.remove('sending');
@@ -1724,7 +1781,7 @@
       prospect_email: email,
       prospect_name: name || '',
       alternate_email: altEmail || '',
-      update_phone: phone || '',
+      update_phone: phone ? formatE164(phone) : '',
       pdf_1_filename: pdfData.pdf1 ? pdfData.pdf1.filename : '',
       pdf_2_filename: pdfData.pdf2 ? pdfData.pdf2.filename : '',
       has_pdf: pdfData.pdf1 ? 'true' : 'false',
@@ -1782,7 +1839,7 @@
       first_name: firstName,
       last_name: lastName,
       email: document.getElementById('log-email').value.trim(),
-      phone: document.getElementById('log-phone').value.trim(),
+      phone: formatE164(document.getElementById('log-phone').value.trim()),
       industry: document.getElementById('log-industry').value,
       duration: document.getElementById('timer-display').textContent,
       outcome: document.getElementById('log-result').value,
@@ -1918,6 +1975,8 @@
       const loggedAt = row.date || row.logged_at || '—';
       const agent = row.agent || row.logged_by || '—';
       const source = row.source || '—';
+      const reasonDidntClose = row.reasons_didn_t_close || row.reasons_didnt_close || '—';
+      const monthlyPlan = row.monthly_plan_interest || '—';
       const resultClass = getResultClass(result);
       return `<div class="tracker-card">
         <span class="tc-name">${name}</span>
@@ -1932,6 +1991,8 @@
             <div><span class="tc-label">Follow-Up</span><div class="tc-value">${followup}</div></div>
             <div><span class="tc-label">Agent</span><div class="tc-value">${agent}</div></div>
             <div><span class="tc-label">Source</span><div class="tc-value">${source}</div></div>
+            <div><span class="tc-label">Reason Didn't Close</span><div class="tc-value">${reasonDidntClose}</div></div>
+            <div><span class="tc-label">Monthly Plan Interest</span><div class="tc-value">${monthlyPlan}</div></div>
           </div>
           ${summary !== '—' ? `<div class="tc-summary-row"><span class="tc-label">Notes</span><div class="tc-value">${summary}</div></div>` : ''}
         </div>
